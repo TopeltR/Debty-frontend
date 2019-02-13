@@ -15,7 +15,7 @@
                 <label for="user">Add people</label>
                 <input type="text" class="form-control" id="user" placeholder="Nimi" v-model="name">
                 <input type="text" class="form-control" id="email" placeholder="Email" v-model="email">
-                <button type="button" v-bind:onclick="addPerson" class="btn btn-primary">Add user</button>
+                <button type="button" v-on:click="addPerson" class="btn btn-primary">Add user</button>
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -37,7 +37,7 @@
         }),
         methods: {
             addPerson (event) {
-                console.log(event)
+                console.log(this)
             },
             getPerson () {
 
