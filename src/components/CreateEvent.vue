@@ -37,7 +37,7 @@
         }),
         methods: {
             addPerson(event) {
-                this.people.push(new User(this.name, this.email))
+                this.people.push(new User(this.name, this.email));
             },
         },
     };

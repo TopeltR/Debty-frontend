@@ -9,9 +9,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import CreateEvent from '@/components/CreateEvent.vue'; // @ is an alias to /src
 
 @Component({
-  components: {
-    CreateEvent,
-  },
+  components: {},
 })
 export default class Home extends Vue {}
 </script>
