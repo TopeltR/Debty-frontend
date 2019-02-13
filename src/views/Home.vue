@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <create-event></create-event>
   </div>
 </template>
@@ -10,7 +10,7 @@ import CreateEvent from '@/components/CreateEvent.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    CreateEvent
+    CreateEvent,
   },
 })
 export default class Home extends Vue {}
