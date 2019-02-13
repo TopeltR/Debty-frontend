@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <form>
-            <div class="form-group">
+            <div class="form-group" @submit.prevent>
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" placeholder="Enter event title">
             </div>
@@ -15,7 +15,7 @@
                 <label for="user">Add people</label>
                 <input type="text" class="form-control" id="user" placeholder="Nimi" v-model="name">
                 <input type="text" class="form-control" id="email" placeholder="Email" v-model="email">
-                <button type="button" v-bind:onclick="addPerson()" class="btn btn-primary">Add user</button>
+                <button type="button" v-bind:onclick="addPerson" class="btn btn-primary">Add user</button>
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -36,11 +36,11 @@
             people: [],
         }),
         methods: {
-            addPerson: (event) => {
-                this.people.push(this.getPerson());
+            addPerson (event) {
+                console.log(event)
             },
-            getPerson: () => {
-                return new User(this.name, this.email);
+            getPerson () {
+
             },
         },
     };
