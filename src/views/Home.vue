@@ -1,12 +1,11 @@
 <template>
   <div>
-    <create-event></create-event>
+    <h2>Welcome to Debty!</h2>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import CreateEvent from '@/components/CreateEvent.vue'; // @ is an alias to /src
 
 @Component({
   components: {},

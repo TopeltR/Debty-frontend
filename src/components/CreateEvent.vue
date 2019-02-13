@@ -1,48 +1,54 @@
 <template>
-    <div class="row">
-        <form>
-            <div class="form-group" @submit.prevent>
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" placeholder="Enter event title">
-            </div>
-            <div class="form-group">
-                <ul>
-                    <li v-for="person in people">
-                        <p>Name: {{ person.name }} Email: {{ person.email }}</p>
-                    </li>
-                </ul>
-                <label for="user">Add people</label>
-                <input type="text" class="form-control" id="user" placeholder="Nimi" v-model="name">
-                <input type="text" class="form-control" id="email" placeholder="Email" v-model="email">
-                <button type="button" v-on:click="addPerson" class="btn btn-primary">Add user</button>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+    <div class="row" @submit.prevent="createEvent">
+        <div class="col-sm-12 col-md-5">
+            <form>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter event title">
+                </div>
+                <div class="form-group">
+                    <p v-if="people.length > 0">People:</p>
+                    <ul>
+                        <li v-for="person in people">
+                            {{ person.name }}
+                        </li>
+                    </ul>
+                    <label for="user">Add people</label>
+                    <input type="text" class="form-control" id="user" placeholder="Name" v-model="name">
+                    <button type="button" v-on:click="addPerson" class="btn btn-primary">Add</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Create event</button>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
     import User from '../entities/User';
+    import router from '../router.ts';
 
     export default {
         name: 'CreateEvent',
         data: () => ({
             name: '',
-            email: '',
             people: [],
         }),
         methods: {
-            addPerson(event) {
-                this.people.push(new User(this.name, this.email));
+            addPerson() {
+                if (this.name.length > 0) {
+                    this.people.push(new User(this.name));
+                    this.name = '';
+                }
+            },
+            createEvent() {
+                router.push('/');
             },
         },
     };
 </script>
 
 <style scoped>
-
+    #user {
+        margin-bottom: 5px;
+    }
 </style>
