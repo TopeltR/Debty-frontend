@@ -8,8 +8,7 @@
             <div class="form-group">
                 <ul>
                     <li v-for="person in people">
-                        <p>Name: {{ person.name }}</p>
-                        <p>Email: {{ person.email }}</p>
+                        <p>Name: {{ person.name }} Email: {{ person.email }}</p>
                     </li>
                 </ul>
                 <label for="user">Add people</label>
@@ -38,10 +37,7 @@
         }),
         methods: {
             addPerson(event) {
-                console.log(this)
-            },
-            getPerson() {
-
+                this.people.push(new User(this.name, this.email))
             },
         },
     };
