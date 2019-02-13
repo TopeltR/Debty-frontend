@@ -28,6 +28,7 @@
 
 <script>
     import User from '../entities/User';
+
     export default {
         name: 'CreateEvent',
         data: () => ({
@@ -36,10 +37,10 @@
             people: [],
         }),
         methods: {
-            addPerson (event) {
+            addPerson(event) {
                 console.log(this)
             },
-            getPerson () {
+            getPerson() {
 
             },
         },
