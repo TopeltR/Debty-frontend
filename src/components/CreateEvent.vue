@@ -10,7 +10,7 @@
                     <p v-if="people.length > 0">People:</p>
                     <ul>
                         <li v-for="person in people">
-                            {{ person.name }}
+                            {{ person.firstName }}
                         </li>
                     </ul>
                     <label for="user">Add people</label>
@@ -36,9 +36,15 @@
         methods: {
             addPerson() {
                 if (this.name.length > 0) {
-                    this.people.push(new User(this.name));
+                    const user = this.searchUser();
+                    this.people.push(user);
                     this.name = '';
                 }
+            },
+            searchUser() {
+                const user = new User();
+                user.firstName = this.name;
+                return user;
             },
             createEvent() {
                 router.push('/');

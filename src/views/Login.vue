@@ -27,7 +27,7 @@
                 </div>
                 <b-row>
                     <b-col sm="12">
-                        <button type="submit" class="btn btn-primary buttonWide">Login</button>
+                        <b-btn variant="primary" type="submit" class="buttonWide">Login</b-btn>
                     </b-col>
                 </b-row>
             </form>
@@ -47,7 +47,7 @@
 
         methods: {
             login() {
-                router.push('/');
+                router.push('/home');
             },
         },
     };
