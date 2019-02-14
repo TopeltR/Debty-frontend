@@ -1,7 +1,7 @@
 <template>
-    <div class="row" @submit.prevent="createEvent">
-        <div class="col-sm-12 col-md-5">
-            <form>
+    <b-row>
+        <b-col sm="12" md="5">
+            <form @submit.prevent="createEvent">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" id="title" placeholder="Enter event title">
@@ -19,8 +19,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Create event</button>
             </form>
-        </div>
-    </div>
+        </b-col>
+    </b-row>
 </template>
 
 <script>
