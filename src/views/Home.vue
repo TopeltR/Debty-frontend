@@ -1,14 +1,22 @@
 <template>
-  <div>
-    <h2>Welcome to Debty!</h2>
-  </div>
+    <div>
+        <navbar></navbar>
+
+        <b-row>
+            <b-col>
+                <h2>Welcome to Debty!</h2>
+            </b-col>
+        </b-row>
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+    import {Component, Vue} from 'vue-property-decorator';
+    import Navbar from '@/components/Navbar.vue';
 
-@Component({
-  components: {},
-})
-export default class Home extends Vue {}
+    @Component({
+        components: {Navbar},
+    })
+    export default class Home extends Vue {
+    }
 </script>
