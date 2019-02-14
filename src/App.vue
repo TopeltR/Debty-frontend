@@ -1,5 +1,5 @@
 <template>
-    <b-container class="bv-example-row">
+    <b-container fluid>
         <router-view/>
     </b-container>
 </template>

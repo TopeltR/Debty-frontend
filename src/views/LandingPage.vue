@@ -1,16 +1,16 @@
 <template>
     <b-row>
         <b-col>
-            Logo
+           Make the Logo AS BIG AS YOU CAN
         </b-col>
         <b-col>
             <b-jumbotron>
-                <div class="container text-center">
+                <b-container class="text-center" >
                     <b-button-group vertical id="mainButtons">
                         <b-btn variant="primary" href="#">Login</b-btn>
                         <b-btn variant="success" href="#">Sign up</b-btn>
                     </b-button-group>
-                </div>
+                </b-container>
             </b-jumbotron>
         </b-col>
     </b-row>
@@ -18,8 +18,8 @@
 
 <script>
     export default {
-        name: "LandingPage"
-    }
+        name: 'LandingPage',
+    };
 </script>
 
 <style scoped>
