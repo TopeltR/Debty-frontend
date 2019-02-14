@@ -2,6 +2,7 @@
   <div>
     <h2>Welcome to Debty!</h2>
   </div>
+
 </template>
 
 <script lang="ts">
