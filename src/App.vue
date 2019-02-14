@@ -1,11 +1,24 @@
 <template>
   <div id="app" class="container">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/event/create">Create event</router-link> |
-      <router-link to="/login">Login</router-link>
+      <!--<router-link to="/">Home</router-link> | -->
+      <!--<router-link to="/event/create">Create event</router-link> |-->
+      <!--<router-link to="/login">Login</router-link> |-->
     </div>
     <router-view/>
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col>
+          Logo
+        </b-col>
+        <b-col>
+        <b-jumbotron>
+          <b-btn variant="primary" href="#">Login</b-btn>
+          <b-btn variant="success" href="#">Sign up</b-btn>
+        </b-jumbotron>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
