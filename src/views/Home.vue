@@ -37,35 +37,33 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue'
+    import router from "@/router";
 
 
     export default {
         name: "CreateEvent",
         components: {Navbar, Background},
-        mounted: () => {
-            this.$http.get("/events/").then(
+        created() {
+            this.$http.get("/events/all").then(
                 response => {
                     this.events = response.data;
                 }
-            )
+            ).catch(error => {
+                alert("You are not logged in!");
+                router.push("/")
+            });
+            this.$http.get("/debts/all").then(
+                response => {
+                    this.debts = response.data;
+                }
+            ).catch(error => {
+            });
         },
         data: () => ({
-            events: [
-                {id: 1, title: "Event 1",},
-                {id: 1, title: "Event 1",},
-                {id: 1, title: "Event 1",},
-                {id: 1, title: "Event 1",},
-            ],
-            debts: [
-                {id: 1, receiver: "Person 1"},
-                {id: 1, receiver: "Person 1"},
-                {id: 1, receiver: "Person 1"},
-                {id: 1, receiver: "Person 1"},
-                {id: 1, receiver: "Person 1"},
-            ]
+            events: [],
+            debts: [],
         }),
     }
 </script>
