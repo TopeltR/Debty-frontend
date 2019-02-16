@@ -1,8 +1,5 @@
 <template>
-
-    <b-container>
-        <router-view/>
-    </b-container>
+    <router-view/>
 </template>
 
 <style lang="scss">
