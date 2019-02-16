@@ -61,19 +61,18 @@
 
         methods: {
             login() {
-                this.$http.post('/login', {
-                    username: this.email,
-                    password: this.password,
-                }).then(response => {
-                    if (response.status === 200) {
-                        router.push('/home')
-                    } else {
+                let bodyFormData = new FormData();
+                bodyFormData.set('username', this.email);
+                bodyFormData.set('password', this.password);
+
+                this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
+                    .then(response => {
+                        if (response.status === 200) {
+                            router.push('/home')
+                        }
+                    }).catch(error => {
                         this.displayProperty = 'block'
-                    }
-                }).catch(error => {
-                    console.log(error)
-                });
-                router.push('/home');
+                    });
             },
         },
     };
@@ -105,8 +104,7 @@
     }
 
     .notification {
-        padding-top: 30px;
-        height: 100px;
+        height: 45px;
         color: red;
     }
 </style>
