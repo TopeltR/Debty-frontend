@@ -19,9 +19,9 @@
                 <form @submit.prevent="register">
                     <div class="form-group text-right">
                         <b-row>
-                            <b-col>
+                            <b-col :class="{ 'hasError': $v.form.email.$error }">
                                 <input type="text" class="form-control" id="email" placeholder="Email"
-                                       v-model="email">
+                                       v-model="form.email">
                             </b-col>
                         </b-row>
                     </div>
@@ -29,15 +29,16 @@
                         <b-row>
                             <b-col>
                                 <input type="password" class="form-control" id="password" placeholder="Password"
-                                       v-model="password">
+                                       v-model="form.password">
                             </b-col>
                         </b-row>
                     </div>
                     <div class="form-group text-right">
                         <b-row>
                             <b-col>
-                                <input type="password" class="form-control" id="passwordConfirm" placeholder="Repeat password"
-                                       v-model="passwordConfirm">
+                                <input type="password" class="form-control" id="passwordConfirm"
+                                       placeholder="Repeat password"
+                                       v-model="form.passwordConfirm">
                             </b-col>
                         </b-row>
                     </div>
@@ -45,7 +46,7 @@
                         <b-row>
                             <b-col>
                                 <input type="text" class="form-control" id="firstName" placeholder="First name"
-                                       v-model="firstName">
+                                       v-model="form.firstName">
                             </b-col>
                         </b-row>
                     </div>
@@ -53,7 +54,7 @@
                         <b-row>
                             <b-col>
                                 <input type="text" class="form-control" id="lastName" placeholder="Last name"
-                                       v-model="lastName">
+                                       v-model="form.lastName">
                             </b-col>
                         </b-row>
                     </div>
@@ -62,7 +63,9 @@
                             <b-btn variant="primary" type="submit" class="button-wide">Register</b-btn>
                         </b-col>
                         <b-col sm="12" md="7" class="MT7">
-                            <a href="#">Already a member?</a>
+                            <router-link to="/">
+                                <a>Already a member?</a>
+                            </router-link>
                         </b-col>
                     </b-row>
                 </form>
@@ -72,6 +75,7 @@
 </template>
 
 <script>
+    // this should go to validated fields: @input="v.$touch()"
     import router from '../router.ts';
     import Background from "../components/Background";
     import {required, email, minLength} from "vuelidate/lib/validators";
@@ -86,16 +90,22 @@
             }
         },
         data: () => ({
-            email: '',
-            password: '',
-            passwordConfirm: '',
-            firstName: '',
-            lastName: ''
+            form: {
+                email: '',
+                password: '',
+                passwordConfirm: '',
+                firstName: '',
+                lastName: ''
+            }
         }),
         methods: {
-            login() {
-
-                this.$http.post('/login',
+            register() {
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    console.log("not ok");
+                    return
+                }
+                /*this.$http.post('/login',
                     {},
                     {
                         headers: {'Content-Type': 'multipart/form-data'}
@@ -106,7 +116,7 @@
                         }
                     }).catch(error => {
                     this.displayProperty = 'block'
-                });
+                });*/
             },
         },
     }
@@ -116,14 +126,17 @@
     .PT15vh {
         padding-top: 15vh;
     }
+
     .MT7 {
         margin-top: 7px;
     }
+
     @media (max-width: 767px) {
         .PT15vh {
             padding-top: 0;
         }
     }
+
     .button-wide {
         width: 100%;
     }
