@@ -1,34 +1,39 @@
 <template>
-    <b-row>
-        <b-col sm="12" md="5">
-            <form @submit.prevent="createEvent">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" placeholder="Enter event title">
-                </div>
-                <div class="form-group">
-                    <p v-if="people.length > 0">People:</p>
-                    <ul>
-                        <li v-for="person in people">
-                            {{ person.firstName }}
-                        </li>
-                    </ul>
-                    <label for="user">Add people</label>
-                    <input type="text" class="form-control" id="user" placeholder="Name" v-model="name">
-                    <button type="button" v-on:click="addPerson" class="btn btn-primary">Add</button>
-                </div>
-                <button type="submit" class="btn btn-primary">Create event</button>
-            </form>
-        </b-col>
-    </b-row>
+    <background>
+        <b-row>
+            <b-col sm="12" md="5">
+                <form @submit.prevent="createEvent">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="Enter event title">
+                    </div>
+                    <div class="form-group">
+                        <p v-if="people.length > 0">People:</p>
+                        <ul>
+                            <li v-for="person in people">
+                                {{ person.firstName }}
+                            </li>
+                        </ul>
+                        <label for="user">Add people</label>
+                        <input type="text" class="form-control" id="user" placeholder="Name" v-model="name">
+                        <button type="button" v-on:click="addPerson" class="btn btn-primary">Add</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create event</button>
+                </form>
+            </b-col>
+        </b-row>
+    </background>
 </template>
 
 <script>
     import User from '../entities/User';
     import router from '../router.ts';
+    import Background from '@/components/Background';
+
 
     export default {
         name: 'CreateEvent',
+        components: {Background},
         data: () => ({
             name: '',
             people: [],

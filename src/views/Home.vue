@@ -40,31 +40,43 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue'
     import router from "@/router";
-
+    import axios from "axios"
 
     export default {
         name: "CreateEvent",
         components: {Navbar, Background},
-        created() {
-            this.$http.get("/events/all").then(
-                response => {
-                    this.events = response.data;
-                }
-            ).catch(error => {
-                alert("You are not logged in!");
-                router.push("/")
-            });
-            this.$http.get("/debts/all").then(
-                response => {
-                    this.debts = response.data;
-                }
-            ).catch(error => {
-            });
+        /*mounted() {
+            this.getDebts();
+            this.getEvents();
         },
         data: () => ({
             events: [],
             debts: [],
         }),
+        methods: {
+            getDebts: () => {
+                let self = this;
+                this.$http.get("/debts/all").then(
+                    response => {
+                        self.debts = response.data;
+                    }
+                ).catch(error => {
+                });
+            },
+            getEvents: () => {
+                let self = this;
+                this.$http.get("/events/all").then(
+                    response => {
+                        self.events = response.data;
+                    }
+                ).catch(
+                    error => {
+                        alert("You are not logged in!");
+                        router.push("/")
+                    }
+                );
+            }
+        }*/
     }
 </script>
 
