@@ -49,6 +49,7 @@
 
 <script>
     import router from '../router.ts';
+    import axios from 'axios'
 
     export default {
         name: 'Login',
@@ -60,19 +61,21 @@
 
         methods: {
             login() {
-                this.$http.post('/login', {
-                    username: this.email,
-                    password: this.password,
-                }).then(response => {
+                var bodyFormData = new FormData();
+                bodyFormData.set('username', this.email);
+                bodyFormData.set('password', this.password);
+                axios.post('/login', bodyFormData, { headers: {'Content-Type': 'multipart/form-data' }})
+                    .then(response => {
+                    console.log("response");
+                    console.log(response);
                     if (response.status === 200) {
                         router.push('/home')
-                    } else {
-                        this.displayProperty = 'block'
                     }
                 }).catch(error => {
-                    console.log(error)
+                    console.log("ERROR");
+                    console.log(error);
+                    this.displayProperty = 'block'
                 });
-                router.push('/home');
             },
         },
     };

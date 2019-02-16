@@ -10,15 +10,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 axios.defaults.baseURL = "http://localhost:8080";
 
-axios.interceptors.response.use(response => response,
-    error => {
-        const {status} = error.response;
-        if (status !== 401) {
-            //return Promise.reject(error.response);
-        }
-    }
-);
-
 Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
