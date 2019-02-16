@@ -1,27 +1,29 @@
 <template>
-    <b-row>
-        <b-navbar toggleable="sm">
-            <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand class="green brand">debty</b-navbar-brand>
-            <b-collapse is-nav id="nav_collapse">
-                <b-navbar-nav>
-                    <b-nav-item href="#/home">
-                        Home
-                    </b-nav-item>
-                </b-navbar-nav>
-                <b-navbar-nav>
-                    <b-nav-item href="#/events">
-                        Events
-                    </b-nav-item>
-                </b-navbar-nav>
-                <b-navbar-nav>
-                    <b-nav-item href="#/debts">
-                        Debts
-                    </b-nav-item>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-navbar>
-    </b-row>
+    <b-container fluid>
+        <b-row class="PB65px">
+            <b-navbar class="fixed-top" style="background-color: #E8E8E8; width:100%" type="light" variant="" toggleable="sm">
+                <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+                <b-navbar-brand class="limegreen brand">debty</b-navbar-brand>
+                <b-collapse is-nav id="nav_collapse">
+                    <b-navbar-nav>
+                        <b-nav-item to="home">
+                            Home
+                        </b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav>
+                        <b-nav-item to="events">
+                            Events
+                        </b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav>
+                        <b-nav-item to="debts">
+                            Debts
+                        </b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
@@ -33,7 +35,7 @@
 </script>
 
 <style scoped>
-    .green {
+    .limegreen {
         color: limegreen;
     }
 
@@ -41,5 +43,7 @@
         font-weight: bolder;
         font-size: 30px;
     }
-
+    .PB65px {
+        padding-bottom: 65px;
+    }
 </style>
