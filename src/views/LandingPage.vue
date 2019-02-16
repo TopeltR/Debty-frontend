@@ -40,7 +40,9 @@
                             <b-btn variant="primary" type="submit" class="button-wide">Login</b-btn>
                         </b-col>
                     </b-row>
-                    <a href="/#/register">Register</a>
+                    <div class="mt-2">
+                        <a href="#/register">Register</a>
+                    </div>
                 </form>
             </b-col>
         </b-row>
