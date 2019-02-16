@@ -3,7 +3,7 @@
         <b-container>
             <b-row class="PT15vh">
                 <b-col sm="12" md="6">
-                    <h1>LOGO</h1>
+                    <p class="logo">debty</p>
                 </b-col>
                 <b-col sm="12" md="5" offset-md="1">
                     <form @submit.prevent="login">
@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <b-row>
                                 <b-col>
-                                    <label for="email">Email</label>
+                                    <label class="label" for="email">Email:</label>
                                     <input type="text" class="form-control" id="email" placeholder="Email"
                                            v-model="email">
                                 </b-col>
@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <b-row>
                                 <b-col>
-                                    <label for="password">Password</label>
+                                    <label class="label" for="password">Password:</label>
                                     <input type="password" class="form-control" id="password" placeholder="Password"
                                            v-model="password">
                                 </b-col>
@@ -89,9 +89,17 @@
         }
     }
 
+    .logo {
+        color: limegreen;
+        font-size: 100px;
+        font-weight: bolder;
+    }
 
     .button-wide {
         width: 100%;
+        background-color: darkgreen;
+        font-weight: 500;
+        border-color: darkgreen
     }
 
     .diagonal-background {
@@ -106,5 +114,9 @@
     .notification {
         height: 45px;
         color: red;
+    }
+
+    .label {
+        font-size: 25px;
     }
 </style>

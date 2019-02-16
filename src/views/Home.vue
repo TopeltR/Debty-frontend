@@ -1,13 +1,15 @@
 <template>
-    <div>
-        <navbar></navbar>
+    <b-container>
+        <div>
+            <navbar></navbar>
 
-        <b-row>
-            <b-col>
-                <h2>Welcome to Debty!</h2>
-            </b-col>
-        </b-row>
-    </div>
+            <b-row>
+                <b-col sm="12" md="5">
+                    <h2>Events</h2>
+                </b-col>
+            </b-row>
+        </div>
+    </b-container>
 </template>
 
 <script lang="ts">
