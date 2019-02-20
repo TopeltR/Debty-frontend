@@ -5,8 +5,8 @@ class BankAccount {
     public created: Date | undefined;
     public modified: Date | undefined;
 
-    constructor(number: string, name: string) {
-        this.number = number;
+    constructor(num: string, name: string) {
+        this.number = num;
         this.name = name;
     }
 }

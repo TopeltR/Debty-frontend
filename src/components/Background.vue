@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid class="diagonal-background">
+    <b-container fluid class='diagonal-background'>
         <b-container>
             <slot></slot>
         </b-container>
@@ -8,13 +8,13 @@
 
 <script>
     export default {
-        name: "Background"
-    }
+        name: 'Background',
+    };
 </script>
 
 <style scoped>
     .diagonal-background {
-        background: url("../assets/bg-diagonal.svg") no-repeat center center fixed;
+        background: url('../assets/bg-diagonal.svg') no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;

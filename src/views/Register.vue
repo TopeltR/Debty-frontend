@@ -1,7 +1,7 @@
 <template>
     <background>
-        <b-row class="PT15vh">
-            <b-col sm="12" md="6">
+        <b-row class='PT15vh'>
+            <b-col sm='12' md='6'>
                 <p>
                     <b>
                         Doggo ipsum bork heckin angery woofer borking doggo wrinkler vvv shooberino pupper, ur givin me
@@ -15,55 +15,55 @@
                     ruin diet noodle horse pupper, stop it fren dat tungg tho.
                 </p>
             </b-col>
-            <b-col sm="12" md="5" offset-md="1">
-                <form @submit.prevent="register">
-                    <div class="form-group text-right">
+            <b-col sm='12' md='5' offset-md='1'>
+                <form @submit.prevent='register'>
+                    <div class='form-group text-right'>
                         <b-row>
-                            <b-col :class="{ 'hasError': $v.form.email.$error }">
-                                <input type="text" class="form-control" id="email" placeholder="Email"
-                                       v-model="form.email">
+                            <b-col :class='{ "hasError": $v.form.email.$error }'>
+                                <input type='text' class='form-control' id='email' placeholder='Email'
+                                       v-model='form.email'>
                             </b-col>
                         </b-row>
                     </div>
-                    <div class="form-group text-right">
+                    <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type="password" class="form-control" id="password" placeholder="Password"
-                                       v-model="form.password">
+                                <input type='password' class='form-control' id='password' placeholder='Password'
+                                       v-model='form.password'>
                             </b-col>
                         </b-row>
                     </div>
-                    <div class="form-group text-right">
+                    <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type="password" class="form-control" id="passwordConfirm"
-                                       placeholder="Repeat password"
-                                       v-model="form.passwordConfirm">
+                                <input type='password' class='form-control' id='passwordConfirm'
+                                       placeholder='Repeat password'
+                                       v-model='form.passwordConfirm'>
                             </b-col>
                         </b-row>
                     </div>
-                    <div class="form-group text-right">
+                    <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type="text" class="form-control" id="firstName" placeholder="First name"
-                                       v-model="form.firstName">
+                                <input type='text' class='form-control' id='firstName' placeholder='First name'
+                                       v-model='form.firstName'>
                             </b-col>
                         </b-row>
                     </div>
-                    <div class="form-group text-right">
+                    <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type="text" class="form-control" id="lastName" placeholder="Last name"
-                                       v-model="form.lastName">
+                                <input type='text' class='form-control' id='lastName' placeholder='Last name'
+                                       v-model='form.lastName'>
                             </b-col>
                         </b-row>
                     </div>
                     <b-row>
-                        <b-col sm="12" md="5">
-                            <b-btn variant="primary" type="submit" class="button-wide">Register</b-btn>
+                        <b-col sm='12' md='5'>
+                            <b-btn variant='primary' type='submit' class='button-wide'>Register</b-btn>
                         </b-col>
-                        <b-col sm="12" md="7" class="MT7">
-                            <router-link to="/">
+                        <b-col sm='12' md='7' class='MT7'>
+                            <router-link to='/'>
                                 <a>Already a member?</a>
                             </router-link>
                         </b-col>
@@ -75,19 +75,19 @@
 </template>
 
 <script>
-    // this should go to validated fields: @input="v.$touch()"
+    // this should go to validated fields: @input='v.$touch()'
     import router from '../router.ts';
-    import Background from "../components/Background";
-    import {required, email, minLength} from "vuelidate/lib/validators";
+    import Background from '../components/Background';
+    import {required, email, minLength} from 'vuelidate/lib/validators';
 
     export default {
-        name: "Register",
+        name: 'Register',
         components: {Background},
         validations: {
             form: {
                 email: {required, email},
                 password: {required, min: minLength(8)},
-            }
+            },
         },
         data: () => ({
             form: {
@@ -95,15 +95,15 @@
                 password: '',
                 passwordConfirm: '',
                 firstName: '',
-                lastName: ''
-            }
+                lastName: '',
+            },
         }),
         methods: {
             register() {
                 this.$v.form.$touch();
                 if (this.$v.form.$error) {
-                    console.log("not ok");
-                    return
+                    // console.log('not ok');
+                    return;
                 }
                 /*this.$http.post('/login',
                     {},
@@ -119,7 +119,7 @@
                 });*/
             },
         },
-    }
+    };
 </script>
 
 <style scoped>
