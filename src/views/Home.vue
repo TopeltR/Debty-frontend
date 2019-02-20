@@ -45,6 +45,19 @@
     export default {
         name: "CreateEvent",
         components: {Navbar, Background},
+        data: () => ({
+            events: [
+                {title: "Event", id: 1},
+                {title: "Event", id: 1},
+                {title: "Event", id: 1},
+            ],
+            debts: [
+                {receiver: "Person", id: 1},
+                {receiver: "Person", id: 1},
+                {receiver: "Person", id: 1},
+                {receiver: "Person", id: 1},
+            ],
+        }),
         /*mounted() {
             this.getDebts();
             this.getEvents();
