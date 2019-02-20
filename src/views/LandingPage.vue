@@ -36,13 +36,15 @@
                         </b-row>
                     </div>
                     <b-row>
-                        <b-col sm='12' md='12'>
+                        <b-col sm='12' md='5'>
                             <b-btn variant='primary' type='submit' class='button-wide'>Login</b-btn>
                         </b-col>
+                        <b-col sm='12' md='7' class='MT7 mob-text-center'>
+                            <router-link to='/register'>
+                                <a>Register?</a>
+                            </router-link>
+                        </b-col>
                     </b-row>
-                    <div class='mt-2'>
-                        <a href='#/register'>Register</a>
-                    </div>
                 </form>
             </b-col>
         </b-row>
@@ -64,17 +66,17 @@
 
         methods: {
             login() {
-                const bodyFormData = new FormData();
+                let bodyFormData = new FormData();
                 bodyFormData.set('username', this.email);
                 bodyFormData.set('password', this.password);
 
                 this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
-                    .then((response) => {
+                    .then(response => {
                         if (response.status === 200) {
-                            router.push('/home');
+                            router.push('/home')
                         }
-                    }).catch((error) => {
-                        this.displayProperty = 'block';
+                    }).catch(error => {
+                        this.displayProperty = 'block'
                     });
             },
         },
@@ -85,26 +87,30 @@
     .PT15vh {
         padding-top: 15vh;
     }
-    @media (max-width: 767px) {
-        .PT15vh {
-            padding-top: 0;
-        }
-    }
-
     .logo {
         color: limegreen;
         font-size: 100px;
         font-weight: bolder;
     }
-
     .button-wide {
         width: 100%;
-        background-color: darkgreen;
+        /*background-color: darkgreen;
         font-weight: 500;
-        border-color: darkgreen
+        border-color: darkgreen*/
     }
     .notification {
         height: 45px;
         color: red;
+    }
+    .MT7 {
+        margin-top: 7px;
+    }
+    @media (max-width: 767px) {
+        .PT15vh {
+            padding-top: 0;
+        }
+        .mob-text-center {
+            text-align: center;
+        }
     }
 </style>

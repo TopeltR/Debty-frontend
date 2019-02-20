@@ -1,20 +1,6 @@
 <template>
     <background>
-        <b-row class='PT15vh'>
-            <b-col sm='12' md='6'>
-                <p>
-                    <b>
-                        Doggo ipsum bork heckin angery woofer borking doggo wrinkler vvv shooberino pupper, ur givin me
-                        a spook smol pupperino long water shoob.
-                    </b>
-                    <br><br>
-                    Sub woofer big ol pupper such treat heckin good boys he made many woofs much ruin diet very good
-                    spot, puggorino super chub doggorino such treat. Doge you are doing me the shock wrinkler,
-                    borkdrive. Many pats boof heckin good boys and girls heckin the neighborhood pupper waggy wags
-                    shibe, noodle horse aqua doggo you are doing me a frighten shibe fluffer. Shoober sub woofer much
-                    ruin diet noodle horse pupper, stop it fren dat tungg tho.
-                </p>
-            </b-col>
+        <b-row class='PT15vh flex-md-row-reverse'>
             <b-col sm='12' md='5' offset-md='1'>
                 <form @submit.prevent='register'>
                     <div class='form-group text-right'>
@@ -62,13 +48,27 @@
                         <b-col sm='12' md='5'>
                             <b-btn variant='primary' type='submit' class='button-wide'>Register</b-btn>
                         </b-col>
-                        <b-col sm='12' md='7' class='MT7'>
+                        <b-col sm='12' md='7' class='MT7 mob-text-center'>
                             <router-link to='/'>
                                 <a>Already a member?</a>
                             </router-link>
                         </b-col>
                     </b-row>
                 </form>
+            </b-col>
+            <b-col sm='12' md='6'>
+                <p>
+                    <b>
+                        Doggo ipsum bork heckin angery woofer borking doggo wrinkler vvv shooberino pupper, ur givin me
+                        a spook smol pupperino long water shoob.
+                    </b>
+                    <br><br>
+                    Sub woofer big ol pupper such treat heckin good boys he made many woofs much ruin diet very good
+                    spot, puggorino super chub doggorino such treat. Doge you are doing me the shock wrinkler,
+                    borkdrive. Many pats boof heckin good boys and girls heckin the neighborhood pupper waggy wags
+                    shibe, noodle horse aqua doggo you are doing me a frighten shibe fluffer. Shoober sub woofer much
+                    ruin diet noodle horse pupper, stop it fren dat tungg tho.
+                </p>
             </b-col>
         </b-row>
     </background>
@@ -100,23 +100,22 @@
         }),
         methods: {
             register() {
-                this.$v.form.$touch();
+                /* this.$v.form.$touch();
                 if (this.$v.form.$error) {
                     // console.log('not ok');
                     return;
-                }
-                /*this.$http.post('/login',
-                    {},
-                    {
-                        headers: {'Content-Type': 'multipart/form-data'}
-                    })
-                    .then(response => {
+                }*/
+                console.log(this);
+                const user = this.form;
+                router.replace('home');
+                this.$http.post('/register', user)
+                    .then((response) => {
+                        console.log("RESP");
+                        console.log(response);
                         if (response.status === 200) {
-                            router.push('/home')
+                            //router.push('/home');
                         }
-                    }).catch(error => {
-                    this.displayProperty = 'block'
-                });*/
+                    }).catch((error) => {});
             },
         },
     };
@@ -131,13 +130,17 @@
         margin-top: 7px;
     }
 
+    .button-wide {
+        width: 100%;
+    }
+
     @media (max-width: 767px) {
         .PT15vh {
             padding-top: 0;
         }
-    }
 
-    .button-wide {
-        width: 100%;
+        .mob-text-center {
+            text-align: center;
+        }
     }
 </style>
