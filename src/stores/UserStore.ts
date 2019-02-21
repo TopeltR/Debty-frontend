@@ -1,5 +1,12 @@
 import User from '@/entities/User';
 
+import axios, {AxiosPromise} from 'axios';
+
+interface UserPromise {
+    then: Function;
+    catch: Function;
+}
+
 class UserStore {
     private user: User | undefined;
 
@@ -11,8 +18,35 @@ class UserStore {
         this.user = user;
     }
 
-    public getUser(): User | undefined {
-        return this.user;
+    public getUser(): UserPromise {
+        if (this.user === undefined) {
+            const promise = axios.get('/users/loggedin');
+            return {
+                then: (onfulfilled: any) => {
+                    promise.then((response) => {
+                        onfulfilled(User.from(response.data));
+                    });
+                    return this;
+                },
+                catch: (onrejected: any) => {
+                    promise.catch(onrejected);
+                    return this;
+                },
+            };
+        } else {
+            const user = this.user;
+            return {
+                then: (onfulfilled: any) => {
+                    onfulfilled(user);
+                    return this;
+                },
+                catch: (onrejected: any) => {
+                    onrejected(user);
+                    return this;
+                },
+            };
+        }
+
     }
 }
 

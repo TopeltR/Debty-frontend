@@ -48,6 +48,9 @@
         mounted() {
             this.getDebts();
             this.getEvents();
+            userStore.getUser().then((user) => {
+                console.log(user);
+            });
         },
         data: () => ({
             events: [],
@@ -59,7 +62,8 @@
                     (response) => {
                         this.debts = response.data;
                     },
-                ).catch((error));
+                ).catch((error) => {
+                });
             },
             getEvents() {
                 this.$http.get('/events/all').then(
