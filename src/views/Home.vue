@@ -36,29 +36,15 @@
     </div>
 </template>
 
-<script lang='ts'>
+<script>
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import router from '@/router';
-    import axios from 'axios';
 
     export default {
         name: 'CreateEvent',
         components: {Navbar, Background},
-        data: () => ({
-            events: [
-                {title: 'Event', id: 1},
-                {title: 'Event', id: 1},
-                {title: 'Event', id: 1},
-            ],
-            debts: [
-                {receiver: 'Person', id: 1},
-                {receiver: 'Person', id: 1},
-                {receiver: 'Person', id: 1},
-                {receiver: 'Person', id: 1},
-            ],
-        }),
-        /*mounted() {
+        mounted() {
             this.getDebts();
             this.getEvents();
         },
@@ -67,29 +53,26 @@
             debts: [],
         }),
         methods: {
-            getDebts: () => {
-                let self = this;
+            getDebts() {
                 this.$http.get('/debts/all').then(
                     response => {
-                        self.debts = response.data;
+                        this.debts = response.data;
                     }
-                ).catch(error => {
-                });
+                ).catch(error => {});
             },
-            getEvents: () => {
-                let self = this;
+            getEvents() {
                 this.$http.get('/events/all').then(
-                    response => {
-                        self.events = response.data;
+                    (response) => {
+                        this.events = response.data;
                     }
                 ).catch(
-                    error => {
+                    (error) => {
                         alert('You are not logged in!');
                         router.push('/')
                     }
                 );
             }
-        }*/
+        }
     };
 </script>
 

@@ -66,17 +66,17 @@
 
         methods: {
             login() {
-                let bodyFormData = new FormData();
+                const bodyFormData = new FormData();
                 bodyFormData.set('username', this.email);
                 bodyFormData.set('password', this.password);
 
                 this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
-                    .then(response => {
+                    .then((response) => {
                         if (response.status === 200) {
-                            router.push('/home')
+                            router.push('/home');
                         }
-                    }).catch(error => {
-                        this.displayProperty = 'block'
+                    }).catch((error) => {
+                        this.displayProperty = 'block';
                     });
             },
         },

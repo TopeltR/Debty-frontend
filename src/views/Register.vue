@@ -105,15 +105,11 @@
                     // console.log('not ok');
                     return;
                 }*/
-                console.log(this);
                 const user = this.form;
-                router.replace('home');
                 this.$http.post('/register', user)
                     .then((response) => {
-                        console.log("RESP");
-                        console.log(response);
                         if (response.status === 200) {
-                            //router.push('/home');
+                            router.push('/home');
                         }
                     }).catch((error) => {});
             },
