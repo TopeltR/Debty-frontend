@@ -47,6 +47,8 @@
         mounted() {
             this.getDebts();
             this.getEvents();
+            console.log("FROM HOME:");
+            console.log(this.user);
         },
         data: () => ({
             events: [],
@@ -58,7 +60,8 @@
                     response => {
                         this.debts = response.data;
                     }
-                ).catch(error => {});
+                ).catch(error => {
+                });
             },
             getEvents() {
                 this.$http.get('/events/all').then(

@@ -54,6 +54,7 @@
 <script>
     import router from '../router.ts';
     import Background from '../components/Background';
+    import User from "../entities/User";
 
     export default {
         name: 'LandingPage',
@@ -73,7 +74,12 @@
                 this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((response) => {
                         if (response.status === 200) {
-                            router.push('/home');
+                            this.$http.get("/people/"+this.email).then(
+                                (response) => {
+                                    this.user = response.data;
+                                    router.push("/home")
+                                }
+                            );
                         }
                     }).catch((error) => {
                         this.displayProperty = 'block';

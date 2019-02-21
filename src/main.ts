@@ -11,12 +11,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.withCredentials = true;
 
 Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(Vuelidate);
+
+Vue.prototype.user = undefined;
+
 /*Vue.use(VuelidateErrorExtractor, {
     i18n: false,
     messages: {
