@@ -79,7 +79,8 @@
     import router from '../router.ts';
     import Background from '../components/Background';
     import {required, email, minLength} from 'vuelidate/lib/validators';
-    import User from "../entities/User";
+    import User from '../entities/User';
+    import userStore from '../stores/UserStore';
 
     export default {
         name: 'Register',
@@ -101,19 +102,14 @@
         }),
         methods: {
             register() {
-                /* this.$v.form.$touch();
-                if (this.$v.form.$error) {
-                    // console.log('not ok');
-                    return;
-                }*/
                 const user = this.form;
                 this.$http.post('/register', user)
                     .then((response) => {
                         if (response.status === 200) {
-                            this.user = new User(user.email, user.firstName, user.lastName);
+                            userStore.setUser(User.from(user));
                             router.push('/home');
                         }
-                    }).catch((error) => {});
+                    }).catch((error));
             },
         },
     };

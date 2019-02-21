@@ -40,6 +40,7 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import router from '@/router';
+    import userStore from '../stores/UserStore';
 
     export default {
         name: 'CreateEvent',
@@ -47,8 +48,6 @@
         mounted() {
             this.getDebts();
             this.getEvents();
-            console.log("FROM HOME:");
-            console.log(this.user);
         },
         data: () => ({
             events: [],
@@ -57,25 +56,24 @@
         methods: {
             getDebts() {
                 this.$http.get('/debts/all').then(
-                    response => {
+                    (response) => {
                         this.debts = response.data;
-                    }
-                ).catch(error => {
-                });
+                    },
+                ).catch((error));
             },
             getEvents() {
                 this.$http.get('/events/all').then(
                     (response) => {
                         this.events = response.data;
-                    }
+                    },
                 ).catch(
                     (error) => {
                         alert('You are not logged in!');
-                        router.push('/')
-                    }
+                        router.push('/');
+                    },
                 );
-            }
-        }
+            },
+        },
     };
 </script>
 

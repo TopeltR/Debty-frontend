@@ -54,7 +54,8 @@
 <script>
     import router from '../router.ts';
     import Background from '../components/Background';
-    import User from "../entities/User";
+    import User from '../entities/User';
+    import userStore from '../stores/UserStore';
 
     export default {
         name: 'LandingPage',
@@ -74,16 +75,16 @@
                 this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((response) => {
                         if (response.status === 200) {
-                            this.$http.get("/people/"+this.email).then(
-                                (response) => {
-                                    this.user = response.data;
-                                    router.push("/home")
-                                }
+                            this.$http.get('/people/' + this.email).then(
+                                (resp) => {
+                                    userStore.setUser(User.from(resp.data));
+                                    router.push('/home');
+                                },
                             );
                         }
                     }).catch((error) => {
-                        this.displayProperty = 'block';
-                    });
+                    this.displayProperty = 'block';
+                });
             },
         },
     };
@@ -93,28 +94,31 @@
     .PT15vh {
         padding-top: 15vh;
     }
+
     .logo {
         color: limegreen;
         font-size: 100px;
         font-weight: bolder;
     }
+
     .button-wide {
         width: 100%;
-        /*background-color: darkgreen;
-        font-weight: 500;
-        border-color: darkgreen*/
     }
+
     .notification {
         height: 45px;
         color: red;
     }
+
     .MT7 {
         margin-top: 7px;
     }
+
     @media (max-width: 767px) {
         .PT15vh {
             padding-top: 0;
         }
+
         .mob-text-center {
             text-align: center;
         }
