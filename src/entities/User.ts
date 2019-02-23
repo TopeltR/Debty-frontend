@@ -1,6 +1,8 @@
 class User {
     public static from(data: any): User {
-        return new User(data.email, data.firstName, data.lastName);
+        let user = new User(data.email, data.firstName, data.lastName);
+        user.id = data.id;
+        return user;
     }
     public id: number | undefined;
     public email: string;
