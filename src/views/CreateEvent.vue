@@ -69,7 +69,9 @@
         }),
         mounted() {
             this.$http.get("/users/all").then((data) => {
-                this.allPeople = data.data;
+                userStore.getUser().then(user => {
+                    this.allPeople = data.data.filter((u) => u.email !== user.email);
+                });
             }).catch((error) => {
                 alert("You are not logged in!");
                 router.push("/");
@@ -80,15 +82,17 @@
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
-                if (this.user.firstName && !this.people.includes(this.user)) {
-                    const user = this.user;
-                    this.people.push(user);
-                    this.user = {};
-                }
+                userStore.getUser().then((user) => {
+                    if (this.user.firstName && !this.people.includes(this.user) && this.user.email !== user.email) {
+                        const user = this.user;
+                        this.people.push(user);
+                        this.user = {};
+                    }
+                });
             },
             createEvent() {
                 userStore.getUser().then((user) => {
-                    this.$http.post('events', {
+                    this.$http.post('/events', {
                         title: this.title,
                         people: this.people,
                         owner: user,
