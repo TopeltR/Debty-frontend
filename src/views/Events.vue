@@ -3,7 +3,7 @@
         <navbar></navbar>
         <background>
             <h1 class="header">My events</h1>
-            <b-table hover :busy.sync="isBusy" :fields="fields" :items="items" ></b-table>
+            <b-table hover :busy.sync="isBusy" :fields="fields" :items="getEvents"></b-table>
         </background>
     </div>
 </template>
@@ -22,23 +22,32 @@
         },
         data() {
             return {
-                items: [],
-                fields: ['Title', 'Owner', 'Created at', 'Modified at'],
-                isBusy: false,
-            };
+                fields: [
+                    { key: 'title', label: 'Title' },
+                    { key: 'owner.firstName', label: 'Owner Firstname' },
+                    { key: 'owner.lastName', label: 'Owner lastname' },
+                    { key: 'created', label: 'Created' },
+                    { key: 'modified', label: 'Modified' },
+                    { key: 'people', label: 'People' },
+                    { key: 'bills', label: 'Bills' },
+                ],
+                isBusy: false
+            }
         },
         methods: {
-            getEvents(ctx) {
+            getEvents() {
                 this.$http.get('/events/all').then(
                     (response) => {
-                        this.items = response.data;
+                        let items = [];
+                        items = response.data;
                         this.isBusy = false;
+                        return items;
                     },
                 ).catch(
                     (error) => {
                         alert('You are not logged in!');
                         router.push('/');
-                        this.items = [];
+                        return [];
                     },
                 );
             },
@@ -49,5 +58,8 @@
 <style>
     .header {
         padding-top: 30px
+    }
+    .events {
+        padding-top: 600px !important;
     }
 </style>
