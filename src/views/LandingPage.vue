@@ -37,7 +37,7 @@
                     </div>
                     <b-row>
                         <b-col sm='12' md='5'>
-                            <b-btn variant='primary' type='submit' class='button-wide'>Login</b-btn>
+                            <b-btn variant='primary' type='submit' class='wide'>Login</b-btn>
                         </b-col>
                         <b-col sm='12' md='7' class='MT7 mob-text-center'>
                             <router-link to='/register'>
@@ -101,7 +101,7 @@
         font-weight: bolder;
     }
 
-    .button-wide {
+    .wide {
         width: 100%;
     }
 
