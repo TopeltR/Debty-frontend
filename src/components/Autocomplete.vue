@@ -53,6 +53,7 @@
             },
             setResult(result) {
                 this.search = result;
+                this.$emit('input', result);
                 this.isOpen = false;
             },
             onArrowDown(evt) {
