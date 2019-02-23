@@ -24,9 +24,9 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
     },
     {
-      path: '/event/create',
+      path: '/events/create',
       name: 'create-event',
-      component: () => import('./components/CreateEvent.vue'),
+      component: () => import('./views/CreateEvent.vue'),
     },
     {
       path: '/events' ,

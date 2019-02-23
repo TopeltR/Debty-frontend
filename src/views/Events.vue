@@ -3,7 +3,7 @@
         <navbar></navbar>
         <background>
             <h1 class="header">My events</h1>
-            <b-table hover :busy.sync="isBusy" :fields="fields" :items="getEvents" ></b-table>
+            <b-table hover :busy.sync="isBusy" :fields="fields" :items="items" ></b-table>
         </background>
     </div>
 </template>
@@ -22,6 +22,7 @@
         },
         data() {
             return {
+                items: [],
                 fields: ['Title', 'Owner', 'Created at', 'Modified at'],
                 isBusy: false,
             };
@@ -30,16 +31,14 @@
             getEvents(ctx) {
                 this.$http.get('/events/all').then(
                     (response) => {
-                        let items = [];
-                        items = response.data;
+                        this.items = response.data;
                         this.isBusy = false;
-                        return items;
                     },
                 ).catch(
                     (error) => {
                         alert('You are not logged in!');
                         router.push('/');
-                        return [];
+                        this.items = [];
                     },
                 );
             },
