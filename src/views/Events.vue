@@ -3,7 +3,7 @@
         <navbar></navbar>
         <background>
             <h1 class="header">My events</h1>
-            <b-table hover :busy.sync="isBusy" :fields="fields" :items="getEvents" ></b-table>
+            <b-table hover :busy.sync="isBusy" :fields="fields" :items="getEvents"></b-table>
         </background>
     </div>
 </template>
@@ -41,13 +41,13 @@
                         let items = [];
                         items = response.data;
                         this.isBusy = false;
-                        return items
+                        return items;
                     },
                 ).catch(
                     (error) => {
                         alert('You are not logged in!');
                         router.push('/');
-                        return []
+                        return [];
                     },
                 );
             },
