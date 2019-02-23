@@ -8,19 +8,22 @@
                         <form @submit.prevent="createEvent" class="wide">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input type="text" class="form-control" id="title" placeholder="Enter event title">
+                                <input type="text" class="form-control" v-model="title" id="title"
+                                       placeholder="Enter event title">
                             </div>
                             <div class="form-group">
                                 <p v-if="people.length > 0">People:</p>
                                 <ul>
                                     <li v-for="person in people">
-                                        {{ person.firstName }}
+                                        {{ keyExtractor(person) }}
                                     </li>
                                 </ul>
                                 <label for="user">Add people</label>
                                 <b-row>
                                     <b-col cols="9" class="PR0px">
-                                        <autocomplete v-model="name" id="user" :placeholder="'Name'" :items="allPeople"></autocomplete>
+                                        <autocomplete v-model="user" id="user" :placeholder="'Name'"
+                                                      :items="allPeople"
+                                                      :keyextractor="keyExtractor"></autocomplete>
                                     </b-col>
                                     <b-col cols="3">
                                         <button type="button" v-on:click="addPerson"
@@ -51,35 +54,48 @@
     import router from '../router.ts';
     import Background from '@/components/Background';
     import Navbar from '@/components/Navbar';
-    import Autocomplete from '@/components/Autocomplete'
+    import Autocomplete from '@/components/Autocomplete';
+    import userStore from '@/stores/UserStore';
 
 
     export default {
         name: 'CreateEvent',
         components: {Background, Navbar, Autocomplete},
         data: () => ({
-            name: '',
-            allPeople: ["TRA", "LMAO"],
+            title: '',
+            user: {},
+            allPeople: [],
             people: [],
         }),
         mounted() {
-            let self = this;
+            this.$http.get("/users/all").then((data) => {
+                this.allPeople = data.data;
+            }).catch((error) => {
+                alert("You are not logged in!");
+                router.push("/");
+            });
         },
         methods: {
+            keyExtractor(user) {
+                return user.firstName + ' ' + user.lastName;
+            },
             addPerson() {
-                if (this.name.length > 0) {
-                    const user = this.searchUser();
+                if (this.user.firstName && !this.people.includes(this.user)) {
+                    const user = this.user;
                     this.people.push(user);
-                    this.name = '';
+                    this.user = {};
                 }
             },
-            searchUser() {
-                const user = new User();
-                user.firstName = this.name;
-                return user;
-            },
             createEvent() {
-                router.push('/');
+                userStore.getUser().then((user) => {
+                    this.$http.post('events', {
+                        title: this.title,
+                        people: this.people,
+                        owner: user,
+                    }).then((result) => {
+                        router.push("/events/"+result.data.id);
+                    });
+                });
             },
         },
     };

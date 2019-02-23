@@ -1,8 +1,16 @@
+<!--Taken from https://alligator.io/vuejs/vue-autocomplete-component/-->
 <script>
     export default {
         name: 'autocomplete',
 
         props: {
+            keyextractor: {
+                type: Function,
+                required: false,
+                default: (object) => {
+                    return object;
+                },
+            },
             items: {
                 type: Array,
                 required: false,
@@ -48,11 +56,11 @@
             filterResults() {
                 // first uncapitalize all the things
                 this.results = this.items.filter((item) => {
-                    return item.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+                    return this.keyextractor(item).toLowerCase().indexOf(this.search.toLowerCase()) > -1;
                 });
             },
             setResult(result) {
-                this.search = result;
+                this.search = this.keyextractor(result);
                 this.$emit('input', result);
                 this.isOpen = false;
             },
@@ -67,7 +75,7 @@
                 }
             },
             onEnter() {
-                this.search = this.results[this.arrowCounter];
+                this.search = this.keyextractor(this.results[this.arrowCounter]);
                 this.isOpen = false;
                 this.arrowCounter = -1;
             },
@@ -127,7 +135,7 @@
                     class="autocomplete-result"
                     :class="{ 'is-active': i === arrowCounter }"
             >
-                {{ result }}
+                {{ keyextractor(result) }}
             </li>
         </ul>
     </div>
@@ -142,7 +150,7 @@
         padding: 0;
         margin: 0;
         border: 1px solid lightgray;
-        border-radius: 5px;
+        border-radius: 0 0 5px 5px;
         height: auto;
         overflow: auto;
         width: 100%;
@@ -158,7 +166,7 @@
 
     .autocomplete-result.is-active,
     .autocomplete-result:hover {
-        background-color: #C8C8C8;
+        background-color: dodgerblue;
         color: white;
     }
 

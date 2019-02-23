@@ -48,9 +48,6 @@
         mounted() {
             this.getDebts();
             this.getEvents();
-            userStore.getUser().then((user) => {
-                console.log(user);
-            });
         },
         data: () => ({
             events: [],
