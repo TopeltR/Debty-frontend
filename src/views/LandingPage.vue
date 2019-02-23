@@ -75,7 +75,7 @@
                 this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((response) => {
                         if (response.status === 200) {
-                            this.$http.get('/users/' + this.email).then(
+                            this.$http.get('/people/' + this.email).then(
                                 (resp) => {
                                     userStore.setUser(User.from(resp.data));
                                     router.push('/home');
