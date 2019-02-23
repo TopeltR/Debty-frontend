@@ -8,12 +8,12 @@ export default new Router({
     {
       path: '/',
       name: 'LandingPage',
-      component: () => import(/* webpackChunkName: "about" */ './views/LandingPage.vue'),
+      component: () => import('./views/LandingPage.vue'),
     },
     {
       path: '/home',
       name: 'home',
-      component: () => import(/* webpackChunkName: "about" */ './views/Home.vue'),
+      component: () => import( './views/Home.vue'),
     },
     {
       path: '/register',
@@ -29,9 +29,9 @@ export default new Router({
       component: () => import('./components/CreateEvent.vue'),
     },
     {
-      path:'/events' ,
+      path: '/events' ,
       name: 'events' ,
-      component: () => import(/* webpackChunkName: "about" */ './views/Events.vue'),
+      component: () => import('./views/Events.vue'),
     },
   ],
 });

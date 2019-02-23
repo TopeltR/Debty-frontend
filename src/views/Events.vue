@@ -23,8 +23,8 @@
         data() {
             return {
                 fields: ['Title', 'Owner', 'Created at', 'Modified at'],
-                isBusy: false
-            }
+                isBusy: false,
+            };
         },
         methods: {
             getEvents(ctx) {
@@ -33,18 +33,18 @@
                         let items = [];
                         items = response.data;
                         this.isBusy = false;
-                        return items
+                        return items;
                     },
                 ).catch(
                     (error) => {
                         alert('You are not logged in!');
                         router.push('/');
-                        return []
+                        return [];
                     },
                 );
             },
         },
-    }
+    };
 </script>
 
 <style>
