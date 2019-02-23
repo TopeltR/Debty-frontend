@@ -28,5 +28,10 @@ export default new Router({
       name: 'create-event',
       component: () => import('./components/CreateEvent.vue'),
     },
+    {
+      path:'/events' ,
+      name: 'events' ,
+      component: () => import(/* webpackChunkName: "about" */ './views/Events.vue'),
+    },
   ],
 });
