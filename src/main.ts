@@ -10,6 +10,16 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faSave } from '@fortawesome/free-solid-svg-icons'
+
+
+library.add(faEdit);
+library.add(faSave);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
 

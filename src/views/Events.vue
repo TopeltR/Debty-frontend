@@ -1,6 +1,6 @@
 <template>
     <div>
-        <navbar></navbar>
+        <navbar/>
         <background>
             <h1 class="header">My events</h1>
             <b-table class="events" hover :busy.sync="isBusy" :fields="fields" :items="items" sortable="true" ></b-table>
@@ -45,11 +45,14 @@
                 let self = this;
                 userStore.getUser().then(user => {
                     console.log(user.id);
-                    let promise = axios.get('http://localhost:8080/events/user/' + user.id);
-                    promise.then(data => {
+                    self.$http.get('http://localhost:8080/events/user/' + user.id)
+                        .then(data => {
                         self.items = data.data;
                         console.log(self.items);
-                    })
+                    }).catch(() => {
+                            router.push('/');
+                        },
+                    );
                 });
             },
         },

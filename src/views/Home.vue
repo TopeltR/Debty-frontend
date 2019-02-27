@@ -59,16 +59,14 @@
                     (response) => {
                         this.debts = response.data;
                     },
-                ).catch((error) => {
-                });
+                );
             },
             getEvents() {
                 this.$http.get('/events/all').then(
                     (response) => {
                         this.events = response.data;
                     },
-                ).catch(
-                    (error) => {
+                ).catch((error) => {
                         alert('You are not logged in!');
                         router.push('/');
                     },

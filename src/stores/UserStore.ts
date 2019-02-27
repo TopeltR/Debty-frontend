@@ -20,7 +20,7 @@ class UserStore {
 
     public getUser(): UserPromise {
         if (this.user === undefined) {
-            const promise = axios.get('/users/loggedin');
+            const promise = axios.get('/users/loggedInUser');
             return {
                 then: (onfulfilled: any) => {
                     promise.then((response) => {

@@ -109,7 +109,7 @@
                             userStore.setUser(User.from(user));
                             router.push('/home');
                         }
-                    }).catch((error) => {});
+                    });
             },
         },
     };
