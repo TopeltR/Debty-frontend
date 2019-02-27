@@ -3,7 +3,7 @@
         <navbar/>
         <background>
             <h1 class="header">My events</h1>
-            <b-table class="events" hover :busy.sync="isBusy" :fields="fields" :items="items" sortable="true" ></b-table>
+            <b-table class="events" hover :busy.sync="isBusy" :fields="fields" :items="items" sortable="true" selectable @select="goToEvent" ></b-table>
         </background>
     </div>
 </template>
@@ -41,6 +41,9 @@
             }
         },
         methods: {
+            goToEvent(event) {
+                router.push("/events/"+event.id);
+            },
             getEvents() {
                 let self = this;
                 userStore.getUser().then(user => {

@@ -6,17 +6,17 @@
                 <b-navbar-brand class="limegreen brand">debty</b-navbar-brand>
                 <b-collapse is-nav id="nav_collapse">
                     <b-navbar-nav>
-                        <b-nav-item to="home">
+                        <b-nav-item to="/home">
                             Home
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav>
-                        <b-nav-item to="events">
+                        <b-nav-item to="/events">
                             Events
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav>
-                        <b-nav-item to="debts">
+                        <b-nav-item to="/debts">
                             Debts
                         </b-nav-item>
                     </b-navbar-nav>
