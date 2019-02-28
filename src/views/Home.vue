@@ -6,8 +6,11 @@
                 <b-row>
                     <b-col class='TM30px' sm='12' md='6'>
                         <b-row>
-                            <b-col sm='12' md='4'>
-                                <b-btn v-b-toggle.events class='mb-2 hidden-button'>Events</b-btn>
+                            <b-col sm='12'>
+                                <b-btn v-b-toggle.events class='menu-list-button'>
+                                    <span class='FL'>Events</span>
+                                    <font-awesome-icon icon='plus' class='FR MT5 green' v-on:click='createNewEvent'/>
+                                </b-btn>
                             </b-col>
                         </b-row>
                         <b-collapse visible id='events'>
@@ -16,12 +19,14 @@
                                 </b-list-group-item>
                             </b-list-group>
                         </b-collapse>
-                        <router-link style="margin-top: 10px; display: block;" to="/events/create">Create new event</router-link>
                     </b-col>
                     <b-col class='TM30px' sm='12' md='6'>
                         <b-row>
-                            <b-col sm='12' md='4'>
-                                <b-btn v-b-toggle.debts class='mb-2 hidden-button'>Debts</b-btn>
+                            <b-col sm='12'>
+                                <b-btn v-b-toggle.debts class='menu-list-button'>
+                                    <span class='FL'>Debts</span>
+                                    <font-awesome-icon icon='plus' class='FR MT5 green' v-on:click='createNewDebt'/>
+                                </b-btn>
                             </b-col>
                         </b-row>
                         <b-collapse visible id='debts'>
@@ -55,6 +60,12 @@
             debts: [],
         }),
         methods: {
+            createNewEvent() {
+                router.push('/events/create');
+            },
+            createNewDebt() {
+                router.push('/debts/create');
+            },
             getDebts() {
                 this.$http.get('/debts/all').then(
                     (response) => {
@@ -81,12 +92,23 @@
     .TM30px {
         margin-top: 30px;
     }
-
-    .hidden-button {
+    .green {
+        color: limegreen;
+    }
+    .menu-list-button {
         width: 100%;
         background-color: white;
         color: black;
         font-size: 25px;
-
+        border-radius:5px 5px 0 0 !important;
+    }
+    .FL {
+        float: left;
+    }
+    .FR {
+        float: right;
+    }
+    .MT5 {
+        margin-top: 5px;
     }
 </style>
