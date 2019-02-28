@@ -16,6 +16,7 @@
                                 </b-list-group-item>
                             </b-list-group>
                         </b-collapse>
+                        <router-link style="margin-top: 10px; display: block;" to="/events/create">Create new event</router-link>
                     </b-col>
                     <b-col class='TM30px' sm='12' md='6'>
                         <b-row>
