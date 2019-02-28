@@ -55,6 +55,7 @@
     import Background from '@/components/Background';
     import Navbar from '@/components/Navbar';
     import Autocomplete from '@/components/Autocomplete';
+    import {inputStore} from '@/components/Autocomplete'
     import userStore from '@/stores/UserStore';
 
 
@@ -63,7 +64,7 @@
         components: {Background, Navbar, Autocomplete},
         data: () => ({
             title: '',
-            user: {},
+            inputStore: inputStore,
             allPeople: [],
             people: [],
         }),
@@ -82,11 +83,12 @@
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
+                this.user = this.inputStore.value.object;
                 userStore.getUser().then((user) => {
                     if (this.user.firstName && !this.people.includes(this.user) && this.user.email !== user.email) {
                         const user = this.user;
                         this.people.push(user);
-                        this.user = {};
+                        this.inputStore.setValue({email: '', firstName: '', lastName: ''});
                     }
                 });
             },
@@ -97,7 +99,7 @@
                         people: this.people,
                         owner: user,
                     }).then((result) => {
-                        router.push("/events/"+result.data.id);
+                        router.push("/events/" + result.data.id);
                     });
                 });
             },

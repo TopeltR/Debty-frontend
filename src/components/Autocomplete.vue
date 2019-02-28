@@ -1,5 +1,20 @@
 <!--Taken from https://alligator.io/vuejs/vue-autocomplete-component/-->
 <script>
+    export let inputStore = {
+        keyExtractor: (object) => object,
+        value: {
+            field: '',
+            object: {},
+        },
+        setKeyExtractor: function(fn) {
+            this.keyExtractor = fn;
+        },
+        setValue: (value) => {
+            this.value.object = value;
+            this.value.field = this.keyExtractor(value);
+        },
+    };
+
     export default {
         name: 'autocomplete',
 
@@ -25,14 +40,14 @@
                 type: String,
                 required: false,
                 default: ""
-            }
+            },
         },
 
         data() {
             return {
                 isOpen: false,
                 results: [],
-                search: '',
+                inputStore: inputStore,
                 isLoading: false,
                 arrowCounter: 0,
             };
@@ -60,9 +75,11 @@
                 });
             },
             setResult(result) {
-                this.search = this.keyextractor(result);
+                this.inputStore.setValue(result);
                 this.$emit('input', result);
                 this.isOpen = false;
+                //this.search = this.keyextractor(result);
+                //this.input.input = result;
             },
             onArrowDown(evt) {
                 if (this.arrowCounter < this.results.length) {
@@ -75,7 +92,8 @@
                 }
             },
             onEnter() {
-                this.search = this.keyextractor(this.results[this.arrowCounter]);
+                this.inputStore.setValue(this.results[this.arrowCounter]);
+                //this.search = this.keyextractor(this.results[this.arrowCounter]);
                 this.isOpen = false;
                 this.arrowCounter = -1;
             },
@@ -96,7 +114,8 @@
             },
         },
         mounted() {
-            document.addEventListener('click', this.handleClickOutside)
+            document.addEventListener('click', this.handleClickOutside);
+            this.inputStore.setKeyExtractor(this.keyextractor);
         },
         destroyed() {
             document.removeEventListener('click', this.handleClickOutside)
@@ -111,7 +130,7 @@
                 :placeholder="placeholder"
                 class="form-control"
                 @input="onChange"
-                v-model="search"
+                v-model="inputStore.value.field"
                 @keydown.down="onArrowDown"
                 @keydown.up="onArrowUp"
                 @keydown.enter="onEnter"
