@@ -26,7 +26,7 @@
                                 <label for="user">Add people:</label>
                                 <b-row>
                                     <b-col cols="9" class="PR0px">
-                                        <autocomplete v-model="user" id="user" :placeholder="'Name'"
+                                        <autocomplete id="user" :placeholder="'Name'"
                                                       :items="allPeople"
                                                       :keyextractor="keyExtractor"></autocomplete>
                                     </b-col>
