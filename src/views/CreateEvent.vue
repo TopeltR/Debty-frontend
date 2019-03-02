@@ -3,13 +3,18 @@
         <navbar></navbar>
         <background>
             <b-row>
-                <b-col sm="12" md="6" class="TM30px">
+                <b-col sm="12" md="6" offset-md="3" class="TM30px">
                     <b-row>
                         <form @submit.prevent="createEvent" class="wide">
                             <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" class="form-control" v-model="title" id="title"
+                                <label for="title">Title:</label>
+                                <input type="text" class="form-control" v-model="title" id="title" required=""
                                        placeholder="Enter event title">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <textarea id="description" class="form-control" v-model="description" type="text"
+                                          placeholder="Enter event description" required=""></textarea>
                             </div>
                             <div class="form-group">
                                 <p v-if="people.length > 0">People:</p>
@@ -18,10 +23,10 @@
                                         {{ keyExtractor(person) }}
                                     </li>
                                 </ul>
-                                <label for="user">Add people</label>
+                                <label for="user">Add people:</label>
                                 <b-row>
                                     <b-col cols="9" class="PR0px">
-                                        <autocomplete v-model="user" id="user" :placeholder="'Name'"
+                                        <autocomplete id="user" :placeholder="'Name'"
                                                       :items="allPeople"
                                                       :keyextractor="keyExtractor"></autocomplete>
                                     </b-col>
@@ -64,6 +69,7 @@
         components: {Background, Navbar, Autocomplete},
         data: () => ({
             title: '',
+            description: '',
             inputStore: inputStore,
             allPeople: [],
             people: [],
@@ -88,20 +94,22 @@
                     if (this.user.firstName && !this.people.includes(this.user) && this.user.email !== user.email) {
                         const user = this.user;
                         this.people.push(user);
+                        this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));
                         this.inputStore.setValue({email: '', firstName: '', lastName: ''});
                     }
                 });
             },
             createEvent() {
-                userStore.getUser().then((user) => {
-                    this.$http.post('/events', {
-                        title: this.title,
-                        people: this.people,
-                        owner: user,
-                    }).then((result) => {
-                        router.push("/events/" + result.data.id);
+                if (this.title && this.description)
+                    userStore.getUser().then((user) => {
+                        this.$http.post('/events', {
+                            title: this.title,
+                            people: this.people,
+                            owner: user,
+                        }).then((result) => {
+                            router.push("/events/" + result.data.id);
+                        });
                     });
-                });
             },
         },
     };
@@ -110,6 +118,10 @@
 <style scoped>
     #user {
         margin-bottom: 5px;
+    }
+
+    #description {
+        height: 100px;
     }
 
     .wide {
