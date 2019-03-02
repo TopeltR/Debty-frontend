@@ -6,10 +6,10 @@
             field: '',
             object: {},
         },
-        setKeyExtractor: function(fn) {
+        setKeyExtractor(fn) {
             this.keyExtractor = fn;
         },
-        setValue: (value) => {
+        setValue(value) {
             this.value.object = value;
             this.value.field = this.keyExtractor(value);
         },
@@ -71,7 +71,7 @@
             filterResults() {
                 // first uncapitalize all the things
                 this.results = this.items.filter((item) => {
-                    return this.keyextractor(item).toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+                    return this.keyextractor(item).toLowerCase().indexOf(this.inputStore.value.field.toLowerCase()) > -1;
                 });
             },
             setResult(result) {
