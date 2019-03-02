@@ -14,9 +14,9 @@
                             <div class="form-group">
                                 <label>Add debtor:</label>
 
-                                <autocomplete id="payer" v-model="formData.payer" :placeholder="'Name'"
+                                <autocomplete id="payer" v-model="formData.payer" :placeholder="'Name'" :field="field"
                                               :items="contacts"
-                                              :keyextractor="getUserFullName"></autocomplete>
+                                              :key-extractor="getUserFullName"></autocomplete>
                             </div>
                             <div class="form-group">
                                 <b-row>
@@ -63,6 +63,7 @@
                 receiver: null,
                 sum: null,
             },
+            field: {value: ''},
             contacts: [],
         }),
         mounted() {
@@ -80,9 +81,9 @@
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             createDebt() {
-                if (this.formData.payer.id === undefined) {
+                if (this.formData.payer === null) {
                     this.formData.payer = {
-                        firstName: this.formData.payer,
+                        firstName: this.field.value,
                     };
                 }
                 console.log(this.formData);

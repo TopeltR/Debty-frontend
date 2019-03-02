@@ -45,7 +45,7 @@
                 let self = this;
                 userStore.getUser().then(user => {
                     console.log(user.id);
-                    self.$http.get('http://localhost:8080/events/user/' + user.id)
+                    self.$http.get('/events/user/' + user.id)
                         .then(data => {
                             self.items = data.data;
                             console.log(self.items);

@@ -7,7 +7,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'LandingPage',
+            name: 'landing-page',
             component: () => import('./views/LandingPage.vue'),
         },
         {
@@ -35,6 +35,7 @@ export default new Router({
         },
         {
             path: '/events/:id',
+            name: 'event-id',
             component: () => import('./views/Event.vue'),
             props: true,
         },
