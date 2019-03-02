@@ -25,7 +25,7 @@
                                 </ul>
                                 <label for="user">Add people:</label>
                                 <b-row>
-                                    <b-col cols="9" class="PR0px">
+                                    <b-col cols="9" class="PR0">
                                         <autocomplete id="user" :placeholder="'Name'"
                                                       :items="allPeople"
                                                       :keyextractor="keyExtractor"></autocomplete>
@@ -55,12 +55,11 @@
 </template>
 
 <script>
-    import User from '../entities/User';
     import router from '../router.ts';
     import Background from '@/components/Background';
     import Navbar from '@/components/Navbar';
     import Autocomplete from '@/components/Autocomplete';
-    import {inputStore} from '@/components/Autocomplete'
+    import {inputStore} from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
 
 
@@ -128,7 +127,7 @@
         width: 100%;
     }
 
-    .PR0px {
+    .PR0 {
         padding-right: 0;
     }
 

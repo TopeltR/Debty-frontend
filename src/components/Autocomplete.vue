@@ -56,8 +56,7 @@
         methods: {
             onChange() {
                 // Let's warn the parent that a change was made
-                this.$emit('input', this);
-
+                this.$emit('input', this.inputStore.value.field);
                 // Is the data given by an outside ajax request?
                 if (this.isAsync) {
                     this.isLoading = true;
@@ -92,9 +91,8 @@
                 }
             },
             onEnter() {
-                this.inputStore.setValue(this.results[this.arrowCounter]);
-                //this.search = this.keyextractor(this.results[this.arrowCounter]);
-                this.isOpen = false;
+                let result = this.results[this.arrowCounter];
+                this.setResult(result);
                 this.arrowCounter = -1;
             },
             handleClickOutside(evt) {

@@ -37,6 +37,11 @@ export default new Router({
             path: '/events/:id',
             component: () => import('./views/Event.vue'),
             props: true,
-        }
+        },
+        {
+            path: '/debts/create',
+            name: 'create-debt',
+            component: () => import('./views/CreateDebt.vue'),
+        },
     ],
 });
