@@ -31,7 +31,7 @@
                         </b-row>
                         <b-collapse visible id='debts'>
                             <b-list-group>
-                                <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>{{ debt.receiver }}
+                                <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>{{ debt.title }}
                                 </b-list-group-item>
                             </b-list-group>
                         </b-collapse>

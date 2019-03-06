@@ -85,11 +85,10 @@
                         firstName: this.formData.payer,
                     };
                 }
-                console.log(this.formData);
                 userStore.getUser().then((user) => {
                     this.formData.receiver = user;
                     this.$http.post('/debts', this.formData).then((result) => {
-                        // router.push("/debts/" + result.data.id);
+                        router.push("/debts/" + result.data.id);
                     });
                 });
             },
