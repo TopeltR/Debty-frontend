@@ -3,8 +3,29 @@
         <navbar/>
         <background>
             <h1 class="header">My events</h1>
-            <b-table class="events" selectable @select="goToEvent" hover :busy.sync="isBusy" :fields="fields"
-                     :items="items" sortable="true" ></b-table>
+            <div id="table">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Owner name</th>
+                        <th class="d-none d-md-table-cell" scope="col">Created at</th>
+                        <th class="d-none d-md-table-cell" scope="col">Closed at</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="event in events" @click="goToEvent(event.id)">
+                        <td>{{event.title}}</td>
+                        <td>{{event.description}}</td>
+                        <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
+                        <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
+                        <td class="d-none d-md-table-cell">{{event.created}}</td>
+                        <td class="d-none d-md-table-cell">{{event.closed}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </background>
     </div>
 </template>
@@ -13,7 +34,6 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import router from '@/router';
-    import axios from 'axios';
     import userStore from "../stores/UserStore";
 
     export default {
@@ -25,30 +45,23 @@
         },
         data() {
             return {
-                items: [],
-                fields: [
-                    {key: 'title', label: 'Title', sortable: true},
-                    {key: 'owner.firstName', label: 'Owner Firstname', sortable: true},
-                    {key: 'owner.lastName', label: 'Owner lastname', sortable: true},
-                    {key: 'created', label: 'Created', sortable: true},
-                    {key: 'modified', label: 'Modified', sortable: true},
-                    {key: 'people.length', label: 'People', sortable: true},
-                ],
-                isBusy: false
+                events: [],
+
             }
         },
         methods: {
-            goToEvent(event) {
-                router.push("/events/" + event.id);
+            goToEvent(id) {
+                router.push("/events/" + id);
             },
             getEvents() {
                 let self = this;
                 userStore.getUser().then(user => {
                     console.log(user.id);
-                    self.$http.get('/events/user/' + user.id)
+                    self.$http.get('http://localhost:8080/events/user/' + user.id)
                         .then(data => {
-                            self.items = data.data;
-                            console.log(self.items);
+                            self.events = data.data;
+                            console.log(data.data);
+                            console.log(self.events);
                         }).catch(() => {
                             router.push('/');
                         },
@@ -56,7 +69,8 @@
                 });
             },
         },
-    }
+
+    };
 </script>
 
 <style>
@@ -67,4 +81,11 @@
     .events {
         padding-top: 600px !important;
     }
+    .desc {
+        width: 40px;
+        word-wrap: break-word;
+    }
+
+
+
 </style>
