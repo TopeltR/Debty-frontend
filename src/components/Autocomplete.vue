@@ -1,25 +1,10 @@
 <!--Taken from https://alligator.io/vuejs/vue-autocomplete-component/-->
 <script>
-    export let inputStore = {
-        keyExtractor: (object) => object,
-        value: {
-            field: '',
-            object: {},
-        },
-        setKeyExtractor(fn) {
-            this.keyExtractor = fn;
-        },
-        setValue(value) {
-            this.value.object = value;
-            this.value.field = this.keyExtractor(value);
-        },
-    };
-
     export default {
         name: 'autocomplete',
 
         props: {
-            keyextractor: {
+            keyExtractor: {
                 type: Function,
                 required: false,
                 default: (object) => {
@@ -39,15 +24,20 @@
             placeholder: {
                 type: String,
                 required: false,
-                default: ""
+                default: "",
             },
+            field: {
+                type: Object,
+                required: true,
+                default: () => ({value: ''}),
+            }
         },
 
         data() {
             return {
                 isOpen: false,
                 results: [],
-                inputStore: inputStore,
+                selected: {},
                 isLoading: false,
                 arrowCounter: 0,
             };
@@ -55,8 +45,8 @@
 
         methods: {
             onChange() {
-                // Let's warn the parent that a change was made
-                this.$emit('input', this.inputStore.value.field);
+                this.$emit('input', null);
+
                 // Is the data given by an outside ajax request?
                 if (this.isAsync) {
                     this.isLoading = true;
@@ -66,19 +56,18 @@
                     this.isOpen = true;
                 }
             },
-
             filterResults() {
                 // first uncapitalize all the things
+                console.log(this.items);
                 this.results = this.items.filter((item) => {
-                    return this.keyextractor(item).toLowerCase().indexOf(this.inputStore.value.field.toLowerCase()) > -1;
+                    return this.keyExtractor(item).toLowerCase().indexOf(this.field.value.toLowerCase()) > -1;
                 });
             },
             setResult(result) {
-                this.inputStore.setValue(result);
+                this.selected = result;
+                this.field.value = this.keyExtractor(result);
                 this.$emit('input', result);
                 this.isOpen = false;
-                //this.search = this.keyextractor(result);
-                //this.input.input = result;
             },
             onArrowDown(evt) {
                 if (this.arrowCounter < this.results.length) {
@@ -92,8 +81,9 @@
             },
             onEnter() {
                 let result = this.results[this.arrowCounter];
-                this.setResult(result);
-                this.arrowCounter = -1;
+                if (result)
+                    this.setResult(result);
+                    this.arrowCounter = -1;
             },
             handleClickOutside(evt) {
                 if (!this.$el.contains(evt.target)) {
@@ -113,7 +103,6 @@
         },
         mounted() {
             document.addEventListener('click', this.handleClickOutside);
-            this.inputStore.setKeyExtractor(this.keyextractor);
         },
         destroyed() {
             document.removeEventListener('click', this.handleClickOutside)
@@ -128,7 +117,7 @@
                 :placeholder="placeholder"
                 class="form-control"
                 @input="onChange"
-                v-model="inputStore.value.field"
+                v-model="field.value"
                 @keydown.down="onArrowDown"
                 @keydown.up="onArrowUp"
                 @keydown.enter="onEnter"
@@ -152,7 +141,7 @@
                     class="autocomplete-result"
                     :class="{ 'is-active': i === arrowCounter }"
             >
-                {{ keyextractor(result) }}
+                {{ keyExtractor(result) }}
             </li>
         </ul>
     </div>
