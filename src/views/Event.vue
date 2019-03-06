@@ -1,14 +1,14 @@
 <template>
     <div>
-        <event-form v-if="editing" :eventId="eventId"/>
+        <event-form v-if='editing' :eventId='eventId'/>
         <div v-else>
             <navbar/>
             <background>
                 <b-row>
-                    <b-col sm="12" md="6">
-                        <div class="header">
+                    <b-col sm='12' md='6'>
+                        <div class='header'>
                             <h1>
-                                <span class="eventTitle">
+                                <span class='eventTitle'>
                                     {{event.title}}
                                 </span>
                             </h1>
@@ -19,26 +19,26 @@
                             </p>
                         </div>
                     </b-col>
-                    <b-col sm="12" md="6">
-                        <div class="table-wrapper-scroll-y PT5vh">
-                            <table class="table table-bordered table-striped bill-table">
+                    <b-col sm='12' md='6'>
+                        <div class='table-wrapper-scroll-y PT5vh'>
+                            <table class='table table-bordered table-striped bill-table'>
                                 <thead>
                                 <tr>
-                                    <th scope="col">People</th>
+                                    <th scope='col'>People</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr v-for="person in event.people">
-                                    <td>{{person.firstName + " " + person.lastName}}</td>
+                                <tr v-for='person in event.people'>
+                                    <td>{{person.firstName + ' ' + person.lastName}}</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </b-col>
-                    <b-btn variant="primary" v-if="!editing" v-on:click="startEditing">Edit</b-btn>
+                    <b-btn variant='primary' v-if='!editing' v-on:click='startEditing'>Edit</b-btn>
                     <div v-else>
-                        <b-btn variant="primary" v-on:click="saveEdit">Save</b-btn>
-                        <b-btn variant="primary" v-on:click="cancelEdit">Cancel</b-btn>
+                        <b-btn variant='primary' v-on:click='saveEdit'>Save</b-btn>
+                        <b-btn variant='primary' v-on:click='cancelEdit'>Cancel</b-btn>
                     </div>
                 </b-row>
             </background>
@@ -54,7 +54,7 @@
     import EventForm from '@/components/EventForm.vue';
 
     export default {
-        name: "Event.vue",
+        name: 'Event.vue',
         components: {Navbar, Background, EventForm},
         data: () => ({
             event: {
@@ -87,17 +87,15 @@
                 this.editing = false;
             },
             cancelEdit() {
-
+                return;
             },
             updateEvent() {
-                console.log("updating event");
                 return;
-                let self = this;
+                const self = this;
                 userStore.getUser().then((user) => {
                     self.$http.post('/events/' + eventId)
                         .then((response) => {
                             self.event = response.data;
-                            console.log(self.event);
                             self.saveTitle();
                         }).catch(() => {
                             router.push('/');
@@ -106,13 +104,12 @@
                 });
             },
             getEvent(eventId) {
-                let self = this;
+                const self = this;
                 userStore.getUser().then((user) => {
                     self.$http.get('/events/' + eventId)
                         .then((response) => {
                             self.event = response.data;
                             self.event.id = eventId;
-                            console.log(self.event);
                         }).catch(() => {
                             router.push('/');
                         },
@@ -120,8 +117,7 @@
                 });
             },
         },
-    }
-
+    };
 </script>
 
 <style scoped>

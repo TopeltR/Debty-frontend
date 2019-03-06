@@ -3,36 +3,36 @@
         <navbar></navbar>
         <background>
             <b-row>
-                <b-col sm="12" md="6" offset-md="3" class="MT30px">
+                <b-col sm='12' md='6' offset-md='3' class='MT30px'>
                     <b-row>
-                        <form @submit.prevent="createDebt" class="wide">
-                            <div class="form-group">
-                                <label for="title">Title:</label>
-                                <input type="text" class="form-control" v-model="formData.title" id="title"
-                                       placeholder="Enter debt title">
+                        <form @submit.prevent='createDebt' class='wide'>
+                            <div class='form-group'>
+                                <label for='title'>Title:</label>
+                                <input type='text' class='form-control' v-model='formData.title' id='title'
+                                       placeholder='Enter debt title'>
                             </div>
-                            <div class="form-group">
+                            <div class='form-group'>
                                 <label>Add debtor:</label>
 
-                                <autocomplete id="payer" v-model="formData.payer" :placeholder="'Name'" :field="field"
-                                              :items="contacts"
-                                              :key-extractor="getUserFullName"></autocomplete>
+                                <autocomplete id='payer' v-model='formData.payer' :placeholder='"Name"' :field='field'
+                                              :items='contacts'
+                                              :key-extractor='getUserFullName'></autocomplete>
                             </div>
-                            <div class="form-group">
+                            <div class='form-group'>
                                 <b-row>
-                                    <b-col cols="2">
-                                        <label for="sum" class="MT5px">Sum:</label>
+                                    <b-col cols='2'>
+                                        <label for='sum' class='MT5px'>Sum:</label>
                                     </b-col>
-                                    <b-col cols="3" md="2">
-                                        <input id="sum" type="text" class="form-control PR0" v-model="formData.sum" placeholder="0">
+                                    <b-col cols='3' md='2'>
+                                        <input id='sum' type='text' class='form-control PR0' v-model='formData.sum' placeholder='0'>
                                     </b-col>
-                                    <b-col cols="1" class="MT5px PL0">€</b-col>
+                                    <b-col cols='1' class='MT5px PL0'>€</b-col>
                                 </b-row>
                             </div>
-                            <b-row class="mt-4">
-                                <b-col sm="12">
-                                    <button type="button" v-on:click="createDebt"
-                                            class="btn btn-primary wide">
+                            <b-row class='mt-4'>
+                                <b-col sm='12'>
+                                    <button type='button' v-on:click='createDebt'
+                                            class='btn btn-primary wide'>
                                         Create debt
                                     </button>
                                 </b-col>
@@ -67,13 +67,13 @@
             contacts: [],
         }),
         mounted() {
-            this.$http.get("/users/all").then((data) => {
-                userStore.getUser().then(user => {
+            this.$http.get('/users/all').then((data) => {
+                userStore.getUser().then((user) => {
                     this.contacts = data.data.filter((u) => u.email !== user.email);
                 });
             }).catch((error) => {
-                alert("You are not logged in!");
-                router.push("/");
+                alert('You are not logged in!');
+                router.push('/');
             });
         },
         methods: {
@@ -89,7 +89,7 @@
                 userStore.getUser().then((user) => {
                     this.formData.receiver = user;
                     this.$http.post('/debts', this.formData).then((result) => {
-                        router.push("/debts/" + result.data.id);
+                        router.push('/debts/' + result.data.id);
                     });
                 });
             },

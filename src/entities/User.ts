@@ -1,6 +1,6 @@
 class User {
     public static from(data: any): User {
-        let user = new User(data.email, data.firstName, data.lastName);
+        const user = new User(data.email, data.firstName, data.lastName);
         user.id = data.id;
         return user;
     }

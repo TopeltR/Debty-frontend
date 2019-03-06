@@ -8,7 +8,7 @@
     export default {
         name: 'CreateEvent',
         components: {EventForm},
-    }
+    };
 </script>
 
 <style scoped>

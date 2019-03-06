@@ -24,13 +24,13 @@
             placeholder: {
                 type: String,
                 required: false,
-                default: "",
+                default: '',
             },
             field: {
                 type: Object,
                 required: true,
                 default: () => ({value: ''}),
-            }
+            },
         },
 
         data() {
@@ -58,7 +58,6 @@
             },
             filterResults() {
                 // first uncapitalize all the things
-                console.log(this.items);
                 this.results = this.items.filter((item) => {
                     return this.keyExtractor(item).toLowerCase().indexOf(this.field.value.toLowerCase()) > -1;
                 });
@@ -80,20 +79,21 @@
                 }
             },
             onEnter() {
-                let result = this.results[this.arrowCounter];
-                if (result)
+                const result = this.results[this.arrowCounter];
+                if (result) {
                     this.setResult(result);
-                    this.arrowCounter = -1;
+                }
+                this.arrowCounter = -1;
             },
             handleClickOutside(evt) {
                 if (!this.$el.contains(evt.target)) {
                     this.isOpen = false;
                     this.arrowCounter = -1;
                 }
-            }
+            },
         },
         watch: {
-            items: function (val, oldValue) {
+            items(val, oldValue) {
                 // actually compare them
                 if (val.length !== oldValue.length) {
                     this.results = val;
@@ -105,41 +105,41 @@
             document.addEventListener('click', this.handleClickOutside);
         },
         destroyed() {
-            document.removeEventListener('click', this.handleClickOutside)
-        }
+            document.removeEventListener('click', this.handleClickOutside);
+        },
     };
 </script>
 
 <template>
-    <div class="autocomplete">
+    <div class='autocomplete'>
         <input
-                type="text"
-                :placeholder="placeholder"
-                class="form-control"
-                @input="onChange"
-                v-model="field.value"
-                @keydown.down="onArrowDown"
-                @keydown.up="onArrowUp"
-                @keydown.enter="onEnter"
+                type='text'
+                :placeholder='placeholder'
+                class='form-control'
+                @input='onChange'
+                v-model='field.value'
+                @keydown.down='onArrowDown'
+                @keydown.up='onArrowUp'
+                @keydown.enter='onEnter'
         />
         <ul
-                id="autocomplete-results"
-                v-show="isOpen"
-                class="autocomplete-results"
+                id='autocomplete-results'
+                v-show='isOpen'
+                class='autocomplete-results'
         >
             <li
-                    class="loading"
-                    v-if="isLoading"
+                    class='loading'
+                    v-if='isLoading'
             >
                 Loading results...
             </li>
             <li
                     v-else
-                    v-for="(result, i) in results"
-                    :key="i"
-                    @click="setResult(result)"
-                    class="autocomplete-result"
-                    :class="{ 'is-active': i === arrowCounter }"
+                    v-for='(result, i) in results'
+                    :key='i'
+                    @click='setResult(result)'
+                    class='autocomplete-result'
+                    :class='{ 'is-active': i === arrowCounter }'
             >
                 {{ keyExtractor(result) }}
             </li>
@@ -147,7 +147,7 @@
     </div>
 </template>
 
-<style lang="scss">
+<style lang='scss'>
     .autocomplete {
         position: relative;
     }
