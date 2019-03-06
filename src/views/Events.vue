@@ -50,7 +50,7 @@
                 events: [],
                 search: '',
 
-            }
+            };
         },
         methods: {
             goToEvent(id) {
@@ -71,14 +71,14 @@
         },
         computed: {
             filteredList() {
-                return this.events.filter(event => {
+                return this.events.filter((event) => {
                     return event.title.toLowerCase().includes(this.search.toLowerCase()) ||
                         event.description.toLowerCase().includes(this.search.toLowerCase()) ||
                         event.owner.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
                         event.owner.lastName.toLowerCase().includes(this.search.toLowerCase());
                 });
-            }
-        }
+            },
+        },
     };
 </script>
 

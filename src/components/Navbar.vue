@@ -35,8 +35,8 @@
             goToHome() {
                 router.push('/home');
             },
-        }
-    }
+        },
+    };
 </script>
 
 <style scoped>
