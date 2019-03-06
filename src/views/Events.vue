@@ -3,6 +3,9 @@
         <navbar/>
         <background>
             <h1 class='header'>My events</h1>
+            <div class='search-wrapper'>
+                <input id='search' type='text' v-model='search' placeholder='Search'/>
+            </div>
             <div id='table'>
                 <table class='table table-bordered table-hover'>
                     <thead>
@@ -15,10 +18,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for='event in events' @click='goToEvent(event.id)'>
+                    <tr v-for="event in filteredList" @click="goToEvent(event.id)">
                         <td>{{event.title}}</td>
                         <td>{{event.description}}</td>
-                        <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
                         <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
                         <td class='d-none d-md-table-cell'>{{event.created}}</td>
                         <td class='d-none d-md-table-cell'>{{event.closed}}</td>
@@ -46,7 +48,9 @@
         data() {
             return {
                 events: [],
-            };
+                search: '',
+
+            }
         },
         methods: {
             goToEvent(id) {
@@ -65,7 +69,16 @@
                 });
             },
         },
-
+        computed: {
+            filteredList() {
+                return this.events.filter(event => {
+                    return event.title.toLowerCase().includes(this.search.toLowerCase()) ||
+                        event.description.toLowerCase().includes(this.search.toLowerCase()) ||
+                        event.owner.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
+                        event.owner.lastName.toLowerCase().includes(this.search.toLowerCase());
+                });
+            }
+        }
     };
 </script>
 
@@ -74,14 +87,13 @@
         padding-top: 30px
     }
 
-    .events {
-        padding-top: 600px !important;
-    }
-    .desc {
-        width: 40px;
-        word-wrap: break-word;
-    }
+   .search-wrapper {
+       margin: 30px 30px 30px 0;
+   }
 
-
-
+   #search {
+       border-radius: 5px;
+       text-align: center;
+       border: 1px solid;
+   }
 </style>
