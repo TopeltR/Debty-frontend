@@ -5,7 +5,7 @@
             <b-row>
                 <b-col sm='12' md='6' offset-md='3' class='TM30px'>
                     <b-row>
-                        <form @submit.prevent='createEvent' class='wide'>
+                        <form @submit.prevent='' class='wide'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='title' id='title' required=''
@@ -39,11 +39,11 @@
                                 </b-row>
                             </div>
                             <b-row class='mt-4'>
-                                <b-col sm='12'>
-                                    <b-btn v-for='button in buttons' :variant='button.variant'
-                                           v-on:click='button.handler'
+                                <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">
+                                    <b-btn :variant='button.variant'
+                                           v-on:click='button.handler(this)'
                                            class='wide'>
-                                        {{button.title}}
+                                        {{button.name}}
                                     </b-btn>
                                 </b-col>
                             </b-row>
@@ -73,15 +73,18 @@
             },
             buttons: {
                 type: Array,
-                default: [{
-                    name: 'Create event',
-                    handler: () => {
-                        if (this.title && this.description) {
+                default: () => [{
+                    width: 12,
+                    offset: 0,
+                    name: "Create event",
+                    handler: (eventForm, userStore) => {
+                        if (eventForm.title && eventForm.description) {
                             userStore.getUser().then((user) => {
-                                this.$http.post('/events', {
-                                    title: this.title,
-                                    people: this.people,
-                                    description: this.description,
+                                eventForm.people.push(user);
+                                eventForm.$http.post('/events', {
+                                    title: eventForm.title,
+                                    people: eventForm.people,
+                                    description: eventForm.description,
                                     owner: user,
                                 }).then((result) => {
                                     router.push('/events/' + result.data.id);
@@ -104,10 +107,19 @@
         mounted() {
             if (this.eventId) {
                 this.$http.get('/events/' + this.eventId).then((data) => {
+                    data = data.data;
                     this.title = data.title;
                     this.description = data.description;
                     this.people = data.people;
                 });
+            }
+
+            for (let i = 0; i < this.buttons.length; i++) {
+                let button = this.buttons[i];
+                let handler = button.handler;
+                button.handler = () => {
+                    handler(this, userStore);
+                };
             }
 
             this.$http.get('/users/all').then((data) => {
@@ -123,36 +135,18 @@
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
-            }
-            ,
+            },
             addPerson() {
                 userStore.getUser().then((user) => {
-                    if (this.user && this.user.firstName && !this.people.includes(this.user)
+                    if (this.user && this.user.firstName && !this.people.map(user => user.email).includes(this.user.email)
                         && this.user.email !== user.email) {
-                        this.people.push();
+                        this.people.push(this.user);
                         this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));
                         this.field.value = '';
                     }
                 });
-            }
-            ,
-            createEvent() {
-                if (this.title && this.description) {
-                    userStore.getUser().then((user) => {
-                        this.$http.post('/events', {
-                            title: this.title,
-                            people: this.people,
-                            description: this.description,
-                            owner: user,
-                        }).then((result) => {
-                            router.push('/events/' + result.data.id);
-                        });
-                    });
-                }
-            }
-            ,
-        }
-        ,
+            },
+        },
     }
     ;
 </script>

@@ -1,6 +1,38 @@
 <template>
     <div>
-        <event-form v-if='editing' :eventId='eventId'/>
+        <event-form v-if="editing" :eventId="eventId" :buttons="[
+            {
+                name: 'Save',
+                width: 6,
+                offset: 0,
+                variant: 'primary',
+                handler: (eventForm, userStore) => {
+                    if (eventForm.title && eventForm.description) {
+                            userStore.getUser().then((user) => {
+                                eventForm.$http.post('/events', {
+                                    id: this.eventId,
+                                    title: eventForm.title,
+                                    people: eventForm.people,
+                                    description: eventForm.description,
+                                    owner: user,
+                                }).then((result) => {
+                                    this.event = result.data;
+                                    this.editing = false;
+                                });
+                            });
+                    }
+                },
+            },
+            {
+                name: 'Cancel',
+                width: 6,
+                offset: 0,
+                variant: 'secondary',
+                handler: () => {
+                    this.editing = false;
+                },
+            }
+        ]"/>
         <div v-else>
             <navbar/>
             <background>
@@ -35,11 +67,9 @@
                             </table>
                         </div>
                     </b-col>
-                    <b-btn variant='primary' v-if='!editing' v-on:click='startEditing'>Edit</b-btn>
-                    <div v-else>
-                        <b-btn variant='primary' v-on:click='saveEdit'>Save</b-btn>
-                        <b-btn variant='primary' v-on:click='cancelEdit'>Cancel</b-btn>
-                    </div>
+                    <b-col cols="6" offset="6" md="2" offset-md="0">
+                        <b-btn class="wide" variant='primary' v-on:click='editing = true'>Edit</b-btn>
+                    </b-col>
                 </b-row>
             </background>
         </div>
@@ -65,44 +95,13 @@
                 people: [],
                 bills: [],
             },
-            prevEvent: {
-                id: null,
-                title: null,
-                description: null,
-                owner: null,
-                people: [],
-                bills: [],
-            },
             editing: false,
         }),
         mounted() {
-            this.getEvent(this.$route.params.id);
+            this.eventId = Number(this.$route.params.id);
+            this.getEvent(this.eventId);
         },
         methods: {
-            startEditing() {
-                this.editing = true;
-                this.prevEvent = JSON.parse(JSON.stringify(this.event));
-            },
-            saveEdit() {
-                this.editing = false;
-            },
-            cancelEdit() {
-                return;
-            },
-            updateEvent() {
-                return;
-                const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.post('/events/' + eventId)
-                        .then((response) => {
-                            self.event = response.data;
-                            self.saveTitle();
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
-            },
             getEvent(eventId) {
                 const self = this;
                 userStore.getUser().then((user) => {
@@ -129,16 +128,8 @@
         padding-top: 5vh;
     }
 
-    .limegreen {
-        color: limegreen;
-    }
-
-    .small {
-        size: 25px !important;
-    }
-
-    .gray {
-        color: #c3c3c3;
+    .wide {
+        width: 100%;
     }
 
     .table-wrapper-scroll-y {
