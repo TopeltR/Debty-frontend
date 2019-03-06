@@ -24,14 +24,12 @@
                             <table class="table table-bordered table-striped bill-table">
                                 <thead>
                                 <tr>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
+                                    <th scope="col">People</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="person in event.people">
-                                    <td>{{person.firstName}}</td>
-                                    <td>{{person.lastName}}</td>
+                                    <td>{{person.firstName + " " + person.lastName}}</td>
                                 </tr>
                                 </tbody>
                             </table>
