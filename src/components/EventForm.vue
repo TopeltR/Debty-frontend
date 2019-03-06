@@ -40,10 +40,11 @@
                             </div>
                             <b-row class="mt-4">
                                 <b-col sm="12">
-                                    <button type="button" v-on:click="createEvent"
-                                            class="btn btn-primary wide">
-                                        Create event
-                                    </button>
+                                    <b-btn v-for="button in buttons" :variant="button.variant"
+                                           v-on:click="button.handler"
+                                           class="wide">
+                                        {{button.title}}
+                                    </b-btn>
                                 </b-col>
                             </b-row>
                         </form>
@@ -62,7 +63,6 @@
     import Autocomplete from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
 
-
     export default {
         name: 'EventForm',
         components: {Background, Navbar, Autocomplete},
@@ -70,6 +70,26 @@
             eventId: {
                 type: Number,
                 default: undefined,
+            },
+            buttons: {
+                type: Array,
+                default: [{
+                    name: "Create event",
+                    handler: () => {
+                        if (this.title && this.description)
+                            userStore.getUser().then((user) => {
+                                this.$http.post('/events', {
+                                    title: this.title,
+                                    people: this.people,
+                                    description: this.description,
+                                    owner: user,
+                                }).then((result) => {
+                                    router.push("/events/" + result.data.id);
+                                });
+                            });
+                    },
+                    variant: "primary"
+                }]
             }
         },
         data: () => ({
@@ -82,7 +102,7 @@
         }),
         mounted() {
             if (this.eventId)
-                this.$http.get("/events/"+this.eventId).then((data) => {
+                this.$http.get("/events/" + this.eventId).then((data) => {
                     this.title = data.title;
                     this.description = data.description;
                     this.people = data.people;
@@ -96,11 +116,13 @@
                 alert("You are not logged in!");
                 router.push("/");
             });
-        },
+        }
+        ,
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
-            },
+            }
+            ,
             addPerson() {
                 userStore.getUser().then((user) => {
                     if (this.user && this.user.firstName && !this.people.includes(this.user) && this.user.email !== user.email) {
@@ -110,7 +132,8 @@
                         this.field.value = '';
                     }
                 });
-            },
+            }
+            ,
             createEvent() {
                 if (this.title && this.description)
                     userStore.getUser().then((user) => {
@@ -123,9 +146,12 @@
                             router.push("/events/" + result.data.id);
                         });
                     });
-            },
-        },
-    };
+            }
+            ,
+        }
+        ,
+    }
+    ;
 </script>
 
 <style scoped>
