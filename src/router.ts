@@ -44,5 +44,10 @@ export default new Router({
             name: 'create-debt',
             component: () => import('./views/CreateDebt.vue'),
         },
+        {
+            path: '/debts',
+            name: 'debts',
+            component: () => import('./views/Debts.vue'),
+        },
     ],
 });

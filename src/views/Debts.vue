@@ -2,7 +2,7 @@
     <div>
         <navbar/>
         <background>
-            <h1 class='header'>My events</h1>
+            <h1 class='header'>My debts</h1>
             <div class='search-wrapper'>
                 <input class='form-control' type='text' v-model='search' placeholder='Search'/>
             </div>
@@ -47,21 +47,21 @@
         },
         data() {
             return {
-                events: [],
+                debts: [],
                 search: '',
 
             };
         },
         methods: {
-            goToEvent(id) {
-                router.push('/events/' + id);
+            goToDebt(id) {
+                router.push('/debts/' + id);
             },
-            getEvents() {
+            getDebts() {
                 const self = this;
                 userStore.getUser().then((user) => {
-                    self.$http.get('http://localhost:8080/events/user/' + user.id)
+                    self.$http.get('debts/user/' + user.id)
                         .then((data) => {
-                            self.events = data.data;
+                            self.debts = data.data;
                         }).catch(() => {
                             router.push('/');
                         },
@@ -71,7 +71,7 @@
         },
         computed: {
             filteredList() {
-                return this.events.filter((event) => {
+                return this.debts.filter((debt) => {
                     return event.title.toLowerCase().includes(this.search.toLowerCase()) ||
                         event.description.toLowerCase().includes(this.search.toLowerCase()) ||
                         event.owner.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
@@ -82,16 +82,16 @@
     };
 </script>
 
-<style>
+<style scoped>
     .header {
         padding-top: 30px
     }
 
-   .search-wrapper {
-       margin: 30px 30px 30px 0;
-   }
+    .search-wrapper {
+        margin: 30px 30px 30px 0;
+    }
 
-   .form-control {
-       width: 300px !important;
-   }
+    .form-control {
+        width: 300px !important;
+    }
 </style>
