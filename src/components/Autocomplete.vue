@@ -139,7 +139,7 @@
                     :key='i'
                     @click='setResult(result)'
                     class='autocomplete-result'
-                    :class='{ 'is-active': i === arrowCounter }'
+                    :class="{ 'is-active': i === arrowCounter }"
             >
                 {{ keyExtractor(result) }}
             </li>
