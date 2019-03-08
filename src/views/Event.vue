@@ -41,6 +41,30 @@
                         <b-btn variant='primary' v-on:click='cancelEdit'>Cancel</b-btn>
                     </div>
                 </b-row>
+                <b-row class="PT20">
+                    <table class='table table-bordered table-hover'>
+                        <thead>
+                        <tr>
+                            <th scope='col'>Title</th>
+                            <th scope='col'>Sum(€)</th>
+                            <th scope='col'>Buyer</th>
+                            <th class='d-none d-md-table-cell' scope='col'>Participants</th>
+                            <th class='d-none d-md-table-cell' scope='col'>Created by</th>
+                            <th class='d-none d-md-table-cell' scope='col'>Created at</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="bill in event.bills" @click="openBillModal">
+                            <td>{{bill.title}}</td>
+                            <td>{{bill.sum}}</td>
+                            <td class=''>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
+                            <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
+                            <td class='d-none d-md-table-cell'>{{bill.creator.firstName}} {{bill.creator.lastName}}</td>
+                            <td class='d-none d-md-table-cell'>{{bill.createdAt}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </b-row>
             </background>
         </div>
     </div>
@@ -52,10 +76,11 @@
     import router from '@/router';
     import userStore from '../stores/UserStore';
     import EventForm from '@/components/EventForm.vue';
+    import BRow from "bootstrap-vue/src/components/layout/row";
 
     export default {
         name: 'Event.vue',
-        components: {Navbar, Background, EventForm},
+        components: {BRow, Navbar, Background, EventForm},
         data: () => ({
             event: {
                 id: null,
@@ -64,6 +89,7 @@
                 owner: null,
                 people: [],
                 bills: [],
+                createdAt: null,
             },
             prevEvent: {
                 id: null,
@@ -105,16 +131,20 @@
             },
             getEvent(eventId) {
                 const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.get('/events/' + eventId)
-                        .then((response) => {
-                            self.event = response.data;
-                            self.event.id = eventId;
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
+                userStore.getUser()
+                    .then((user) => {
+                        self.$http.get('/events/' + eventId)
+                            .then((response) => {
+                                self.event = response.data;
+                                console.log(self.event);
+                            }).catch(() => {
+                                router.push('/');
+                            },
+                        );
+                    });
+            },
+            openBillModal() {
+                // TODO: @ingmar
             },
         },
     };
@@ -129,23 +159,15 @@
         padding-top: 5vh;
     }
 
-    .limegreen {
-        color: limegreen;
-    }
-
-    .small {
-        size: 25px !important;
-    }
-
-    .gray {
-        color: #c3c3c3;
-    }
-
     .table-wrapper-scroll-y {
         display: block;
         max-height: 200px;
         overflow-y: auto;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         margin-top: 5vh;
+    }
+
+    .PT20 {
+        padding-top: 20px;
     }
 </style>
