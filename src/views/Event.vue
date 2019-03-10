@@ -99,11 +99,11 @@
                     width: 6,
                     offset: 0,
                     variant: 'primary',
-                    handler: (eventForm, userStore) => {
+                    handler: function(eventForm, userStore) {
                         if (eventForm.title && eventForm.description) {
                             userStore.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
-                                    id: this.eventId,
+                                    id: this.event.id,
                                     title: eventForm.title,
                                     people: eventForm.people,
                                     description: eventForm.description,
@@ -121,7 +121,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
-                    handler: () => {
+                    handler: function() {
                         this.editing = false;
                     },
                 }
@@ -130,9 +130,15 @@
         mounted() {
             this.event.id = Number(this.$route.params.id);
             this.getEvent(this.event.id);
+
+            for (let i = 0; i < this.buttons.length; i++) {
+                let button = this.buttons[i];
+                button.handler = button.handler.bind(this);
+            }
         },
         methods: {
             addBill() {
+                this.addBillState.showing = false;
                 this.addBillState.showing = true;
             },
             getEvent(eventId) {
@@ -142,7 +148,7 @@
                         self.$http.get('/events/' + eventId)
                             .then((response) => {
                                 self.event = response.data;
-                                console.log(self.event);
+                                self.event.id = eventId;
                             }).catch(() => {
                                 router.push('/');
                             },

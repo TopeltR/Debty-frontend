@@ -41,7 +41,7 @@
                             <b-row class='mt-4'>
                                 <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">
                                     <b-btn :variant='button.variant'
-                                           v-on:click='button.handler(this)'
+                                           v-on:click='button.handler'
                                            class='wide'>
                                         {{button.name}}
                                     </b-btn>

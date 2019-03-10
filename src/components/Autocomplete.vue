@@ -6,8 +6,8 @@
         props: {
             keyExtractor: {
                 type: Function,
-                required: false,
-                default: (object) => {
+                required: true,
+                default: () => (object) => {
                     return object;
                 },
             },
@@ -28,7 +28,7 @@
             },
             field: {
                 type: Object,
-                required: true,
+                required: false,
                 default: () => ({value: ''}),
             },
         },
@@ -82,8 +82,8 @@
                 const result = this.results[this.arrowCounter];
                 if (result) {
                     this.setResult(result);
+                    this.arrowCounter = -1;
                 }
-                this.arrowCounter = -1;
             },
             handleClickOutside(evt) {
                 if (!this.$el.contains(evt.target)) {
@@ -93,7 +93,7 @@
             },
         },
         watch: {
-            items(val, oldValue) {
+            items: function(val, oldValue) {
                 // actually compare them
                 if (val.length !== oldValue.length) {
                     this.results = val;
