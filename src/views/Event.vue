@@ -62,7 +62,7 @@
                         <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
                     </b-col>
                     <b-col cols="12" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='danger'>Close event</b-btn>
+                        <b-btn class="wide mt-4" variant='danger' v-on:click='closeEvent'>Close event</b-btn>
                     </b-col>
                 </b-row>
             </background>
@@ -91,6 +91,7 @@
                 bills: [],
                 createdAt: null,
             },
+            debts: [],
             editing: false,
             addBillState: {showing: false},
             buttons: [
@@ -152,6 +153,13 @@
             openBillModal() {
                 // TODO: @ingmar
             },
+            closeEvent() {
+                this.$http.get('/events/' + this.event.id + '/debts').then(
+                    (response) => {
+                        this.debts = response.data;
+                    },
+                );
+            }
         },
     };
 </script>
