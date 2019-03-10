@@ -1,42 +1,11 @@
 <template>
     <div>
-        <event-form v-if="editing" :eventId="eventId" :buttons="[
-            {
-                name: 'Save',
-                width: 6,
-                offset: 0,
-                variant: 'primary',
-                handler: (eventForm, userStore) => {
-                    if (eventForm.title && eventForm.description) {
-                            userStore.getUser().then((user) => {
-                                eventForm.$http.post('/events', {
-                                    id: this.eventId,
-                                    title: eventForm.title,
-                                    people: eventForm.people,
-                                    description: eventForm.description,
-                                    owner: user,
-                                }).then((result) => {
-                                    this.event = result.data;
-                                    this.editing = false;
-                                });
-                            });
-                    }
-                },
-            },
-            {
-                name: 'Cancel',
-                width: 6,
-                offset: 0,
-                variant: 'secondary',
-                handler: () => {
-                    this.editing = false;
-                },
-            }
-        ]"/>
+        <event-form v-if="editing" :eventId="event.id" :buttons="buttons"/>
         <div v-else>
             <navbar/>
             <background>
                 <b-row>
+                    <add-bill :state="addBillState" :eventId="event.id"/>
                     <b-col sm='12' md='6'>
                         <div class='header'>
                             <h1>
@@ -63,30 +32,38 @@
                             </table>
                         </div>
                     </b-col>
-                    <b-col cols="6" offset="6" md="2" offset-md="0">
-                        <b-btn class="wide" variant='primary' v-on:click='editing = true'>Edit</b-btn>
-                    </b-col>
                 </b-row>
                 <b-row class="PT20">
-                    <h2>Bills</h2>
-                    <table class='table table-bordered table-hover'>
-                        <thead>
-                        <tr class='d-none d-md-table-row'>
-                            <th scope='col'>Title</th>
-                            <th scope='col'>Sum (€)</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Participants</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="bill in event.bills" @click="openBillModal">
-                            <td>{{bill.title}}</td>
-                            <td>{{bill.sum}}</td>
-                            <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
-                            <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <b-col cols="12">
+                        <h2>Bills</h2>
+                        <table class='table table-bordered table-hover'>
+                            <thead>
+                            <tr class='d-none d-md-table-row'>
+                                <th scope='col'>Title</th>
+                                <th scope='col'>Sum (€)</th>
+                                <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
+                                <th class='d-none d-md-table-cell' scope='col'>Participants</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="bill in event.bills" @click="openBillModal">
+                                <td>{{bill.title}}</td>
+                                <td>{{bill.sum}}</td>
+                                <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
+                                <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </b-col>
+                    <b-col cols="6" offset="0" md="2" offset-md="0">
+                        <b-btn class="wide mt-4" variant='primary' v-on:click='editing = true'>Edit</b-btn>
+                    </b-col>
+                    <b-col cols="6" offset="0" md="2" offset-md="0">
+                        <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
+                    </b-col>
+                    <b-col cols="12" offset="0" md="2" offset-md="0">
+                        <b-btn class="wide mt-4" variant='danger'>Close event</b-btn>
+                    </b-col>
                 </b-row>
             </background>
         </div>
@@ -99,10 +76,11 @@
     import router from '@/router';
     import userStore from '../stores/UserStore';
     import EventForm from '@/components/EventForm.vue';
+    import AddBill from '@/components/AddBill.vue';
 
     export default {
         name: 'Event.vue',
-        components: {Navbar, Background, EventForm},
+        components: {Navbar, Background, EventForm, AddBill},
         data: () => ({
             event: {
                 id: null,
@@ -114,12 +92,49 @@
                 createdAt: null,
             },
             editing: false,
+            addBillState: {showing: false},
+            buttons: [
+                {
+                    name: 'Save',
+                    width: 6,
+                    offset: 0,
+                    variant: 'primary',
+                    handler: (eventForm, userStore) => {
+                        if (eventForm.title && eventForm.description) {
+                            userStore.getUser().then((user) => {
+                                eventForm.$http.post('/events', {
+                                    id: this.eventId,
+                                    title: eventForm.title,
+                                    people: eventForm.people,
+                                    description: eventForm.description,
+                                    owner: user,
+                                }).then((result) => {
+                                    this.event = result.data;
+                                    this.editing = false;
+                                });
+                            });
+                        }
+                    },
+                },
+                {
+                    name: 'Cancel',
+                    width: 6,
+                    offset: 0,
+                    variant: 'secondary',
+                    handler: () => {
+                        this.editing = false;
+                    },
+                }
+            ],
         }),
         mounted() {
-            this.eventId = Number(this.$route.params.id);
-            this.getEvent(this.eventId);
+            this.event.id = Number(this.$route.params.id);
+            this.getEvent(this.event.id);
         },
         methods: {
+            addBill() {
+                this.addBillState.showing = true;
+            },
             getEvent(eventId) {
                 const self = this;
                 userStore.getUser()

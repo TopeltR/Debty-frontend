@@ -100,7 +100,8 @@
         background-color: white;
         color: black;
         font-size: 25px;
-        border-radius:5px 5px 0 0 !important;
+        border-color: lightgray;
+        border-radius:5px 5px 5px 5px !important;
     }
     .FL {
         float: left;

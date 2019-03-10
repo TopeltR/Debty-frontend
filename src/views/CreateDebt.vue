@@ -7,7 +7,7 @@
                     <b-row>
                         <form @submit.prevent='createDebt' class='wide'>
                             <div class='form-group'>
-                                <label for='title'>Title:</label>
+                                <label for='title'>Title:</label>0
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
                                        placeholder='Enter debt title'>
                             </div>
