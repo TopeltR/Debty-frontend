@@ -12,18 +12,20 @@
                     <tr>
                         <th scope='col'>Title</th>
                         <th scope='col'>Description</th>
-                        <th scope='col'>Owner name</th>
+                        <th scope='col'>Payer</th>
+                        <th scope='col'>Receiver</th>
                         <th class='d-none d-md-table-cell' scope='col'>Created at</th>
                         <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="event in filteredList" @click="goToEvent(event.id)">
-                        <td>{{event.title}}</td>
-                        <td>{{event.description}}</td>
-                        <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
-                        <td class='d-none d-md-table-cell'>{{event.created}}</td>
-                        <td class='d-none d-md-table-cell'>{{event.closed}}</td>
+                    <tr v-for="debt in filteredList" @click="goToDebt(debt.id)">
+                        <td>{{debt.title}}</td>
+                        <td  >{{debt.sum}} {{debt.currency}} </td>
+                        <td class=''>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
+                        <td class=''>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
+                        <td class='d-none d-md-table-cell'>{{debt.created}}</td>
+                        <td class='d-none d-md-table-cell'>{{debt.closed}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -43,7 +45,7 @@
         components: {Navbar, Background},
 
         mounted() {
-            this.getEvents();
+            this.getDebts();
         },
         data() {
             return {
@@ -72,10 +74,11 @@
         computed: {
             filteredList() {
                 return this.debts.filter((debt) => {
-                    return event.title.toLowerCase().includes(this.search.toLowerCase()) ||
-                        event.description.toLowerCase().includes(this.search.toLowerCase()) ||
-                        event.owner.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
-                        event.owner.lastName.toLowerCase().includes(this.search.toLowerCase());
+                    return debt.title.toLowerCase().includes(this.search.toLowerCase()) ||
+                        debt.payer.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
+                        debt.payer.lastName.toLowerCase().includes(this.search.toLowerCase()) ||
+                        debt.receiver.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
+                        debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase())
                 });
             },
         },

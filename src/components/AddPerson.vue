@@ -3,7 +3,7 @@
         <b-col cols='8' col-md="9">
             <autocomplete id='user' v-model='user' :placeholder='"Name"' :field='field'
                           :items='state.allPeople'
-                          :key-extractor='getFullName'></autocomplete>
+                          :keyExtractor="getFullName"/>
         </b-col>
         <b-col cols='4' col-md="3">
             <button type='button' v-on:click='addPerson'

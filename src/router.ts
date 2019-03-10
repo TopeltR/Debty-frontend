@@ -49,5 +49,10 @@ export default new Router({
             name: 'debts',
             component: () => import('./views/Debts.vue'),
         },
+        {
+            path: '/contacts',
+            name: 'contacts',
+            component: () => import('./views/Contacts.vue')
+        },
     ],
 });
