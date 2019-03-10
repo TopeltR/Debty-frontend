@@ -20,7 +20,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="buyer">Buyer:</label>
-                                <autocomplete id="buyer" v-model="bill.buyer" :items="allPeople"/>
+                                <autocomplete id="buyer" v-model="bill.buyer" :items="allPeople" :field="field"/>
                             </div>
                             <div class='form-group'>
                                 <p v-if='bill.people.length > 0'>Participants:</p>
