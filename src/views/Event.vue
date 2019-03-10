@@ -52,13 +52,9 @@
                         </div>
                     </b-col>
                     <b-col sm='12' md='6'>
+                        <h2>People</h2>
                         <div class='table-wrapper-scroll-y PT5vh'>
                             <table class='table table-bordered table-striped bill-table'>
-                                <thead>
-                                <tr>
-                                    <th scope='col'>People</th>
-                                </tr>
-                                </thead>
                                 <tbody>
                                 <tr v-for='person in event.people'>
                                     <td>{{person.firstName + ' ' + person.lastName}}</td>
@@ -72,25 +68,22 @@
                     </b-col>
                 </b-row>
                 <b-row class="PT20">
+                    <h2>Bills</h2>
                     <table class='table table-bordered table-hover'>
                         <thead>
-                        <tr>
+                        <tr class='d-none d-md-table-row'>
                             <th scope='col'>Title</th>
-                            <th scope='col'>Sum(€)</th>
-                            <th scope='col'>Buyer</th>
+                            <th scope='col'>Sum (€)</th>
+                            <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
                             <th class='d-none d-md-table-cell' scope='col'>Participants</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Created by</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Created at</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="bill in event.bills" @click="openBillModal">
                             <td>{{bill.title}}</td>
                             <td>{{bill.sum}}</td>
-                            <td class=''>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
+                            <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
                             <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
-                            <td class='d-none d-md-table-cell'>{{bill.creator.firstName}} {{bill.creator.lastName}}</td>
-                            <td class='d-none d-md-table-cell'>{{bill.createdAt}}</td>
                         </tr>
                         </tbody>
                     </table>
