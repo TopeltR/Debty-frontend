@@ -77,10 +77,11 @@
     import userStore from '../stores/UserStore';
     import EventForm from '@/components/EventForm.vue';
     import AddBill from '@/components/AddBill.vue';
+    import DebtDistribution from '@/components/DebtDistribution.vue';
 
     export default {
         name: 'Event.vue',
-        components: {Navbar, Background, EventForm, AddBill},
+        components: {Navbar, Background, EventForm, AddBill, DebtDistribution},
         data: () => ({
             event: {
                 id: null,
@@ -91,9 +92,9 @@
                 bills: [],
                 createdAt: null,
             },
-            debts: [],
             editing: false,
             addBillState: {showing: false},
+            debtDistributionState: {showing: false},
             buttons: [
                 {
                     name: 'Save',
@@ -160,11 +161,9 @@
                 // TODO: @ingmar
             },
             closeEvent() {
-                this.$http.get('/events/' + this.event.id + '/debts').then(
-                    (response) => {
-                        this.debts = response.data;
-                    },
-                );
+                console.log("should open debts modal rn");
+                this.debtDistributionState.showing = false;
+                this.debtDistributionState.showing = true;
             }
         },
     };
