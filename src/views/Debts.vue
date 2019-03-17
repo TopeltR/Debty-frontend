@@ -11,11 +11,9 @@
                     <thead>
                     <tr>
                         <th scope='col'>Title</th>
-                        <th scope='col'>Description</th>
+                        <th scope='col'>Sum</th>
                         <th scope='col'>Payer</th>
                         <th scope='col'>Receiver</th>
-                        <th class='d-none d-md-table-cell' scope='col'>Created at</th>
-                        <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -24,8 +22,6 @@
                         <td  >{{debt.sum}} {{debt.currency}} </td>
                         <td class=''>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
                         <td class=''>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
-                        <td class='d-none d-md-table-cell'>{{debt.created}}</td>
-                        <td class='d-none d-md-table-cell'>{{debt.closed}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -63,6 +59,7 @@
                 userStore.getUser().then((user) => {
                     self.$http.get('debts/user/' + user.id)
                         .then((data) => {
+                            console.log(data.data);
                             self.debts = data.data;
                         }).catch(() => {
                             router.push('/');
@@ -72,7 +69,13 @@
             },
         },
         computed: {
+
             filteredList() {
+                this.debts.sort(function(a,b){
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.modifiedAt) - new Date(a.modifiedAt);
+                });
                 return this.debts.filter((debt) => {
                     return debt.title.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.payer.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
