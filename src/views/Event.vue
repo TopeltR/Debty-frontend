@@ -5,7 +5,8 @@
             <navbar/>
             <background>
                 <b-row>
-                    <add-bill :state="addBillState" :eventId="event.id"/>
+                    <add-bill :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
+                    <add-bill :state="addBillState" :event="event"/>
                     <b-col sm='12' md='6'>
                         <div class='header'>
                             <h1>
@@ -20,9 +21,9 @@
                             </p>
                         </div>
                     </b-col>
-                    <b-col sm='12' md='6'>
+                    <b-col class="MDMT40px" sm='12' md='6'>
                         <h2>People</h2>
-                        <div class='table-wrapper-scroll-y PT5vh'>
+                        <div class='table-wrapper-scroll-y MDMT3vh'>
                             <table class='table table-bordered table-striped bill-table'>
                                 <tbody>
                                 <tr v-for='person in event.people'>
@@ -33,7 +34,7 @@
                         </div>
                     </b-col>
                 </b-row>
-                <b-row class="PT20">
+                <b-row class="PT20px">
                     <b-col cols="12">
                         <h2>Bills</h2>
                         <table class='table table-bordered table-hover'>
@@ -46,7 +47,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="bill in event.bills" @click="openBillModal">
+                            <tr v-for="bill in event.bills" v-if="bill != undefined" @click="openBillModal(bill)">
                                 <td>{{bill.title}}</td>
                                 <td>{{bill.sum}}</td>
                                 <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
@@ -61,7 +62,7 @@
                     <b-col cols="6" offset="0" md="2" offset-md="0">
                         <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
                     </b-col>
-                    <b-col cols="12" offset="0" md="2" offset-md="0">
+                    <b-col class="mb-3" cols="12" offset="0" md="2" offset-md="0">
                         <b-btn class="wide mt-4" variant='danger' v-on:click='closeEvent'>Close event</b-btn>
                     </b-col>
                 </b-row>
@@ -92,8 +93,11 @@
                 bills: [],
                 createdAt: null,
             },
+            selectedBill: undefined,
             editing: false,
             addBillState: {showing: false},
+            seeBillState: {showing: false},
+            addBillStates: {},
             debtDistributionState: {showing: false},
             buttons: [
                 {
@@ -101,7 +105,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'primary',
-                    handler: function(eventForm, userStore) {
+                    handler: function (eventForm, userStore) {
                         if (eventForm.title && eventForm.description) {
                             userStore.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
@@ -123,7 +127,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
-                    handler: function() {
+                    handler: function () {
                         this.editing = false;
                     },
                 }
@@ -137,11 +141,20 @@
                 let button = this.buttons[i];
                 button.handler = button.handler.bind(this);
             }
+
+            for (let i = 0; i < this.event.bills; i++) {
+                let bill = this.event.bills[i];
+                this.addBillStates[bill.id] = {showing: false};
+            }
         },
         methods: {
             addBill() {
                 this.addBillState.showing = false;
                 this.addBillState.showing = true;
+            },
+            getAddBillState(id) {
+                this.addBillStates[id] = {showing: false};
+                return this.addBillStates[id];
             },
             getEvent(eventId) {
                 const self = this;
@@ -157,11 +170,12 @@
                         );
                     });
             },
-            openBillModal() {
-                // TODO: @ingmar
+            openBillModal(bill) {
+                this.selectedBill = bill;
+                this.seeBillState.showing = false;
+                this.seeBillState.showing = true;
             },
             closeEvent() {
-                console.log("should open debts modal rn");
                 this.debtDistributionState.showing = false;
                 this.debtDistributionState.showing = true;
             }
@@ -190,7 +204,17 @@
         margin-top: 5vh;
     }
 
-    .PT20 {
+    .PT20px {
         padding-top: 20px;
+    }
+
+    @media (min-width: 768px) {
+        .MDMT40px {
+            margin-top: 40px;
+        }
+
+        .MDMT3vh {
+            margin-top: 3vh;
+        }
     }
 </style>
