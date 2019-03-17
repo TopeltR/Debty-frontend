@@ -20,24 +20,34 @@
                             </div>
                             <div class="form-group">
                                 <label for="buyer">Buyer:</label>
-                                <autocomplete id="buyer" v-model="buyer" v-on:input="updateBuyer" :items="allPeople"
+                                <autocomplete id="buyer" v-model="buyer" :field="field" v-on:input="updateBuyer"
+                                              :items="allPeople"
                                               :keyExtractor="getFullName"/>
                             </div>
-                            <div class="form-group">
-                                <label for="sum">Sum:</label>
-                                <input type="text" class="form-control" id="sum" v-model="bill.sum" required="">
+                            <div class="form-group inline-form">
+                                <label class="PR5px" for="sum">Sum:</label>
+                                <input type="text" class="inline form-control skinny" id="sum" v-model="bill.sum"
+                                       required="">
+                                <span class="ml-1">€</span>
                             </div>
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length > 0'>Participants:</p>
                                 <ul>
                                     <li v-for='person in addPersonState.people'>
-                                        <!--TODO: Calculate and add person.participation after adding-->
-                                        <p>{{ getFullName(person) }}</p>
-                                        <!--<input v-model="person.participation">-->
+                                        <div class="form-group inline-form">
+                                            <label class="PR5px col-9 col-md-6" :for="person.firstName">{{
+                                                getFullName(person)
+                                                }}</label>
+                                            <input type="text" class="inline form-control skinny participation col-3"
+                                                   :id="person.firstName" v-model="person.participation" required="">
+                                            <span class="ml-1 col-1">€</span>
+                                        </div>
                                     </li>
                                 </ul>
                                 <label for='user'>Add participants:</label>
                                 <add-person id="user" :state="addPersonState"/>
+                                <p class="red MT29px" v-bind:style='{display: displayProperty}'>Sum and participations
+                                    don't match!</p>
                             </div>
                         </form>
                     </b-row>
@@ -77,8 +87,31 @@
                     showing: false
                 }),
             },
-            eventId: {
-                type: Number
+            selectedBill: {
+                title: {type: String, default: ''},
+                description: {type: String, default: ''},
+                sum: {type: Number, default: 0},
+                buyer: {type: Object, default: () => ({})},
+                people: {type: Array, default: () => ([])},
+                billPayments: {type: Array, default: () => ([])},
+                creator: {type: Object}
+            },
+            event: {
+                type: Object
+            }
+        },
+        computed: {
+            participantsLength() {
+                return this.addPersonState.people.length;
+            },
+            billSum() {
+                return Number(this.bill.sum);
+            },
+            participations() {
+                return this.addPersonState.people.map((u) => Number(u.participation));
+            },
+            sumAndParticipationsMatch() {
+                return this.participations.reduce((a, b) => a + b, 0) === this.billSum;
             }
         },
         watch: {
@@ -91,38 +124,67 @@
                         this.$refs.modal.hide();
                     }
                 }
+            },
+            sumAndParticipationsMatch(yes) {
+                if (!yes) {
+                    this.displayProperty = 'block';
+                } else {
+                    this.displayProperty = 'none';
+                }
+            },
+            selectedBill(bill) {
+                for (let i = 0; i < bill.billPayments.length; i++) {
+                    let payment = bill.billPayments[i];
+                    let person = bill.people.find((p) => p.email == payment.person.email);
+                    person.participation = payment.sum;
+                }
+                this.bill = bill;
+                this.buyer = this.bill.buyer;
+                this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
+                this.addPersonState.people = this.bill.people;
+                console.log(this.bill);
             }
         },
         mounted() {
             this.$http.get('/users/all').then((data) => {
+
                 userStore.getUser().then((user) => {
-                    this.allPeople = data.data.filter((u) => u.email !== user.email);
+                    this.allPeople = data.data.filter((u) => u.email !== user.email).map((u) => {
+                        u.participation = 0;
+                        return u
+                    });
                     // Copy, can't be same
-                    this.addPersonState.allPeople = this.allPeople.filter((u) => u);
+                    this.addPersonState.allPeople = this.allPeople.map((u) => u);
                 });
             }).catch((error) => {
                 console.log(error);
                 alert('You are not logged in!');
                 router.push('/');
             });
-            this.bill.people = this.addPersonState.people
+            this.addPersonState.people = this.bill.people;
+
         },
         data: () => ({
             user: {},
-            field: {},
+            field: {value: ''},
             allPeople: [],
             buyer: {},
+            participationChanged: false,
+            billChanged: false,
+            displayProperty: 'none',
             bill: {
                 title: '',
                 description: '',
                 sum: 0,
                 buyer: {},
+                creator: {},
                 people: [],
+                billPayments: []
             },
             addPersonState: {
                 allPeople: [],
-                people: []
-            }
+                people: [],
+            },
         }),
         methods: {
             updateBuyer() {
@@ -138,13 +200,31 @@
             },
             save() {
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
-                    this.$http.post('/events/' + this.eventId + '/bills', this.bill)
-                        .then((response) => {
-                            this.state.showing = false;
+                    this.bill.people = this.addPersonState.people;
+
+                    for (let i = 0; i < this.bill.people.length; i++) {
+                        let person = this.bill.people[i];
+                        this.bill.billPayments.push({
+                            person: person,
+                            sum: person.participation,
                         });
+                    }
+
+                    userStore.getUser().then((user) => {
+                        this.bill.creator = user;
+                        console.log(this.bill);
+                        this.$http.post('/events/' + this.event.id + '/bills', this.bill)
+                            .then((response) => {
+                                console.log(response);
+                                this.event.bills = response.data.bills;
+                                this.state.showing = true;
+                                this.state.showing = false;
+                            });
+                    });
                 }
             },
             cancel() {
+                this.state.showing = true;
                 this.state.showing = false;
             }
         },
@@ -154,5 +234,29 @@
 <style scoped>
     .wide {
         width: 100%;
+    }
+
+    .PR5px {
+        padding-right: 5px;
+    }
+
+    .inline {
+        display: inline;
+    }
+
+    .inline-form {
+        white-space: nowrap;
+    }
+
+    .skinny {
+        width: 70px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .MT29px {
+        margin-top: 29px;
     }
 </style>
