@@ -1,6 +1,7 @@
 <template>
     <div>
         <navbar></navbar>
+        <add-bank-account :state="addBankAccountState"></add-bank-account>
         <background>
             <div>
                 <b-row>
@@ -47,17 +48,20 @@
     import Background from '@/components/Background.vue';
     import router from '@/router';
     import userStore from '../stores/UserStore';
+    import AddBankAccount from "../components/AddBankAccount";
 
     export default {
         name: 'CreateEvent',
-        components: {Navbar, Background},
+        components: {AddBankAccount, Navbar, Background},
         mounted() {
             this.getDebts();
             this.getEvents();
+            this.openBankAccountModal();
         },
         data: () => ({
             events: [],
             debts: [],
+            addBankAccountState: {showing: false},
         }),
         methods: {
             createNewEvent() {
@@ -83,6 +87,15 @@
                         router.push('/');
                     },
                 );
+            },
+            openBankAccountModal() {
+                const self = this;
+                userStore.getUser().then((user) => {
+                    if (user.bankAccount === null) {
+                        self.addBankAccountState.showing = false;
+                        self.addBankAccountState.showing = true;
+                    }
+                });
             },
         },
     };

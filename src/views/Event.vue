@@ -62,7 +62,7 @@
                         <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
                     </b-col>
                     <b-col cols="12" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='danger'>Close event</b-btn>
+                        <b-btn class="wide mt-4" variant='danger' v-on:click='closeEvent'>Close event</b-btn>
                     </b-col>
                 </b-row>
             </background>
@@ -77,10 +77,11 @@
     import userStore from '../stores/UserStore';
     import EventForm from '@/components/EventForm.vue';
     import AddBill from '@/components/AddBill.vue';
+    import DebtDistribution from '@/components/DebtDistribution.vue';
 
     export default {
         name: 'Event.vue',
-        components: {Navbar, Background, EventForm, AddBill},
+        components: {Navbar, Background, EventForm, AddBill, DebtDistribution},
         data: () => ({
             event: {
                 id: null,
@@ -93,17 +94,18 @@
             },
             editing: false,
             addBillState: {showing: false},
+            debtDistributionState: {showing: false},
             buttons: [
                 {
                     name: 'Save',
                     width: 6,
                     offset: 0,
                     variant: 'primary',
-                    handler: (eventForm, userStore) => {
+                    handler: function(eventForm, userStore) {
                         if (eventForm.title && eventForm.description) {
                             userStore.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
-                                    id: this.eventId,
+                                    id: this.event.id,
                                     title: eventForm.title,
                                     people: eventForm.people,
                                     description: eventForm.description,
@@ -121,7 +123,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
-                    handler: () => {
+                    handler: function() {
                         this.editing = false;
                     },
                 }
@@ -130,9 +132,15 @@
         mounted() {
             this.event.id = Number(this.$route.params.id);
             this.getEvent(this.event.id);
+
+            for (let i = 0; i < this.buttons.length; i++) {
+                let button = this.buttons[i];
+                button.handler = button.handler.bind(this);
+            }
         },
         methods: {
             addBill() {
+                this.addBillState.showing = false;
                 this.addBillState.showing = true;
             },
             getEvent(eventId) {
@@ -142,7 +150,7 @@
                         self.$http.get('/events/' + eventId)
                             .then((response) => {
                                 self.event = response.data;
-                                console.log(self.event);
+                                self.event.id = eventId;
                             }).catch(() => {
                                 router.push('/');
                             },
@@ -152,6 +160,11 @@
             openBillModal() {
                 // TODO: @ingmar
             },
+            closeEvent() {
+                console.log("should open debts modal rn");
+                this.debtDistributionState.showing = false;
+                this.debtDistributionState.showing = true;
+            }
         },
     };
 </script>
