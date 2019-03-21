@@ -67,18 +67,17 @@
                 this.user = await userStore.getUser();
                 this.$http.get('debts/user/' + this.user.id)
                     .then((data) => {
-                        /*self.debts = data.data.filter(debt => debt.payer.firstName === this.user.firstName && debt.payer.lastName === this.user.lastName
-                            || debt.receiver.firstName === this.user.firstName && debt.receiver.lastName === this.user.lastName);*/
-                        data.data.forEach(debt => {
-                            if(debt.payer.id === this.user.id) {
-                                Object.assign(debt, {type:'out'});
+                        data.data.forEach((debt) => {
+                            if (debt.payer.id === this.user.id) {
+                                Object.assign(debt, { type:'out'});
                                 this.debts.push(debt);
-                            } else if(debt.receiver.id === this.user.id) {
+                            } else if (debt.receiver.id === this.user.id) {
                                 Object.assign(debt, {type: 'in'});
                                 this.debts.push(debt);
                             }
                         });
-                        this.debts = this.debts.filter(debt => debt.payer.id === this.user.id || debt.receiver.id === this.user.id);
+                        this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
+                            || debt.receiver.id === this.user.id);
                     }).catch(() => {
                         router.push('/');
                     },
@@ -87,7 +86,7 @@
         },
         computed: {
             filteredList() {
-                this.debts.sort(function (a, b) {
+                this.debts.sort((a, b) => {
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
                     return new Date(b.modifiedAt) - new Date(a.modifiedAt);
@@ -97,7 +96,7 @@
                         debt.payer.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.payer.lastName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.receiver.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
-                        debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase())
+                        debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase());
                 });
             }
             ,

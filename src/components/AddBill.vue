@@ -68,9 +68,9 @@
 </template>
 
 <script>
-    import AddPerson from '@/components/AddPerson.vue'
+    import AddPerson from '@/components/AddPerson.vue';
     import router from '../router.ts';
-    import userStore from '../stores/UserStore.ts'
+    import userStore from '../stores/UserStore.ts';
     import Autocomplete from "./Autocomplete";
 
 
@@ -81,10 +81,10 @@
             state: {
                 type: Object,
                 showing: {
-                    type: Boolean
+                    type: Boolean,
                 },
                 default: () => ({
-                    showing: false
+                    showing: false,
                 }),
             },
             selectedBill: {
@@ -94,11 +94,11 @@
                 buyer: {type: Object, default: () => ({})},
                 people: {type: Array, default: () => ([])},
                 billPayments: {type: Array, default: () => ([])},
-                creator: {type: Object}
+                creator: { type: Object },
             },
             event: {
-                type: Object
-            }
+                type: Object,
+            },
         },
         computed: {
             participantsLength() {
@@ -112,7 +112,7 @@
             },
             sumAndParticipationsMatch() {
                 return this.participations.reduce((a, b) => a + b, 0) === this.billSum;
-            }
+            },
         },
         watch: {
             state: {
@@ -123,7 +123,7 @@
                     } else {
                         this.$refs.modal.hide();
                     }
-                }
+                },
             },
             sumAndParticipationsMatch(yes) {
                 if (!yes) {
@@ -135,15 +135,14 @@
             selectedBill(bill) {
                 for (let i = 0; i < bill.billPayments.length; i++) {
                     let payment = bill.billPayments[i];
-                    let person = bill.people.find((p) => p.email == payment.person.email);
+                    let person = bill.people.find((p) => p.email === payment.person.email);
                     person.participation = payment.sum;
                 }
                 this.bill = bill;
                 this.buyer = this.bill.buyer;
                 this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
                 this.addPersonState.people = this.bill.people;
-                console.log(this.bill);
-            }
+            },
         },
         mounted() {
             this.$http.get('/users/all').then((data) => {
@@ -151,13 +150,12 @@
                 userStore.getUser().then((user) => {
                     this.allPeople = data.data.filter((u) => u.email !== user.email).map((u) => {
                         u.participation = 0;
-                        return u
+                        return u;
                     });
                     // Copy, can't be same
                     this.addPersonState.allPeople = this.allPeople.map((u) => u);
                 });
             }).catch((error) => {
-                console.log(error);
                 alert('You are not logged in!');
                 router.push('/');
             });
@@ -179,7 +177,7 @@
                 buyer: {},
                 creator: {},
                 people: [],
-                billPayments: []
+                billPayments: [],
             },
             addPersonState: {
                 allPeople: [],
@@ -212,10 +210,8 @@
 
                     userStore.getUser().then((user) => {
                         this.bill.creator = user;
-                        console.log(this.bill);
                         this.$http.post('/events/' + this.event.id + '/bills', this.bill)
                             .then((response) => {
-                                console.log(response);
                                 this.event.bills = response.data.bills;
                                 this.state.showing = true;
                                 this.state.showing = false;
@@ -226,9 +222,9 @@
             cancel() {
                 this.state.showing = true;
                 this.state.showing = false;
-            }
+            },
         },
-    }
+    };
 </script>
 
 <style scoped>

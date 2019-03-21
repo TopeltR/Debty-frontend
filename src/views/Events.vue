@@ -76,7 +76,7 @@
             },
             goToEventCreation() {
                 router.push('/events/create');
-            }
+            },
         },
         computed: {
             filteredList() {

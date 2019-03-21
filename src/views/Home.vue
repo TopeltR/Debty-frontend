@@ -75,7 +75,7 @@
                 this.user = await userStore.getUser();
                 this.$http.get('/debts/all').then(
                     (response) => {
-                        response.data.forEach(debt => {
+                        response.data.forEach((debt) => {
                             if (debt.payer.id === this.user.id) {
                                 Object.assign(debt, {type: 'out'});
                                 this.debts.push(debt);
@@ -84,7 +84,7 @@
                                 this.debts.push(debt);
                             }
                         });
-                        this.debts = this.debts.filter(debt => debt.payer.id === this.user.id
+                        this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
                             || debt.receiver.id === this.user.id);
                     },
                 );
@@ -94,7 +94,7 @@
                     (response) => {
                         this.events = response.data;
                     },
-                )
+                );
             },
             openBankAccountModal() {
                 const self = this;

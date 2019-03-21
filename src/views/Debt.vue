@@ -130,10 +130,11 @@
                 const debtResponse = await this.$http.get('/debts/' + this.debtId);
                 this.debt = debtResponse.data;
                 this.field.value = this.getUserFullName(this.debt.payer);
-                console.log(this.debt);
             },
             getUserFullName(user) {
-                if (user === undefined || user.firstName === undefined) return '';
+                if (user === undefined || user.firstName === undefined){
+                    return '';
+                }
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             edit() {
@@ -151,7 +152,7 @@
             cancel() {
                 this.editing = false;
                 this.loadDebt();
-            }
+            },
         },
     };
 </script>

@@ -128,7 +128,7 @@
                 userStore.getUser().then((user) => {
                     this.allPeople = data.data.filter((u) => u.email !== user.email);
                 });
-            })
+            });
         },
         methods: {
             getFullName(user) {
@@ -136,7 +136,7 @@
             },
             addPerson() {
                 userStore.getUser().then((user) => {
-                    if (this.user && this.user.firstName && !this.people.map(user => user.email).includes(this.user.email)
+                    if (this.user && this.user.firstName && !this.people.map((user) => user.email).includes(this.user.email)
                         && this.user.email !== user.email) {
                         this.people.push(this.user);
                         this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));

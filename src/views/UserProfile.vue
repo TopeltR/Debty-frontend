@@ -120,7 +120,7 @@
                 bankAccount: {},
                 password: '',
                 passwordConfirmation: '',
-            }
+            },
         }),
         async mounted() {
             this.user = await userStore.getUser();
@@ -135,9 +135,9 @@
             async cancel() {
                 this.user = await userStore.getUser();
                 this.editing = false;
-            }
-        }
-    }
+            },
+        },
+    };
 </script>
 
 <style scoped>

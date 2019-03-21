@@ -55,37 +55,34 @@
             state: {
                 type: Object,
                 showing: {
-                    type: Boolean
+                    type: Boolean,
                 },
                 default: () => ({
-                    showing: false
+                    showing: false,
                 }),
             },
             eventId: {
-                type: Number
-            }
+                type: Number,
+            },
         },
         watch: {
             state: {
                 deep: true,
-                handler: function (state) {
+                handler: function(state) {
                     if (state.showing) {
                         this.$refs.modal.show();
                     } else {
                         this.$refs.modal.hide();
                     }
-                }
-            }
+                },
+            },
         },
         mounted() {
             this.$http.get('/events/' + this.eventId + '/debts').then(
                 (response) => {
-                    console.log(response.data);
                     this.debts = response.data;
-                    console.log(this.debts);
                 },
             ).catch((error) => {
-                console.log(error);
                 alert('You are not logged in!');
                 router.push('/');
             });
@@ -98,13 +95,13 @@
                 return person.firstName + ' ' + person.lastName;
             },
             closeEvent() {
-                console.log("Close event");
+                console.log("Close event"); // TODO What is u doing here?
             },
             cancel() {
                 this.state.showing = false;
-            }
+            },
         },
-    }
+    };
 </script>
 
 <style scoped>

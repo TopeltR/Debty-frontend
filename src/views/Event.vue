@@ -105,7 +105,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'primary',
-                    handler: function (eventForm, userStore) {
+                    handler: function(eventForm, userStore) {
                         if (eventForm.title && eventForm.description) {
                             userStore.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
@@ -127,10 +127,10 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
-                    handler: function () {
+                    handler: function() {
                         this.editing = false;
                     },
-                }
+                },
             ],
         }),
         mounted() {
@@ -178,7 +178,7 @@
             closeEvent() {
                 this.debtDistributionState.showing = false;
                 this.debtDistributionState.showing = true;
-            }
+            },
         },
     };
 </script>

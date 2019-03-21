@@ -93,8 +93,8 @@
                     this.$http.get('/contact/waiting/' + user.id)
                         .then((data) => {
                             this.requests = data.data;
-                            this.requests.forEach(request => {
-                                Object.assign(request, {type: 'INC'})
+                            this.requests.forEach((request) => {
+                                Object.assign(request, { type: 'INC' });
                             });
                         }).catch(() => {
                             router.push('/');
@@ -107,8 +107,8 @@
                 userStore.getUser().then((user) => {
                     self.$http.post('/contact/add/' + user.id + '/' + this.contact.id)
                         .then(this.getContacts).then(() => {
-                            this.field.value ='';
-                            Object.assign(this.contact, {type:'OUT'});
+                            this.field.value = '';
+                            Object.assign(this.contact, { type: 'OUT' });
                             this.requests.push(this.contact);
                         })
                         .catch(() => {
@@ -150,7 +150,7 @@
                         },
                     );
                 });
-            }
+            },
         },
     };
 </script>

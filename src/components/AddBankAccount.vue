@@ -48,27 +48,27 @@
             state: {
                 type: Object,
                 showing: {
-                    type: Boolean
+                    type: Boolean,
                 },
                 default: () => ({
-                    showing: false
+                    showing: false,
                 }),
             },
             eventId: {
-                type: Number
-            }
+                type: Number,
+            },
         },
         watch: {
             state: {
                 deep: true,
-                handler: function (state) {
+                handler: function(state) {
                     if (state.showing) {
                         this.$refs.modal.show();
                     } else {
                         this.$refs.modal.hide();
                     }
-                }
-            }
+                },
+            },
         },
         data: () => ({
             bankAccount: {
@@ -90,7 +90,7 @@
                 this.state.showing = false;
             },
         },
-    }
+    };
 </script>
 
 <style scoped>
