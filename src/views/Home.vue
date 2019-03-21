@@ -62,6 +62,7 @@
             events: [],
             debts: [],
             addBankAccountState: {showing: false},
+            user: {},
         }),
         methods: {
             createNewEvent() {
@@ -70,10 +71,21 @@
             createNewDebt() {
                 router.push('/debts/create');
             },
-            getDebts() {
+            async getDebts() {
+                this.user = await userStore.getUser();
                 this.$http.get('/debts/all').then(
                     (response) => {
-                        this.debts = response.data;
+                        response.data.forEach(debt => {
+                            if (debt.payer.id === this.user.id) {
+                                Object.assign(debt, {type: 'out'});
+                                this.debts.push(debt);
+                            } else if (debt.receiver.id === this.user.id) {
+                                Object.assign(debt, {type: 'in'});
+                                this.debts.push(debt);
+                            }
+                        });
+                        this.debts = this.debts.filter(debt => debt.payer.id === this.user.id
+                            || debt.receiver.id === this.user.id);
                     },
                 );
             },
@@ -101,23 +113,28 @@
     .TM30px {
         margin-top: 30px;
     }
+
     .green {
         color: limegreen;
     }
+
     .menu-list-button {
         width: 100%;
         background-color: white;
         color: black;
         font-size: 25px;
         border-color: lightgray;
-        border-radius:5px 5px 5px 5px !important;
+        border-radius: 5px 5px 5px 5px !important;
     }
+
     .FL {
         float: left;
     }
+
     .FR {
         float: right;
     }
+
     .MT5 {
         margin-top: 5px;
     }
