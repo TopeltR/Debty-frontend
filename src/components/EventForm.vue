@@ -99,6 +99,7 @@
         data: () => ({
             title: '',
             description: '',
+            bills: [],
             user: {},
             allPeople: [],
             people: [],
@@ -111,6 +112,7 @@
                     this.title = data.title;
                     this.description = data.description;
                     this.people = data.people;
+                    this.bills = data.bills;
                 });
             }
 
