@@ -51,6 +51,11 @@ const router = new Router({
             component: () => import('./views/Debts.vue'),
         },
         {
+            path: '/debts/:id',
+            name: 'debts-id',
+            component: () => import('./views/Debt.vue'),
+        },
+        {
             path: '/contacts',
             name: 'contacts',
             component: () => import('./views/Contacts.vue'),
