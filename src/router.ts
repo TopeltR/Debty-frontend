@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import userStore from '@/stores/UserStore';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     routes: [
         {
             path: '/',
@@ -57,7 +58,32 @@ export default new Router({
         {
             path: '/contacts',
             name: 'contacts',
-            component: () => import('./views/Contacts.vue')
+            component: () => import('./views/Contacts.vue'),
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: () => import('./views/UserProfile.vue'),
         },
     ],
 });
+
+router.beforeEach(async (to, from, next) => {
+    const publicPages = ['/register', '/'];
+    const authRequired = !publicPages.includes(to.path);
+
+    let loggedIn = true;
+    try {
+        const user = await userStore.getUser();
+    } catch (e) {
+        loggedIn = false;
+    }
+
+    if (authRequired && !loggedIn) {
+        alert("You are not logged in!");
+        return next('/');
+    }
+    next();
+});
+
+export default router;
