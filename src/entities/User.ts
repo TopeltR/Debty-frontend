@@ -1,6 +1,6 @@
 class User {
     public static from(data: any): User {
-        const user = new User(data.email, data.firstName, data.lastName, data.bankAccount);
+        const user = new User(data.id, data.email, data.firstName, data.lastName, data.bankAccount);
         user.id = data.id;
         return user;
     }
@@ -13,7 +13,8 @@ class User {
 
     public bankAccount: BankAccount | undefined;
 
-    constructor(email: string, firstName: string, lastName: string, bankAccount: any) {
+    constructor(id: number, email: string, firstName: string, lastName: string, bankAccount: any) {
+        this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
