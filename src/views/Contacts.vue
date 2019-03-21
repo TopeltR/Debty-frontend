@@ -96,7 +96,6 @@
                             this.requests.forEach(request => {
                                 Object.assign(request, {type: 'INC'})
                             });
-                            console.log(this.requests);
                         }).catch(() => {
                             router.push('/');
                         },

@@ -2,34 +2,38 @@
     <div>
         <navbar/>
         <background>
-            <h1 class='header'>My debts</h1>
-            <div class='search-wrapper'>
-                <input class='form-control' type='text' v-model='search' placeholder='Search'/>
+            <div v-if="debts.length > 0">
+                <h1 class='header'>My debts</h1>
+                <div class='search-wrapper'>
+                    <input class='form-control' type='text' v-model='search' placeholder='Search'/>
+                </div>
+                <div id='table'>
+                    <table class='table table-bordered table-hover' id='debts'>
+                        <thead>
+                        <tr>
+                            <th scope='col'>Title</th>
+                            <th scope='col'>To/From</th>
+                            <th scope='col'>Sum</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="debt in filteredList" @click="goToDebt(debt.id)">
+                            <td>{{debt.title}}</td>
+                            <td v-if='debt.type === "out"'>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
+                            <td v-else-if='debt.type === "in"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
+                            <td v-if="debt.receiver.id === user.id">
+                                <div class="text-success">
+                                    +{{debt.sum}} {{debt.currency}}
+                                </div>
+                            </td>
+                            <td v-else> -{{debt.sum}}{{debt.currency}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div id='table'>
-                <table class='table table-bordered table-hover' id='debts'>
-                    <thead>
-                    <tr>
-                        <th scope='col'>Title</th>
-                        <th scope='col'>To/From</th>
-                        <th scope='col'>Sum</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="debt in filteredList" @click="goToDebt(debt.id)">
-                        <td>{{debt.title}}</td>
-                        <td v-if='debt.type === "out"'>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
-                        <td v-else-if='debt.type === "in"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
-                        <td v-if="debt.receiver.id === user.id">
-                            <div class="text-success">
-                                +{{debt.sum}} {{debt.currency}}
-                            </div>
-                        </td>
-                        <td v-else> -{{debt.sum}}{{debt.currency}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
+            <div v-else class="text-center p-5">
+                <h1>Unfortunately/luckily you have no debts ¯\_(ツ)_/¯</h1>
             </div>
         </background>
     </div>
@@ -74,9 +78,7 @@
                                 this.debts.push(debt);
                             }
                         });
-                        const result = this.debts.filter(debt => debt.payer.id === this.user.id || debt.receiver.id === this.user.id);
-                        console.log(result);
-                        this.debts = result;
+                        this.debts = this.debts.filter(debt => debt.payer.id === this.user.id || debt.receiver.id === this.user.id);
                     }).catch(() => {
                         router.push('/');
                     },
