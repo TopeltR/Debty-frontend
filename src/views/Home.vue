@@ -82,11 +82,7 @@
                     (response) => {
                         this.events = response.data;
                     },
-                ).catch((error) => {
-                        alert('You are not logged in!');
-                        router.push('/');
-                    },
-                );
+                )
             },
             openBankAccountModal() {
                 const self = this;

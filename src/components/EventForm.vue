@@ -128,12 +128,8 @@
                 userStore.getUser().then((user) => {
                     this.allPeople = data.data.filter((u) => u.email !== user.email);
                 });
-            }).catch((error) => {
-                alert('You are not logged in!');
-                router.push('/');
-            });
-        }
-        ,
+            })
+        },
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
