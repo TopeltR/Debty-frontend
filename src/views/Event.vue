@@ -48,7 +48,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="bill in event.bills" v-if="bill != undefined" @click="openBillModal(bill)">
+                            <tr v-for="bill in event.bills" v-if="bill !== undefined" @click="openBillModal(bill)">
                                 <td>{{bill.title}}</td>
                                 <td>{{bill.sum}}</td>
                                 <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
@@ -160,8 +160,7 @@
             },
             getEvent(eventId) {
                 const self = this;
-                userStore.getUser()
-                    .then((user) => {
+                userStore.getUser().then((user) => {
                         self.$http.get('/events/' + eventId)
                             .then((response) => {
                                 self.event = response.data;

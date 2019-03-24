@@ -2,6 +2,10 @@
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
             Add bill
+            <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
+            <b-tooltip target="info"
+                       title="Here you can add bill to the event, remember to add participants!"
+                       placement="bottom"></b-tooltip>
         </div>
         <div class="col-10 offset-1">
             <b-row>
@@ -144,19 +148,16 @@
                 this.addPersonState.people = this.bill.people;
             },
         },
-        mounted() {
-            this.$http.get('/users/all').then((data) => {
-
-                userStore.getUser().then((user) => {
-                    this.allPeople = data.data.filter((u) => u.email !== user.email).map((u) => {
-                        u.participation = 0;
-                        return u;
-                    });
-                    // Copy, can't be same
-                    this.addPersonState.allPeople = this.allPeople.map((u) => u);
+        async mounted() {
+            this.user = await userStore.getUser();
+            this.$http.get('/contact/id/' + this.user.id).then((data) => {
+                this.allPeople = data.data.filter((u) => u.email !== this.user.email).map((u) => {
+                    u.participation = 0;
+                    return u;
                 });
+                // Copy, can't be same
+                this.addPersonState.allPeople = this.allPeople.map((u) => u);
             }).catch((error) => {
-                alert('You are not logged in!');
                 router.push('/');
             });
             this.addPersonState.people = this.bill.people;

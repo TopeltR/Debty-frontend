@@ -23,10 +23,10 @@
                             <td v-else-if='debt.type === "in"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
                             <td v-if="debt.receiver.id === user.id">
                                 <div class="text-success">
-                                    +{{debt.sum}} {{debt.currency}}
+                                    +{{debt.sum}} €
                                 </div>
                             </td>
-                            <td v-else> -{{debt.sum}}{{debt.currency}}</td>
+                            <td v-else> -{{debt.sum}} €</td>
                         </tr>
                         </tbody>
                     </table>

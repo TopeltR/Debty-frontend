@@ -18,6 +18,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faEnvelope} from '@fortawesome/free-solid-svg-icons';
 
 library.add(faEdit);
 library.add(faSave);
@@ -26,6 +27,7 @@ library.add(faArrowRight);
 library.add(faInfoCircle);
 library.add(faCheck);
 library.add(faTimes);
+library.add(faEnvelope);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 axios.defaults.baseURL = 'http://localhost:8080';

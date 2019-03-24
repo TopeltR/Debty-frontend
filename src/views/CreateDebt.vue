@@ -5,6 +5,11 @@
             <b-row>
                 <b-col sm='12' md='6' offset-md='3' class='MT30px'>
                     <b-row>
+                        <h2>Create debt</h2>
+                        <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
+                        <b-tooltip target="info"
+                                   title="Give your debt an informative title, so that your contact can understand it."
+                                   placement="bottom"></b-tooltip>
                         <form @submit.prevent='createDebt' class='wide'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
@@ -68,8 +73,8 @@
             contacts: [],
         }),
         async mounted() {
-            const response = await this.$http.get('/users/all');
             const user = await userStore.getUser();
+            const response = await this.$http.get('/contact/id/' + user.id);
             this.contacts = response.data.filter((u) => u.email !== user.email);
         },
         methods: {
