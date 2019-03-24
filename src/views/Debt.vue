@@ -112,7 +112,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-            <b-row>
+            <b-row v-if="isPayer()">
                 <b-col cols="12" md="9" offset-md="3" class="mt-5">
                     <h2>Maksa</h2>
                     <img v-on:click="payWithSEB" src="../assets/seb-logo.png"/>
@@ -170,6 +170,9 @@
             },
             editDebt() {
                 this.editing = true;
+            },
+            isPayer() {
+                return this.user == null ? false : (this.user.email === this.debt.payer.email)
             },
             async saveDebt() {
                 if (this.debt.payer === null) {
