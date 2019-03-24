@@ -15,6 +15,9 @@
                         </b-col>
                         <b-col cols="9">
                             {{ getUserFullName(debt.payer) }}
+                            <small v-if="debt.payer != null && debt.owner != null && debt.payer.id === debt.owner.id">
+                                (owner)
+                            </small>
                         </b-col>
                     </b-row>
                     <b-row class="mt-4">
@@ -23,6 +26,9 @@
                         </b-col>
                         <b-col cols="9">
                             {{ getUserFullName(debt.receiver) }}
+                            <small v-if="debt.receiver != null && debt.owner != null && debt.receiver.id === debt.owner.id">
+                                (owner)
+                            </small>
                         </b-col>
                     </b-row>
                     <b-row class="mt-4">
@@ -49,26 +55,36 @@
                             {{ new Date(debt.modifiedAt).toLocaleString() }}
                         </b-col>
                     </b-row>
-                    <b-row class="mt-3">
+                    <b-row class="mt-3" v-if="debt.owner != null && user != null && debt.owner.id === user.id">
                         <b-col>
-                            <b-button variant="primary" class="w-25 mt-3" v-on:click="edit">Edit</b-button>
+                            <b-button variant="danger" class="mt-3 w-25" v-on:click="deleteDebt">Delete</b-button>
+                            <b-button variant="primary" class="mt-3 w-25 ml-2" v-on:click="editDebt">Edit</b-button>
                         </b-col>
                     </b-row>
                 </b-col>
             </b-row>
             <b-row v-else>
-                <b-col sm="12" md="6" offset-md="3">
+                <b-col sm="12" md="6" offset-md="3" class="w-100">
                     <b-row class="mt-5">
-                        <form @submit.prevent='createDebt' class='wide'>
+                        <form @submit.prevent='createDebt' class='w-100'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='debt.title' id='title'
                                        placeholder='Enter debt title'>
                             </div>
-                            <div class='form-group'>
-                                <label>Add debtor:</label>
+                            <div class='form-group'
+                                 v-if="debt.receiver != null && debt.owner != null && debt.receiver.id === debt.owner.id">
+                                <label>Debtor:</label>
 
                                 <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
+                                              :items='contacts'
+                                              :key-extractor='getUserFullName'></autocomplete>
+                            </div>
+                            <div class='form-group'
+                                 v-if="debt.payer != null && debt.owner != null && debt.payer.id === debt.owner.id">
+                                <label>Receiver:</label>
+
+                                <autocomplete id='receiver' v-model='debt.receiver' :placeholder='"Name"' :field='field'
                                               :items='contacts'
                                               :key-extractor='getUserFullName'></autocomplete>
                             </div>
@@ -89,7 +105,7 @@
                                     <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                                 </b-col>
                                 <b-col cols="6">
-                                    <b-button class="w-100" variant="primary" v-on:click="save">Save</b-button>
+                                    <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
                                 </b-col>
                             </b-row>
                         </form>
@@ -109,53 +125,64 @@
 </template>
 
 <script>
+    import router from '../router.ts';
     import Background from '@/components/Background';
     import Navbar from '@/components/Navbar';
     import BRow from "bootstrap-vue/src/components/layout/row";
     import Autocomplete from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
+    import BCol from "bootstrap-vue/src/components/layout/col";
 
     export default {
         name: 'CreateEvent',
-        components: {BRow, Background, Navbar, Autocomplete},
+        components: {BCol, BRow, Background, Navbar, Autocomplete},
         data: () => ({
             debtId: null,
             debt: {},
             editing: false,
             contacts: [],
             field: {value: ''},
+            user: null,
         }),
         async mounted() {
             this.debtId = Number(this.$route.params.id);
             this.loadDebt();
 
             const usersResponse = await this.$http.get('/users/all');
-            const user = await userStore.getUser();
-            this.contacts = usersResponse.data.filter((u) => u.email !== user.email);
+            this.user = await userStore.getUser();
+            this.contacts = usersResponse.data.filter((u) => u.email !== this.user.email);
         },
         methods: {
             async loadDebt() {
                 const debtResponse = await this.$http.get('/debts/' + this.debtId);
                 this.debt = debtResponse.data;
-                this.field.value = this.getUserFullName(this.debt.payer);
+                if (this.debt.payer.id === this.debt.owner.id) {
+                    this.field.value = this.getUserFullName(this.debt.receiver);
+                } else {
+                    this.field.value = this.getUserFullName(this.debt.payer);
+                }
             },
             getUserFullName(user) {
-                if (user === undefined || user.firstName === undefined) {
+                if (user == null || user.firstName == null) {
                     return '';
                 }
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
-            edit() {
+            editDebt() {
                 this.editing = true;
             },
-            save() {
-                this.editing = false;
+            async saveDebt() {
                 if (this.debt.payer === null) {
                     this.debt.payer = {
                         firstName: this.field.value,
                     };
                 }
-                // TODO: actually save this too
+                await this.$http.post('/debts/', this.debt);
+                this.editing = false;
+            },
+            async deleteDebt() {
+                await this.$http.deleteDebt('/debts/' + this.debtId);
+                router.push('/debts');
             },
             cancel() {
                 this.editing = false;

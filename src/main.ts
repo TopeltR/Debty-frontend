@@ -14,12 +14,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faEdit);
 library.add(faSave);
 library.add(faPlus);
+library.add(faArrowRight);
+library.add(faInfoCircle);
 library.add(faCheck);
 library.add(faTimes);
 Vue.component('font-awesome-icon', FontAwesomeIcon);

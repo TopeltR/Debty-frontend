@@ -7,6 +7,7 @@
                 <b-row>
                     <add-bill :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
                     <add-bill :state="addBillState" :event="event"/>
+                    <debt-distribution :state="debtDistributionState" :debts="debts"/>
                     <b-col sm='12' md='6'>
                         <div class='header'>
                             <h1>
@@ -37,7 +38,7 @@
                 <b-row class="PT20px">
                     <b-col cols="12">
                         <h2>Bills</h2>
-                        <table class='table table-bordered table-hover'>
+                        <table class='table table-bordered table-hover table-striped'>
                             <thead>
                             <tr class='d-none d-md-table-row'>
                                 <th scope='col'>Title</th>
@@ -63,7 +64,7 @@
                         <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
                     </b-col>
                     <b-col class="mb-3" cols="12" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='danger' v-on:click='closeEvent'>Close event</b-btn>
+                        <b-btn class="wide mt-4" variant='danger' v-on:click='calculateDistributedDebts'>Close event...</b-btn>
                     </b-col>
                 </b-row>
             </background>
@@ -99,13 +100,14 @@
             seeBillState: {showing: false},
             addBillStates: {},
             debtDistributionState: {showing: false},
+            debts: [],
             buttons: [
                 {
                     name: 'Save',
                     width: 6,
                     offset: 0,
                     variant: 'primary',
-                    handler: function(eventForm, userStore) {
+                    handler: function (eventForm, userStore) {
                         if (eventForm.title && eventForm.description) {
                             userStore.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
@@ -127,7 +129,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
-                    handler: function() {
+                    handler: function () {
                         this.editing = false;
                     },
                 },
@@ -175,7 +177,22 @@
                 this.seeBillState.showing = false;
                 this.seeBillState.showing = true;
             },
+            calculateDistributedDebts() {
+                this.$http.get('/events/' + this.event.id + '/debts').then(
+                    (response) => {
+                        console.log(response.data);
+                        this.debts = response.data;
+                        console.log(this.debts);
+                        this.closeEvent();
+                    },
+                ).catch((error) => {
+                    console.log(error);
+                    alert('You are not logged in!');
+                    router.push('/');
+                });
+            },
             closeEvent() {
+                console.log("should open debts modal rn");
                 this.debtDistributionState.showing = false;
                 this.debtDistributionState.showing = true;
             },
