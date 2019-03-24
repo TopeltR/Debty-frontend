@@ -2,10 +2,10 @@
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
             Optimized debts
-            <font-awesome-icon id="info" icon='info-circle' class="info"/>
+            <font-awesome-icon id="info" icon='info-circle' class="info"></font-awesome-icon>
             <b-tooltip target="info"
                        title="When you have decided to close this event, the following debts will be saved."
-                       placement="bottom"/>
+                       placement="bottom"></b-tooltip>
         </div>
         <div class="col-10 offset-1">
             <b-row>
@@ -14,7 +14,7 @@
                         <b-col sm="12" md="3"><b>{{ debt.sum }} €</b></b-col>
                         <b-col sm="12" md="9">
                             {{ getFullName(debt.payer) }}
-                            <font-awesome-icon icon='arrow-right' class="arrow-margin"/>
+                            <font-awesome-icon icon='arrow-right' class="arrow-margin"></font-awesome-icon>
                             {{ getFullName(debt.receiver) }}
                         </b-col>
                     </b-row>
@@ -77,7 +77,10 @@
                 return person.firstName + ' ' + person.lastName;
             },
             closeEvent() {
-                console.log("Close event"); // TODO What is u doing here?
+                this.$http.post('/events/' + this.eventId + '/bills', this.bill)
+                    .then((response) => {
+                        this.state.showing = false;
+                    }); // TODO What is u doing here?
             },
             cancel() {
                 this.state.showing = false;
@@ -98,10 +101,6 @@
 
     .arrow-margin {
         margin: 6px 10px 0 10px;
-    }
-
-    .PR15px {
-        padding-right: 35px;
     }
 
     .info {
