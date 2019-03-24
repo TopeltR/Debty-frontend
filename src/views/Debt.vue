@@ -173,8 +173,10 @@
                 this.editing = false;
             },
             async deleteDebt() {
-                await this.$http.deleteDebt('/debts/' + this.debtId);
-                router.push('/debts');
+                if (confirm("Are you sure?")) {
+                    await this.$http.delete('/debts/' + this.debtId);
+                    router.push('/debts');
+                }
             },
             cancel() {
                 this.editing = false;

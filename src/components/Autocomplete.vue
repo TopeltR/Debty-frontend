@@ -147,7 +147,7 @@
     </div>
 </template>
 
-<style lang='scss'>
+<style scoped lang='scss'>
     .autocomplete {
         position: relative;
     }

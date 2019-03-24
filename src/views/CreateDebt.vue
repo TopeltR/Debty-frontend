@@ -3,31 +3,66 @@
         <navbar></navbar>
         <background>
             <b-row>
-                <b-col sm='12' md='6' offset-md='3' class='MT30px'>
+                <b-col sm='12' md='6' offset-md='3' class='mt-5 pt-3'>
                     <b-row>
-                        <form @submit.prevent='createDebt' class='wide'>
+                        <form @submit.prevent='createDebt' class='w-100'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
                                        placeholder='Enter debt title'>
                             </div>
                             <div class='form-group'>
-                                <label>Add debtor:</label>
-
-                                <autocomplete id='payer' v-model='formData.payer' :placeholder='"Name"' :field='field'
-                                              :items='contacts'
-                                              :key-extractor='getUserFullName'></autocomplete>
+                                <b-row>
+                                    <b-col cols="11">
+                                        <b-row>
+                                            <b-col cols="2">
+                                                <label>Debtor:</label>
+                                            </b-col>
+                                            <b-col cols="10">
+                                                <input v-if="!userIsReceiver" type='text' class='form-control'
+                                                       v-model='userName'
+                                                       disabled>
+                                                <autocomplete v-else id='payer' v-model='formData.payer'
+                                                              :placeholder='"Name"'
+                                                              :field='field'
+                                                              :items='contacts'
+                                                              :key-extractor='getUserFullName'></autocomplete>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col cols="2" class="mt-3">
+                                                <label>Receiver:</label>
+                                            </b-col>
+                                            <b-col cols="10" class="mt-3">
+                                                <input v-if="userIsReceiver" type='text' class='form-control'
+                                                       v-model='userName'
+                                                       disabled>
+                                                <autocomplete v-else id='receiver' v-model='formData.receiver'
+                                                              :placeholder='"Name"'
+                                                              :field='field'
+                                                              :items='contacts'
+                                                              :key-extractor='getUserFullName'></autocomplete>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                    <b-col cols="1" v-on:click="switchDebtorReceiver">
+                                        <font-awesome-icon icon='arrow-up'
+                                                           class="mt-4 p-0 limegreen"></font-awesome-icon>
+                                        <font-awesome-icon icon='arrow-down'
+                                                           class="mb-2 ml-2 limegreen"></font-awesome-icon>
+                                    </b-col>
+                                </b-row>
                             </div>
                             <div class='form-group'>
                                 <b-row>
                                     <b-col cols='2'>
-                                        <label for='sum' class='MT5px'>Sum:</label>
+                                        <label for='sum' class='mt-1'>Sum:</label>
                                     </b-col>
                                     <b-col cols='3' md='2'>
-                                        <input id='sum' type='text' class='form-control PR0' v-model='formData.sum'
+                                        <input id='sum' type='text' class='form-control pr-0' v-model='formData.sum'
                                                placeholder='0'>
                                     </b-col>
-                                    <b-col cols='1' class='MT5px PL0'>€</b-col>
+                                    <b-col cols='1' class='pl-0 mt-1'>€</b-col>
                                 </b-row>
                             </div>
                             <b-row class='mt-4'>
@@ -52,25 +87,35 @@
     import Navbar from '@/components/Navbar';
     import Autocomplete from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
+    import BCol from "bootstrap-vue/src/components/layout/col";
+    import BRow from "bootstrap-vue/src/components/layout/row";
 
 
     export default {
         name: 'CreateEvent',
-        components: {Background, Navbar, Autocomplete},
+        components: {BRow, BCol, Background, Navbar, Autocomplete},
         data: () => ({
             formData: {
                 title: '',
                 payer: null,
                 receiver: null,
+                owner: null,
                 sum: null,
             },
             field: {value: ''},
             contacts: [],
+            user: null,
+            userIsReceiver: true,
+            userName: null,
         }),
         async mounted() {
+            this.user = await userStore.getUser();
+            this.formData.receiver = this.user;
+            this.formData.owner = this.user;
+            this.userName = this.getUserFullName(this.user);
+
             const response = await this.$http.get('/users/all');
-            const user = await userStore.getUser();
-            this.contacts = response.data.filter((u) => u.email !== user.email);
+            this.contacts = response.data.filter((u) => u.email !== this.user.email);
         },
         methods: {
             getUserFullName(user) {
@@ -82,32 +127,18 @@
                         firstName: this.field.value,
                     };
                 }
-                this.formData.receiver = await userStore.getUser();
                 const result = await this.$http.post('/debts', this.formData);
                 router.push('/debts/' + result.data.id);
             },
+            switchDebtorReceiver() {
+                this.userIsReceiver = !this.userIsReceiver;
+            }
         },
     };
 </script>
 
 <style scoped>
-    .wide {
-        width: 100%;
-    }
-
-    .PR0 {
-        padding-right: 0;
-    }
-
-    .PL0 {
-        padding-left: 0;
-    }
-
-    .MT30px {
-        margin-top: 30px;
-    }
-
-    .MT5px {
-        margin-top: 5px;
+    .limegreen {
+        color: limegreen !important;
     }
 </style>
