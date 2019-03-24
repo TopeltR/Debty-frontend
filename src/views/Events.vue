@@ -91,7 +91,7 @@
     };
 </script>
 
-<style>
+<style scoped>
     .header {
         padding-top: 30px
     }

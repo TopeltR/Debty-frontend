@@ -5,7 +5,14 @@
             <b-row>
                 <b-col sm='12' md='6' offset-md='3' class='TM30px'>
                     <b-row>
-                        <form @submit.prevent='' class='wide'>
+                        <h2>Create Event</h2>
+                        <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
+                        <b-tooltip target="info"
+                                   title="Create an Event by giving it an informative title and contacts, then add your contacts to it."
+                                   placement="bottom"></b-tooltip>
+                    </b-row>
+                    <b-row>
+                        <form @submit.prevent='' class='wide mt-3'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='title' id='title' required=''
@@ -123,9 +130,8 @@
                     handler(this, userStore);
                 };
             }
-
-            this.$http.get('/users/all').then((data) => {
-                userStore.getUser().then((user) => {
+            userStore.getUser().then((user) => {
+                this.$http.get('/contact/id/' + user.id).then((data) => {
                     this.allPeople = data.data.filter((u) => u.email !== user.email);
                 });
             });
@@ -169,4 +175,5 @@
     .TM30px {
         margin-top: 30px;
     }
+
 </style>

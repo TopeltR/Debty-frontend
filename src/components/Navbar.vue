@@ -23,6 +23,7 @@
                     <b-navbar-nav>
                         <b-nav-item to='/contacts'>
                             Contacts
+                                <font-awesome-icon v-if="notification === true" class='limegreen m-0' icon='envelope' />
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav>
@@ -38,12 +39,31 @@
 
 <script>
     import router from '@/router';
+    import userStore from '../stores/UserStore';
 
     export default {
         name: 'Navbar',
+        data: () => ({
+            notification: false,
+        }),
+        mounted() {
+            this.getNotificationCount();
+        },
         methods: {
             goToHome() {
                 router.push('/home');
+            },
+            async getNotificationCount() {
+                 const user = await userStore.getUser();
+                    this.$http.get('/contact/waiting/' + user.id)
+                        .then((data) => {
+                            if (data.data.length > 0) {
+                                this.notification = true;
+                            }
+                        }).catch(() => {
+                            router.push('/');
+                    },
+                );
             },
         },
     };
@@ -61,4 +81,8 @@
     .PB65px {
         padding-bottom: 65px;
     }
+    .MT5 {
+        padding-bottom: 5px;
+    }
+
 </style>

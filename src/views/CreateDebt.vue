@@ -5,7 +5,12 @@
             <b-row>
                 <b-col sm='12' md='6' offset-md='3' class='mt-5 pt-3'>
                     <b-row>
-                        <form @submit.prevent='createDebt' class='w-100'>
+                        <h2>Create debt</h2>
+                        <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
+                        <b-tooltip target="info"
+                                   title="Give your debt an informative title, so that your contact can understand it."
+                                   placement="bottom"></b-tooltip>
+                        <form @submit.prevent='createDebt' class='wide'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
@@ -114,8 +119,8 @@
             this.formData.owner = this.user;
             this.userName = this.getUserFullName(this.user);
 
-            const response = await this.$http.get('/users/all');
-            this.contacts = response.data.filter((u) => u.email !== this.user.email);
+            const response = await this.$http.get('/contact/id/' + user.id);
+            this.contacts = response.data.filter((u) => u.email !== user.email);
         },
         methods: {
             getUserFullName(user) {

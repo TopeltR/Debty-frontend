@@ -21,39 +21,6 @@ class UserStore {
         }
         return this.user;
     }
-
-    /*public getUser(): UserPromise {
-        if (this.user === undefined) {
-            const promise = axios.get('/users/loggedIn');
-            const userPromise = {
-                then: (onfulfilled: any) => {
-                    promise.then((response) => {
-                        onfulfilled(User.from(response.data));
-                    });
-                    return userPromise;
-                },
-                catch: (onrejected: any) => {
-                    promise.catch(onrejected);
-                    return userPromise;
-                },
-            };
-            return userPromise;
-        } else {
-            const user = this.user;
-            const userPromise = {
-                then: (onfulfilled: any) => {
-                    onfulfilled(user);
-                    return userPromise;
-                },
-                catch: (onrejected: any) => {
-                    onrejected(user);
-                    return userPromise;
-                },
-            };
-            return userPromise;
-        }
-
-    }*/
 }
 
 const userStore = new UserStore();
