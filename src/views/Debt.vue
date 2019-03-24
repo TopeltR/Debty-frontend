@@ -96,6 +96,14 @@
                     </b-row>
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col cols="12" md="9" offset-md="3" class="mt-5">
+                    <h2>Maksa</h2>
+                    <img v-on:click="payWithSEB" src="../assets/seb-logo.png"/>
+                    <img v-on:click="payWithLHV" class="lhv" src="../assets/lhv_logo.jpg"/>
+                    <img v-on:click="payWithSwed" class="swed" src="../assets/swedbank-logo.png"/>
+                </b-col>
+            </b-row>
         </background>
     </div>
 </template>
@@ -132,7 +140,7 @@
                 this.field.value = this.getUserFullName(this.debt.payer);
             },
             getUserFullName(user) {
-                if (user === undefined || user.firstName === undefined){
+                if (user === undefined || user.firstName === undefined) {
                     return '';
                 }
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
@@ -153,8 +161,40 @@
                 this.editing = false;
                 this.loadDebt();
             },
+            payWithLHV() {
+                const url = `https://www.lhv.ee/portfolio/payment_out.cfm?i_receiver_name=${this.debt.receiver.bankAccount.name}&amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}&amp;i_amount=${this.debt.amount}&amp;i_payment_desc=${this.debt.title}&amp`;
+                window.location.href = encodeURI(url);
+            },
+            payWithSEB() {
+                const url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST&field1=benname&value1=${this.debt.receiver.bankAccount.name}&field3=benacc&value3=${this.debt.receiver.bankAccount.number}&field10=desc&value10=${this.debt.title}&value11=&field5=amount&value5=${this.debt.amount}&paymtype=REMSEBEE&field6=currency&value6=EUR`;
+                window.location.href = encodeURI(url);
+            },
+            payWithSwed() {
+                window.location.href = "https://www.swedbank.ee/private";
+            }
         },
     };
 </script>
 <style scoped>
+    img {
+        height: 60px;
+        margin-right: 15px;
+    }
+
+    .lhv {
+        padding: 10px 10px 10px 10px;
+        background-color: white;
+    }
+
+    .swed {
+        background-color: white;
+        margin-right: 0;
+    }
+
+    @media(max-width: 768px) {
+        img {
+            height: 46px;
+            margin-right: 5px;
+        }
+    }
 </style>
