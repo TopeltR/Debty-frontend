@@ -99,6 +99,7 @@
         data: () => ({
             title: '',
             description: '',
+            bills: [],
             user: {},
             allPeople: [],
             people: [],
@@ -111,6 +112,7 @@
                     this.title = data.title;
                     this.description = data.description;
                     this.people = data.people;
+                    this.bills = data.bills;
                 });
             }
 
@@ -126,19 +128,15 @@
                 userStore.getUser().then((user) => {
                     this.allPeople = data.data.filter((u) => u.email !== user.email);
                 });
-            }).catch((error) => {
-                alert('You are not logged in!');
-                router.push('/');
             });
-        }
-        ,
+        },
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
                 userStore.getUser().then((user) => {
-                    if (this.user && this.user.firstName && !this.people.map(user => user.email).includes(this.user.email)
+                    if (this.user && this.user.firstName && !this.people.map((user) => user.email).includes(this.user.email)
                         && this.user.email !== user.email) {
                         this.people.push(this.user);
                         this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));

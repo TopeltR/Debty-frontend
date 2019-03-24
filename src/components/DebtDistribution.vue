@@ -50,10 +50,10 @@
             state: {
                 type: Object,
                 showing: {
-                    type: Boolean
+                    type: Boolean,
                 },
                 default: () => ({
-                    showing: false
+                    showing: false,
                 }),
             },
             debts: {
@@ -63,27 +63,27 @@
         watch: {
             state: {
                 deep: true,
-                handler: function (state) {
+                handler: function(state) {
                     if (state.showing) {
                         this.$refs.modal.show();
                     } else {
                         this.$refs.modal.hide();
                     }
-                }
-            }
+                },
+            },
         },
         methods: {
             getFullName(person) {
                 return person.firstName + ' ' + person.lastName;
             },
             closeEvent() {
-                console.log("Close event");
+                console.log("Close event"); // TODO What is u doing here?
             },
             cancel() {
                 this.state.showing = false;
-            }
+            },
         },
-    }
+    };
 </script>
 
 <style scoped>

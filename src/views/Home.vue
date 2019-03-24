@@ -1,6 +1,7 @@
 <template>
     <div>
         <navbar></navbar>
+        <add-bank-account :state="addBankAccountState"></add-bank-account>
         <background>
             <div>
                 <b-row>
@@ -47,17 +48,21 @@
     import Background from '@/components/Background.vue';
     import router from '@/router';
     import userStore from '../stores/UserStore';
+    import AddBankAccount from "../components/AddBankAccount";
 
     export default {
         name: 'CreateEvent',
-        components: {Navbar, Background},
+        components: {AddBankAccount, Navbar, Background},
         mounted() {
             this.getDebts();
             this.getEvents();
+            this.openBankAccountModal();
         },
         data: () => ({
             events: [],
             debts: [],
+            addBankAccountState: {showing: false},
+            user: {},
         }),
         methods: {
             createNewEvent() {
@@ -66,10 +71,21 @@
             createNewDebt() {
                 router.push('/debts/create');
             },
-            getDebts() {
+            async getDebts() {
+                this.user = await userStore.getUser();
                 this.$http.get('/debts/all').then(
                     (response) => {
-                        this.debts = response.data;
+                        response.data.forEach((debt) => {
+                            if (debt.payer.id === this.user.id) {
+                                Object.assign(debt, {type: 'out'});
+                                this.debts.push(debt);
+                            } else if (debt.receiver.id === this.user.id) {
+                                Object.assign(debt, {type: 'in'});
+                                this.debts.push(debt);
+                            }
+                        });
+                        this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
+                            || debt.receiver.id === this.user.id);
                     },
                 );
             },
@@ -78,11 +94,16 @@
                     (response) => {
                         this.events = response.data;
                     },
-                ).catch((error) => {
-                        alert('You are not logged in!');
-                        router.push('/');
-                    },
                 );
+            },
+            openBankAccountModal() {
+                const self = this;
+                userStore.getUser().then((user) => {
+                    if (user.bankAccount === null) {
+                        self.addBankAccountState.showing = false;
+                        self.addBankAccountState.showing = true;
+                    }
+                });
             },
         },
     };
@@ -92,23 +113,28 @@
     .TM30px {
         margin-top: 30px;
     }
+
     .green {
         color: limegreen;
     }
+
     .menu-list-button {
         width: 100%;
         background-color: white;
         color: black;
         font-size: 25px;
         border-color: lightgray;
-        border-radius:5px 5px 5px 5px !important;
+        border-radius: 5px 5px 5px 5px !important;
     }
+
     .FL {
         float: left;
     }
+
     .FR {
         float: right;
     }
+
     .MT5 {
         margin-top: 5px;
     }

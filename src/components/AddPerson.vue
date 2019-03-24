@@ -36,25 +36,22 @@
             user: {},
             field: {value: ''},
         }),
-        mounted() {
-
-        },
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
                 userStore.getUser().then((user) => {
-                    if (this.user && this.user.firstName && !this.state.people.map(user => user.email).includes(this.user.email)
-                        && this.user.email !== user.email) {
+                    if (this.user && this.user.firstName && !this.state.people.map((user) => user.email)
+                            .includes(this.user.email) && this.user.email !== user.email) {
                         this.state.people.push(this.user);
                         this.state.allPeople = this.state.allPeople.filter((person) => !this.state.people.includes(person));
                         this.field.value = '';
                     }
                 });
             },
-        }
-    }
+        },
+    };
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
                     <b-row>
                         <form @submit.prevent='createDebt' class='wide'>
                             <div class='form-group'>
-                                <label for='title'>Title:</label>0
+                                <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
                                        placeholder='Enter debt title'>
                             </div>
@@ -24,7 +24,8 @@
                                         <label for='sum' class='MT5px'>Sum:</label>
                                     </b-col>
                                     <b-col cols='3' md='2'>
-                                        <input id='sum' type='text' class='form-control PR0' v-model='formData.sum' placeholder='0'>
+                                        <input id='sum' type='text' class='form-control PR0' v-model='formData.sum'
+                                               placeholder='0'>
                                     </b-col>
                                     <b-col cols='1' class='MT5px PL0'>€</b-col>
                                 </b-row>
@@ -66,32 +67,24 @@
             field: {value: ''},
             contacts: [],
         }),
-        mounted() {
-            this.$http.get('/users/all').then((data) => {
-                userStore.getUser().then((user) => {
-                    this.contacts = data.data.filter((u) => u.email !== user.email);
-                });
-            }).catch((error) => {
-                alert('You are not logged in!');
-                router.push('/');
-            });
+        async mounted() {
+            const response = await this.$http.get('/users/all');
+            const user = await userStore.getUser();
+            this.contacts = response.data.filter((u) => u.email !== user.email);
         },
         methods: {
             getUserFullName(user) {
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
-            createDebt() {
+            async createDebt() {
                 if (this.formData.payer === null) {
                     this.formData.payer = {
                         firstName: this.field.value,
                     };
                 }
-                userStore.getUser().then((user) => {
-                    this.formData.receiver = user;
-                    this.$http.post('/debts', this.formData).then((result) => {
-                        router.push('/debts/' + result.data.id);
-                    });
-                });
+                this.formData.receiver = await userStore.getUser();
+                const result = await this.$http.post('/debts', this.formData);
+                router.push('/debts/' + result.data.id);
             },
         },
     };
@@ -105,9 +98,11 @@
     .PR0 {
         padding-right: 0;
     }
+
     .PL0 {
         padding-left: 0;
     }
+
     .MT30px {
         margin-top: 30px;
     }

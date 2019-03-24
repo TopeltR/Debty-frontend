@@ -2,31 +2,37 @@
     <div>
         <navbar/>
         <background>
-            <h1 class='header'>My events</h1>
-            <div class='search-wrapper'>
-                <input class='form-control' type='text' v-model='search' placeholder='Search'/>
+            <div v-if="events.length > 0">
+                <h1 class='header'>My events</h1>
+                <div class='search-wrapper'>
+                    <input class='form-control' type='text' v-model='search' placeholder='Search'/>
+                </div>
+                <div id='table'>
+                    <table class='table table-bordered table-hover'>
+                        <thead>
+                        <tr>
+                            <th scope='col'>Title</th>
+                            <th scope='col'>Description</th>
+                            <th scope='col'>Owner name</th>
+                            <th class='d-none d-md-table-cell' scope='col'>Created at</th>
+                            <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="event in filteredList" @click="goToEvent(event.id)">
+                            <td>{{event.title}}</td>
+                            <td>{{event.description}}</td>
+                            <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
+                            <td class='d-none d-md-table-cell'>{{event.created}}</td>
+                            <td class='d-none d-md-table-cell'>{{event.closed}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div id='table'>
-                <table class='table table-bordered table-hover'>
-                    <thead>
-                    <tr>
-                        <th scope='col'>Title</th>
-                        <th scope='col'>Description</th>
-                        <th scope='col'>Owner name</th>
-                        <th class='d-none d-md-table-cell' scope='col'>Created at</th>
-                        <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="event in filteredList" @click="goToEvent(event.id)">
-                        <td>{{event.title}}</td>
-                        <td>{{event.description}}</td>
-                        <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
-                        <td class='d-none d-md-table-cell'>{{event.created}}</td>
-                        <td class='d-none d-md-table-cell'>{{event.closed}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div v-else class="text-center p-5">
+                <h1>You don't have any events yet, grab your friends and create one!</h1>
+                <b-btn class="m-5" v-on:click="goToEventCreation">Create event!</b-btn>
             </div>
         </background>
     </div>
@@ -67,6 +73,9 @@
                         },
                     );
                 });
+            },
+            goToEventCreation() {
+                router.push('/events/create');
             },
         },
         computed: {

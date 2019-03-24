@@ -25,6 +25,11 @@
                             Contacts
                         </b-nav-item>
                     </b-navbar-nav>
+                    <b-navbar-nav>
+                        <b-nav-item to='/profile'>
+                            Profile
+                        </b-nav-item>
+                    </b-navbar-nav>
                 </b-collapse>
             </b-navbar>
         </b-row>

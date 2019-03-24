@@ -5,17 +5,46 @@
                 <div class='search-wrapper'>
                     <h3>Add contact</h3>
                     <b-row>
-                        <b-col>
-                            <autocomplete id='search' v-model='contact' :placeholder='"Name"' :field='field'
-                                          :items='contacts'
+                        <b-col sm='12' md='6'>
+                            <autocomplete id='search ' v-model='contact' :placeholder='"Name"' :field='field'
+                                          :items='availableContacts'
                                           :key-extractor='getUserFullName'></autocomplete>
                         </b-col>
                         <b-col>
-                            <button type='button' v-on:click='' class='btn btn-primary wide'> Create debt </button>
+                            <button type='button' v-on:click='addContact'
+                                    class='btn btn-primary wide'> Add contact</button>
                         </b-col>
                     </b-row>
                 </div>
-            </background>
+                <b-row class='MT30'>
+                    <b-col>
+                        <b-list-group>
+                            <h2>Requests</h2>
+                            <b-list-group-item v-for='r in requests'> {{r.firstName}} {{r.lastName}}
+                                <div v-if='r.type === "INC"'>
+                                    <span class="float-right">
+                                        <span class="btn btn-default">
+                                            <font-awesome-icon icon='check' class='green icons'  v-on:click='acceptContact(r.id)'/>
+                                        </span>
+                                    </span>
+                                    <span class="float-right">
+                                        <span class="btn btn-default">
+                                            <font-awesome-icon icon='times' class='red icons' v-on:click='removeRequest(r.id)'/>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div v-else></div>
+                            </b-list-group-item>
+                        </b-list-group>
+                    </b-col>
+                <b-col>
+                    <b-list-group>
+                        <h2>My contacts</h2>
+                        <b-list-group-item v-for='c in userContacts' > {{c.firstName}} {{c.lastName}} </b-list-group-item>
+                    </b-list-group>
+                </b-col>
+                </b-row>
+        </background>
     </div>
 </template>
 
@@ -33,23 +62,89 @@
             return {
                 contact: {},
                 field: {value: ''},
-                contacts: [],
+                availableContacts: [],
+                requests: [],
+                userContacts: [],
+                user: userStore.getUser(),
             };
         },
         mounted() {
+          this.getWaitingContacts();
           this.getContacts();
+          this.getPersonContacts();
         },
         methods: {
             getUserFullName(user) {
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             getContacts() {
+                userStore.getUser().then((user) => {
+                    this.$http.get('/contact/all/' + user.id)
+                        .then((data) => {
+                            this.availableContacts = data.data;
+                        }).catch(() => {
+                            router.push('/');
+                        },
+                    );
+                });
+            },
+            getWaitingContacts() {
+                userStore.getUser().then((user) => {
+                    this.$http.get('/contact/waiting/' + user.id)
+                        .then((data) => {
+                            this.requests = data.data;
+                            this.requests.forEach((request) => {
+                                Object.assign(request, { type: 'INC' });
+                            });
+                        }).catch(() => {
+                            router.push('/');
+                        },
+                    );
+                });
+            },
+            addContact() {
                 const self = this;
                 userStore.getUser().then((user) => {
-                    self.$http.get('/users/contacts/id/' + user.id)
+                    self.$http.post('/contact/add/' + user.id + '/' + this.contact.id)
+                        .then(this.getContacts).then(() => {
+                            this.field.value = '';
+                            Object.assign(this.contact, { type: 'OUT' });
+                            this.requests.push(this.contact);
+                        })
+                        .catch(() => {
+                            router.push('/');
+                        },
+                    );
+                });
+            },
+            getPersonContacts() {
+                const self = this;
+                userStore.getUser().then((user) => {
+                    self.$http.get('/contact/id/' + user.id)
                         .then((data) => {
-                            self.contacts = data.data;
-                            console.log(self.contacts);
+                            self.userContacts = data.data;
+                        }).catch(() => {
+                            router.push('/');
+                        },
+                    );
+                });
+            },
+            acceptContact(id) {
+                this.$http.post('/contact/accept/' + id)
+                    .then(() => {
+                        this.getPersonContacts();
+                        this.getWaitingContacts();
+                    }).catch(() => {
+                        router.push('/');
+                    },
+                );
+            },
+            removeRequest(id) {
+                const self = this;
+                userStore.getUser().then((user) => {
+                    self.$http.delete('/contact/remove/' + user.id + '/' + id)
+                        .then(() => {
+                            this.getWaitingContacts();
                         }).catch(() => {
                             router.push('/');
                         },
@@ -66,9 +161,23 @@
         display: table;
         margin: 0 auto;
     }
-
     #search {
-        width: 300px;
+        width: 100%;
     }
+    .MT30 {
+        margin-top: 40px;
+    }
+    .green {
+        color: limegreen;
+    }
+    .red {
+        color:red;
+    }
+    .icons {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+
 
 </style>
