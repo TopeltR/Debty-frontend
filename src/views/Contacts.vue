@@ -11,7 +11,7 @@
                                    placement="bottom"></b-tooltip>
                     </b-row>
                     <b-row class='pt-4'>
-                        <b-col sm='12' md='6'>
+                        <b-col sm='12' md='6' class='ML-15'>
                             <autocomplete id='search ' v-model='contact' :placeholder='"Name"' :field='field'
                                           :items='availableContacts'
                                           :key-extractor='getUserFullName'></autocomplete>
@@ -196,7 +196,10 @@
         height: 22px !important;
     }
     .MT-20 {
-        margin-top:-30px;
+        margin-top:-20px;
+    }
+    .ML-15 {
+        margin-left: -15px;
     }
 
 

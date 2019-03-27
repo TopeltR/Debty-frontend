@@ -87,8 +87,6 @@
         computed: {
             filteredList() {
                 this.debts.sort((a, b) => {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
                     return new Date(b.modifiedAt) - new Date(a.modifiedAt);
                 });
                 return this.debts.filter((debt) => {
