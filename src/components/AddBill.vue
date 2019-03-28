@@ -200,7 +200,7 @@
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
                     this.bill.people = this.addPersonState.people;
 
-                    for (const person of this.bill.people.) {
+                    for (const person of this.bill.people) {
                         this.bill.billPayments.push({
                             person: {person},
                             sum: person.participation,
