@@ -121,7 +121,7 @@
         watch: {
             state: {
                 deep: true,
-                handler: function (state) {
+                handler(state) {
                     if (state.showing) {
                         this.$refs.modal.show();
                     } else {
@@ -137,9 +137,8 @@
                 }
             },
             selectedBill(bill) {
-                for (let i = 0; i < bill.billPayments.length; i++) {
-                    let payment = bill.billPayments[i];
-                    let person = bill.people.find((p) => p.email === payment.person.email);
+                for (const payment of bill.billPayments) {
+                    const person = bill.people.find((p) => p.email === payment.person.email);
                     person.participation = payment.sum;
                 }
                 this.bill = bill;
@@ -201,10 +200,9 @@
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
                     this.bill.people = this.addPersonState.people;
 
-                    for (let i = 0; i < this.bill.people.length; i++) {
-                        let person = this.bill.people[i];
+                    for (const person of this.bill.people.) {
                         this.bill.billPayments.push({
-                            person: person,
+                            person: {person},
                             sum: person.participation,
                         });
                     }

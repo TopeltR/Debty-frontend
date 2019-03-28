@@ -85,7 +85,6 @@
                 this.user = await userStore.getUser();
                 this.$http.get('debts/user/' + this.user.id)
                     .then((response) => {
-                        console.log(response.data);
                         response.data.forEach((debt) => {
                             if (debt.payer.id === this.user.id) {
                                 Object.assign(debt, {type: 'out'});
@@ -99,7 +98,6 @@
                             || debt.receiver.id === this.user.id);
                         this.sortDebts();
                         this.filteredDebts = this.debts;
-                        console.log(this.filteredDebts);
                     }).catch(() => {
                         router.push('/');
                     },
@@ -107,8 +105,11 @@
             },
             filterStatus() {
                 this.sortDebts();
-                if (this.selectedStatus === "ALL") this.filteredDebts = this.debts;
-                else this.filteredDebts = this.debts.filter((debt) => debt.status === this.selectedStatus);
+                if (this.selectedStatus === "ALL") {
+                    this.filteredDebts = this.debts;
+                } else {
+                    this.filteredDebts = this.debts.filter((debt) => debt.status === this.selectedStatus);
+                }
             },
             filterSearch() {
                 this.sortDebts();

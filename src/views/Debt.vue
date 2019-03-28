@@ -173,7 +173,7 @@
                 this.editing = true;
             },
             isPayer() {
-                return this.user == null ? false : (this.user.email === this.debt.payer.email)
+                return this.user == null ? false : (this.user.email === this.debt.payer.email);
             },
             async saveDebt() {
                 if (this.debt.payer === null) {
@@ -195,16 +195,25 @@
                 this.loadDebt();
             },
             payWithLHV() {
-                const url = `https://www.lhv.ee/portfolio/payment_out.cfm?i_receiver_name=${this.debt.receiver.bankAccount.name}&amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}&amp;i_amount=${this.debt.amount}&amp;i_payment_desc=${this.debt.title}&amp`;
+                const url = `https://www.lhv.ee/portfolio/payment_out.cfm?
+                i_receiver_name=${this.debt.receiver.bankAccount.name}
+                &amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}
+                &amp;i_amount=${this.debt.amount}
+                &amp;i_payment_desc=${this.debt.title}&amp`;
                 window.location.href = encodeURI(url);
             },
             payWithSEB() {
-                const url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST&field1=benname&value1=${this.debt.receiver.bankAccount.name}&field3=benacc&value3=${this.debt.receiver.bankAccount.number}&field10=desc&value10=${this.debt.title}&value11=&field5=amount&value5=${this.debt.amount}&paymtype=REMSEBEE&field6=currency&value6=EUR`;
+                const url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST
+                &field1=benname&value1=${this.debt.receiver.bankAccount.name}
+                &field3=benacc&value3=${this.debt.receiver.bankAccount.number}
+                &field10=desc&value10=${this.debt.title}
+                &value11=&field5=amount&value5=${this.debt.amount}
+                &paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 window.location.href = encodeURI(url);
             },
             payWithSwed() {
                 window.location.href = "https://www.swedbank.ee/private";
-            }
+            },
         },
     };
 </script>
@@ -224,7 +233,7 @@
         margin-right: 0;
     }
 
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
         img {
             height: 46px;
             margin-right: 5px;

@@ -93,7 +93,7 @@
             },
         },
         watch: {
-            items: function(val, oldValue) {
+            items(val, oldValue) {
                 // actually compare them
                 if (val.length !== oldValue.length) {
                     this.results = val;

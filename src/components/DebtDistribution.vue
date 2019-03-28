@@ -44,7 +44,7 @@
         name: 'DebtDistribution',
         components: {
             BCol,
-            BRow
+            BRow,
         },
         props: {
             state: {
@@ -57,13 +57,13 @@
                 }),
             },
             debts: {
-                type: Array
-            }
+                type: Array,
+            },
         },
         watch: {
             state: {
                 deep: true,
-                handler: function(state) {
+                handler(state) {
                     if (state.showing) {
                         this.$refs.modal.show();
                     } else {

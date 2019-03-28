@@ -64,7 +64,9 @@
                         <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
                     </b-col>
                     <b-col class="mb-3" cols="12" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='danger' v-on:click='calculateDistributedDebts'>Close event...</b-btn>
+                        <b-btn class="wide mt-4" variant='danger' v-on:click='calculateDistributedDebts'>Close
+                            event...
+                        </b-btn>
                     </b-col>
                 </b-row>
             </background>
@@ -107,9 +109,9 @@
                     width: 6,
                     offset: 0,
                     variant: 'primary',
-                    handler: function (eventForm, userStore) {
+                    handler(eventForm, store) {
                         if (eventForm.title && eventForm.description) {
-                            userStore.getUser().then((user) => {
+                            store.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
                                     id: this.event.id,
                                     title: eventForm.title,
@@ -129,7 +131,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
-                    handler: function () {
+                    handler() {
                         this.editing = false;
                     },
                 },
@@ -139,13 +141,10 @@
             this.event.id = Number(this.$route.params.id);
             this.getEvent(this.event.id);
 
-            for (let i = 0; i < this.buttons.length; i++) {
-                let button = this.buttons[i];
+            for (const button of this.buttons) {
                 button.handler = button.handler.bind(this);
             }
-
-            for (let i = 0; i < this.event.bills; i++) {
-                let bill = this.event.bills[i];
+            for (const bill of this.event.bills) {
                 this.addBillStates[bill.id] = {showing: false};
             }
         },
@@ -161,15 +160,15 @@
             getEvent(eventId) {
                 const self = this;
                 userStore.getUser().then((user) => {
-                        self.$http.get('/events/' + eventId)
-                            .then((response) => {
-                                self.event = response.data;
-                                self.event.id = eventId;
-                            }).catch(() => {
-                                router.push('/');
-                            },
-                        );
-                    });
+                    self.$http.get('/events/' + eventId)
+                        .then((response) => {
+                            self.event = response.data;
+                            self.event.id = eventId;
+                        }).catch(() => {
+                            router.push('/');
+                        },
+                    );
+                });
             },
             openBillModal(bill) {
                 this.selectedBill = bill;
@@ -179,19 +178,15 @@
             calculateDistributedDebts() {
                 this.$http.get('/events/' + this.event.id + '/debts').then(
                     (response) => {
-                        console.log(response.data);
                         this.debts = response.data;
-                        console.log(this.debts);
                         this.closeEvent();
                     },
-                ).catch((error) => {
-                    console.log(error);
+                ).catch(() => {
                     alert('You are not logged in!');
                     router.push('/');
                 });
             },
             closeEvent() {
-                console.log("should open debts modal rn");
                 this.debtDistributionState.showing = false;
                 this.debtDistributionState.showing = true;
             },

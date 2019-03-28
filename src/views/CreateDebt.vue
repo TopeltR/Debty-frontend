@@ -137,7 +137,7 @@
             },
             switchDebtorReceiver() {
                 this.userIsReceiver = !this.userIsReceiver;
-            }
+            },
         },
     };
 </script>
