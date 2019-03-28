@@ -24,4 +24,41 @@ describe('AddBankAccount.vue', () => {
         })
     });
 
+    const mockModal = (addBankAccount) => {
+        const show = jest.fn();
+        const hide = jest.fn();
+        addBankAccount.vm.$refs.modal = {show, hide};
+        return {show, hide};
+    };
+
+    describe('cancel', () => {
+        it('should set state.showing to false', () => {
+            const addBankAccount = mount(AddBankAccount);
+            mockModal(addBankAccount);
+            addBankAccount.vm.state.showing = true;
+            addBankAccount.vm.cancel();
+
+            expect(addBankAccount.vm.state.showing).toBe(false);
+        })
+    });
+
+    describe('watch', () => {
+        const addBankAccount = mount(AddBankAccount);
+        const {show, hide} = mockModal(addBankAccount);
+        it('should call modal.show when state.showing changes to true', () => {
+            addBankAccount.vm.state.showing = false;
+            addBankAccount.vm.state.showing = true;
+            expect(show).toHaveBeenCalled();
+        });
+
+        it('should call modal.hide when state.showing changes to false', () => {
+            addBankAccount.vm.state.showing = true;
+            addBankAccount.vm.state.showing = false;
+            expect(hide).toHaveBeenCalled();
+        })
+    });
+
+    it('should render', () => {
+        expect(mount(AddBankAccount).html()).toMatchSnapshot();
+    })
 });
