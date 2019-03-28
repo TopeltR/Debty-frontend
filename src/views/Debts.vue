@@ -3,10 +3,25 @@
         <navbar/>
         <background>
             <div v-if="debts.length > 0">
-                <h1 class='header'>My debts</h1>
-                <div class='search-wrapper'>
-                    <input class='form-control' type='text' v-model='search' placeholder='Search'/>
-                </div>
+                <h1 class='header pt-4'>My debts</h1>
+                <b-row class='mt-4 mb-4'>
+                    <b-col class="col-12 col-md-3">
+                        <input class='form-control' type='text' v-model='search' placeholder='Search' v-on:change="filterSearch"/>
+                    </b-col>
+                    <b-col class="col-12 col-md-3 form-inline mt-3 mt-md-0">
+                        <div class="form-group">
+                            <label for="statusFilter" class="mr-3">Filter by status:</label>
+                            <select id="statusFilter" v-model='selectedStatus' class="form-control float-right" v-on:change="filterStatus">
+                                <option selected value="ALL">All</option>
+                                <option value="NEW">New</option>
+                                <option value="ACCEPTED">Accepted</option>
+                                <option value="DECLINED">Declined</option>
+                                <option value="PAID">Paid</option>
+                                <option value="CONFIRMED">Confirmed</option>
+                            </select>
+                        </div>
+                    </b-col>
+                </b-row>
                 <div id='table'>
                     <table class='table table-bordered table-hover' id='debts'>
                         <thead>
@@ -17,7 +32,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="debt in filteredList" @click="goToDebt(debt.id)">
+                        <tr v-for="debt in filteredDebts" @click="goToDebt(debt.id)">
                             <td>{{debt.title}}</td>
                             <td v-if='debt.type === "out"'>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
                             <td v-else-if='debt.type === "in"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
@@ -55,8 +70,11 @@
         data() {
             return {
                 debts: [],
+                filteredDebts: [],
                 search: '',
                 user: {},
+                allStatuses: ["NEW", "ACCEPTED", "DECLINED", "PAID", "CONFIRMED"],
+                selectedStatus: "ALL",
             };
         },
         methods: {
@@ -66,10 +84,11 @@
             async getDebts() {
                 this.user = await userStore.getUser();
                 this.$http.get('debts/user/' + this.user.id)
-                    .then((data) => {
-                        data.data.forEach((debt) => {
+                    .then((response) => {
+                        console.log(response.data);
+                        response.data.forEach((debt) => {
                             if (debt.payer.id === this.user.id) {
-                                Object.assign(debt, { type:'out'});
+                                Object.assign(debt, {type: 'out'});
                                 this.debts.push(debt);
                             } else if (debt.receiver.id === this.user.id) {
                                 Object.assign(debt, {type: 'in'});
@@ -78,44 +97,40 @@
                         });
                         this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
                             || debt.receiver.id === this.user.id);
+                        this.sortDebts();
+                        this.filteredDebts = this.debts;
+                        console.log(this.filteredDebts);
                     }).catch(() => {
                         router.push('/');
                     },
                 );
             },
-        },
-        computed: {
-            filteredList() {
-                this.debts.sort((a, b) => {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(b.modifiedAt) - new Date(a.modifiedAt);
-                });
-                return this.debts.filter((debt) => {
+            filterStatus() {
+                this.sortDebts();
+                if (this.selectedStatus === "ALL") this.filteredDebts = this.debts;
+                else this.filteredDebts = this.debts.filter((debt) => debt.status === this.selectedStatus);
+            },
+            filterSearch() {
+                this.sortDebts();
+                this.filteredDebts = this.debts.filter((debt) => {
                     return debt.title.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.payer.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.payer.lastName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.receiver.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase());
                 });
-            }
-            ,
-        }
-        ,
+            },
+            sortDebts() {
+                this.debts.sort((a, b) => {
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+            },
+        },
     }
     ;
 </script>
 
 <style scoped>
-    .header {
-        padding-top: 30px
-    }
-
-    .search-wrapper {
-        margin: 30px 30px 30px 0;
-    }
-
-    .form-control {
-        width: 300px !important;
-    }
 </style>

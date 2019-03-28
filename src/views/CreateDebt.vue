@@ -21,7 +21,7 @@
                                     <b-col cols="11">
                                         <b-row>
                                             <b-col cols="2">
-                                                <label>Debtor:</label>
+                                                <label>From:</label>
                                             </b-col>
                                             <b-col cols="10">
                                                 <input v-if="!userIsReceiver" type='text' class='form-control'
@@ -36,7 +36,7 @@
                                         </b-row>
                                         <b-row>
                                             <b-col cols="2" class="mt-3">
-                                                <label>Receiver:</label>
+                                                <label>To:</label>
                                             </b-col>
                                             <b-col cols="10" class="mt-3">
                                                 <input v-if="userIsReceiver" type='text' class='form-control'

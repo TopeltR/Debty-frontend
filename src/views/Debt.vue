@@ -74,7 +74,7 @@
                             </div>
                             <div class='form-group'
                                  v-if="debt.receiver != null && debt.owner != null && debt.receiver.id === debt.owner.id">
-                                <label>Debtor:</label>
+                                <label>From:</label>
 
                                 <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
                                               :items='contacts'
@@ -82,7 +82,7 @@
                             </div>
                             <div class='form-group'
                                  v-if="debt.payer != null && debt.owner != null && debt.payer.id === debt.owner.id">
-                                <label>Receiver:</label>
+                                <label>To:</label>
 
                                 <autocomplete id='receiver' v-model='debt.receiver' :placeholder='"Name"' :field='field'
                                               :items='contacts'
@@ -108,6 +108,7 @@
                                     <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
                                 </b-col>
                             </b-row>
+
                         </form>
                     </b-row>
                 </b-col>
