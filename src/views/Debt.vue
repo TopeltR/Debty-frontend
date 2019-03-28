@@ -128,9 +128,9 @@
                     </b-row>
                 </b-col>
             </b-row>
-            <b-row v-if="isPayer()">
+            <b-row v-if="canPay()">
                 <b-col cols="12" md="9" offset-md="3" class="mt-5">
-                    <h2>Maksa</h2>
+                    <h2>Pay</h2>
                     <img v-on:click="payWithSEB" src="../assets/seb-logo.png"/>
                     <img v-on:click="payWithLHV" class="lhv" src="../assets/lhv_logo.jpg"/>
                     <img v-on:click="payWithSwed" class="swed" src="../assets/swedbank-logo.png"/>
@@ -194,7 +194,7 @@
             editDebt() {
                 this.editing = true;
             },
-            isPayer() {
+            canPay() {
                 return this.user != null && this.debt.payer != null
                 && this.user.id === this.debt.payer.id
                 && this.debt.status !== this.debtStatus.NEW;
@@ -226,8 +226,6 @@
             async decline() {
                 this.debt.status = this.debtStatus.DECLINED;
                 await this.$http.post('/debts', this.debt);
-                console.log(this.debt);
-                console.log(this.canAcceptDecline())
             },
             async accept() {
                 this.debt.status = this.debtStatus.ACCEPTED;
