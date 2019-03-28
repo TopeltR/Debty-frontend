@@ -37,13 +37,10 @@
 </template>
 
 <script>
-    import router from '../router.ts';
-    import BRow from "bootstrap-vue/src/components/layout/row";
     import userStore from '@/stores/UserStore';
 
     export default {
         name: 'AddBankAccount',
-        components: {BRow},
         props: {
             state: {
                 type: Object,
