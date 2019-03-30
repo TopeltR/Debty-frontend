@@ -24,7 +24,7 @@
                     <b-navbar-nav>
                         <b-nav-item to='/contacts'>
                             Contacts
-                            <font-awesome-icon v-if="notification === true" class='limegreen m-0' icon='envelope'/>
+                            <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notification_amount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav>
@@ -46,6 +46,7 @@
         name: 'Navbar',
         data: () => ({
             notification: false,
+            notification_amount: 0,
         }),
         mounted() {
             this.getNotificationCount();
@@ -60,6 +61,7 @@
                     .then((data) => {
                         if (data.data.length > 0) {
                             this.notification = true;
+                            this.notification_amount = data.data.length;
                         }
                     }).catch(() => {
                         router.push('/');
@@ -84,8 +86,9 @@
         padding-bottom: 65px;
     }
 
-    .MT5 {
-        padding-bottom: 5px;
+    .bg-lime {
+        background-color: limegreen !important;
     }
+
 
 </style>

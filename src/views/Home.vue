@@ -5,12 +5,12 @@
         <background>
             <div>
                 <b-row>
-                    <b-col class='TM30px' sm='12' md='6'>
+                    <b-col class='mt-5' sm='12' md='6'>
                         <b-row>
                             <b-col sm='12'>
                                 <b-btn v-b-toggle.events class='menu-list-button'>
-                                    <span class='FL'>Events</span>
-                                    <font-awesome-icon icon='plus' class='FR MT5 green' v-on:click='createNewEvent'/>
+                                    <span class='float-left'>Events</span>
+                                    <font-awesome-icon icon='plus' class='float-right mt-2 green' v-on:click='createNewEvent'/>
                                 </b-btn>
                             </b-col>
                         </b-row>
@@ -21,12 +21,12 @@
                             </b-list-group>
                         </b-collapse>
                     </b-col>
-                    <b-col class='TM30px' sm='12' md='6'>
+                    <b-col class='mt-5' sm='12' md='6'>
                         <b-row>
                             <b-col sm='12'>
                                 <b-btn v-b-toggle.debts class='menu-list-button'>
-                                    <span class='FL'>Debts</span>
-                                    <font-awesome-icon icon='plus' class='FR MT5 green' v-on:click='createNewDebt'/>
+                                    <span class='float-left'>Debts</span>
+                                    <font-awesome-icon icon='plus' class='float-right mt-2 green' v-on:click='createNewDebt'/>
                                 </b-btn>
                             </b-col>
                         </b-row>
@@ -110,10 +110,6 @@
 </script>
 
 <style scoped>
-    .TM30px {
-        margin-top: 30px;
-    }
-
     .green {
         color: limegreen;
     }
@@ -127,15 +123,4 @@
         border-radius: 5px 5px 5px 5px !important;
     }
 
-    .FL {
-        float: left;
-    }
-
-    .FR {
-        float: right;
-    }
-
-    .MT5 {
-        margin-top: 5px;
-    }
 </style>
