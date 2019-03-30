@@ -76,7 +76,7 @@
         methods: {
             async saveBankAccount() {
                 const user = await userStore.getUser();
-                await this.$http.post('/users/bankAccount/' + user.id, this.bankAccount)
+                const result = await this.$http.post('/users/bankAccount/' + user.id, this.bankAccount);
                 this.cancel();
             },
             cancel() {
