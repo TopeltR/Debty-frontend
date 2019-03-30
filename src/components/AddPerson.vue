@@ -40,15 +40,14 @@
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
-            addPerson() {
-                userStore.getUser().then((currentUser) => {
-                    if (this.user && this.user.firstName && !this.state.people.map((user) => user.email)
-                            .includes(this.user.email) && this.user.email !== currentUser.email) {
-                        this.state.people.push(this.user);
-                        this.state.allPeople = this.state.allPeople.filter((person) => !this.state.people.includes(person));
-                        this.field.value = '';
-                    }
-                });
+            async addPerson() {
+                const currentUser = await userStore.getUser();
+                if (this.user && this.user.firstName && !this.state.people.map((user) => user.email)
+                    .includes(this.user.email) && this.user.email !== currentUser.email) {
+                    this.state.people.push(this.user);
+                    this.state.allPeople = this.state.allPeople.filter((person) => !this.state.people.includes(person));
+                    this.field.value = '';
+                }
             },
         },
     };

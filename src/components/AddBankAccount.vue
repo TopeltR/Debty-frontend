@@ -74,14 +74,10 @@
             },
         }),
         methods: {
-            saveBankAccount() {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    this.$http.post('/users/bankAccount/' + user.id, this.bankAccount).then((result) => {
-                        self.cancel();
-                        // TODO: maybe forward to profile?
-                    });
-                });
+            async saveBankAccount() {
+                const user = await userStore.getUser();
+                const result = await this.$http.post('/users/bankAccount/' + user.id, this.bankAccount);
+                this.cancel();
             },
             cancel() {
                 this.state.showing = false;
