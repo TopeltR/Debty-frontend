@@ -112,15 +112,13 @@
             people: [],
             field: {value: ''},
         }),
-        mounted() {
+        async mounted() {
             if (this.eventId) {
-                this.$http.get('/events/' + this.eventId).then((data) => {
-                    data = data.data;
-                    this.title = data.title;
-                    this.description = data.description;
-                    this.people = data.people;
-                    this.bills = data.bills;
-                });
+                const {data} = await this.$http.get('/events/' + this.eventId);
+                this.title = data.title;
+                this.description = data.description;
+                this.people = data.people;
+                this.bills = data.bills;
             }
 
             for (const button of this.buttons) {
@@ -129,25 +127,23 @@
                     handler(this, userStore);
                 };
             }
-            userStore.getUser().then((user) => {
-                this.$http.get('/contact/id/' + user.id).then((data) => {
-                    this.allPeople = data.data.filter((u) => u.email !== user.email);
-                });
-            });
+            const user = await userStore.getUser();
+            const data = await this.$http.get('/contact/id/' + user.id);
+            this.allPeople = data.data.filter((u) => u.email !== user.email);
         },
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
-                userStore.getUser().then((currentUser) => {
-                    if (this.user && this.user.firstName && !this.people.map((user) => user.email).includes(this.user.email)
-                        && this.user.email !== currentUser.email) {
-                        this.people.push(this.user);
-                        this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));
-                        this.field.value = '';
-                    }
-                });
+                //TODO: replace this functionality with addPerson component
+                const currentUser = userStore.getUser();
+                if (this.user && this.user.firstName && !this.people.map((user) => user.email).includes(this.user.email)
+                    && this.user.email !== currentUser.email) {
+                    this.people.push(this.user);
+                    this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));
+                    this.field.value = '';
+                }
             },
         },
     }

@@ -24,7 +24,7 @@
                     <b-navbar-nav>
                         <b-nav-item to='/contacts'>
                             Contacts
-                            <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notification_amount}}</span>
+                            <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav>
@@ -46,7 +46,7 @@
         name: 'Navbar',
         data: () => ({
             notification: false,
-            notification_amount: 0,
+            notificationAmount: 0,
         }),
         mounted() {
             this.getNotificationCount();
@@ -57,16 +57,11 @@
             },
             async getNotificationCount() {
                 const user = await userStore.getUser();
-                this.$http.get('/contact/waiting/' + user.id)
-                    .then((data) => {
-                        if (data.data.length > 0) {
-                            this.notification = true;
-                            this.notification_amount = data.data.length;
-                        }
-                    }).catch(() => {
-                        router.push('/');
-                    },
-                );
+                const data = await this.$http.get('/contact/waiting/' + user.id);
+                if (data.data.length > 0) {
+                    this.notification = true;
+                    this.notificationAmount = data.data.length;
+                }
             },
         },
     };

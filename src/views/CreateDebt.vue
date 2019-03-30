@@ -92,13 +92,11 @@
     import Navbar from '@/components/Navbar';
     import Autocomplete from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
-    import BCol from "bootstrap-vue/src/components/layout/col";
-    import BRow from "bootstrap-vue/src/components/layout/row";
 
 
     export default {
         name: 'CreateEvent',
-        components: {BRow, BCol, Background, Navbar, Autocomplete},
+        components: {Background, Navbar, Autocomplete},
         data: () => ({
             formData: {
                 title: '',
@@ -119,12 +117,12 @@
             this.formData.owner = this.user;
             this.userName = this.getUserFullName(this.user);
 
-            const response = await this.$http.get('/contact/id/' + user.id);
-            this.contacts = response.data.filter((u) => u.email !== user.email);
+            const response = await this.$http.get('/contact/id/' + this.user.id);
+            this.contacts = response.data.filter((u) => u.email !== this.user.email);
         },
         methods: {
             getUserFullName(user) {
-                return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
+                return user.lastName == null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             async createDebt() {
                 if (this.formData.payer === null) {

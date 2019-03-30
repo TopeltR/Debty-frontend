@@ -35,17 +35,8 @@
 </template>
 
 <script>
-    import router from '../router.ts';
-    import BRow from "bootstrap-vue/src/components/layout/row";
-    import BCol from "bootstrap-vue/src/components/layout/col";
-
-
     export default {
         name: 'DebtDistribution',
-        components: {
-            BCol,
-            BRow,
-        },
         props: {
             state: {
                 type: Object,

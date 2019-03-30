@@ -74,8 +74,8 @@
 <script>
     import AddPerson from '@/components/AddPerson.vue';
     import router from '../router.ts';
-    import userStore from '../stores/UserStore.ts';
     import Autocomplete from "./Autocomplete";
+    import userStore from "../stores/UserStore";
 
 
     export default {
@@ -98,7 +98,7 @@
                 buyer: {type: Object, default: () => ({})},
                 people: {type: Array, default: () => ([])},
                 billPayments: {type: Array, default: () => ([])},
-                creator: { type: Object },
+                creator: {type: Object},
             },
             event: {
                 type: Object,
@@ -196,26 +196,23 @@
             getFullName(person) {
                 return person.firstName + ' ' + person.lastName;
             },
-            save() {
+            async save() {
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
                     this.bill.people = this.addPersonState.people;
 
                     for (const person of this.bill.people) {
                         this.bill.billPayments.push({
-                            person: {person},
+                            person: person,
                             sum: person.participation,
                         });
                     }
 
-                    userStore.getUser().then((user) => {
-                        this.bill.creator = user;
-                        this.$http.post('/events/' + this.event.id + '/bills', this.bill)
-                            .then((response) => {
-                                this.event.bills = response.data.bills;
-                                this.state.showing = true;
-                                this.state.showing = false;
-                            });
-                    });
+                    this.bill.creator = await userStore.getUser();
+
+                    const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
+                    this.event.bills = response.data.bills;
+                    this.state.showing = true;
+                    this.state.showing = false;
                 }
             },
             cancel() {
