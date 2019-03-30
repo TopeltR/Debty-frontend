@@ -30,12 +30,13 @@
                     <b-list-group>
                         <h2>Requests</h2>
                         <div v-if='requests.length > 0'>
-                            <b-list-group-item v-for='request in requests'> {{r.firstName}} {{r.lastName}}
-                                <span v-if='request.type === "INC"'>
+                            <b-list-group-item v-for='request in requests'> {{request.firstName}} {{request.lastName}}
+                                <span v-if='request.type === "Incoming"'>
                                     <font-awesome-icon icon='check' class='color-green ml-1 icons float-right'
                                                        v-on:click='acceptContact(request.id)'/>
                                     <font-awesome-icon icon='times' class='color-red icons float-right' v-on:click='removeRequest(request.id)'/>
                                 </span>
+                                <div v-else></div>
                             </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
@@ -90,37 +91,34 @@
             getUserFullName(user) {
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
-            getContacts() {
-                userStore.getUser().then((user) => {
-                    this.$http.get('/contact/all/' + user.id)
-                        .then((data) => {
-                            this.availableContacts = data.data;
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
+            async getContacts() {
+            this.user = await userStore.getUser();
+            this.$http.get('/contact/all/' + this.user.id)
+                .then((data) => {
+                    this.availableContacts = data.data;
+                }).catch(() => {
+                    router.push('/');
+                },
+            );
             },
-            getWaitingContacts() {
-                userStore.getUser().then((user) => {
-                    this.$http.get('/contact/waiting/' + user.id)
-                        .then((data) => {
-                            this.requests = data.data;
-                            this.requests.forEach((request) => {
-                                Object.assign(request, {type: 'INC'});
-                            });
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
+            async getWaitingContacts() {
+                this.user = await userStore.getUser();
+                this.$http.get('/contact/waiting/' + this.user.id)
+                    .then((data) => {
+                        this.requests = data.data;
+                        this.requests.forEach((request) => {
+                            Object.assign(request, {type: 'Incoming'});
+                        });
+                    }).catch(() => {
+                        router.push('/');
+                    },
+                );
             },
             async addContact() {
                 this.user = await userStore.getUser();
                 this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id)
                     .then(this.getContacts).then(() => {
                     this.field.value = '';
-                    Object.assign(this.contact, {type: 'OUT'});
                     this.requests.push(this.contact);
                 })
                     .catch(() => {
@@ -128,17 +126,15 @@
                         },
                     );
             },
-            getPersonContacts() {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.get('/contact/id/' + user.id)
-                        .then((data) => {
-                            self.userContacts = data.data;
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
+            async getPersonContacts() {
+                this.user = await userStore.getUser();
+                this.$http.get('/contact/id/' + this.user.id)
+                    .then((data) => {
+                        this.userContacts = data.data;
+                    }).catch(() => {
+                        router.push('/');
+                    },
+                );
             },
             async acceptContact(id) {
                 this.user = await userStore.getUser();

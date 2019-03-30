@@ -26,22 +26,22 @@
                     <table class='table table-bordered table-hover' id='debts'>
                         <thead>
                         <tr>
+                            <th scope='col'>Sum</th>
                             <th scope='col'>Title</th>
                             <th scope='col'>To/From</th>
-                            <th scope='col'>Sum</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="debt in filteredDebts" @click="goToDebt(debt.id)">
-                            <td>{{debt.title}}</td>
-                            <td v-if='debt.type === "out"'>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
-                            <td v-else-if='debt.type === "in"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
                             <td v-if="debt.receiver.id === user.id">
                                 <div class="text-success">
                                     +{{debt.sum}} €
                                 </div>
                             </td>
                             <td v-else> -{{debt.sum}} €</td>
+                            <td>{{debt.title}}</td>
+                            <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
+                            <td v-else-if='debt.type === "incoming"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -87,10 +87,10 @@
                     .then((response) => {
                         response.data.forEach((debt) => {
                             if (debt.payer.id === this.user.id) {
-                                Object.assign(debt, {type: 'out'});
+                                Object.assign(debt, {type: 'outgoing'});
                                 this.debts.push(debt);
                             } else if (debt.receiver.id === this.user.id) {
-                                Object.assign(debt, {type: 'in'});
+                                Object.assign(debt, {type: 'incoming'});
                                 this.debts.push(debt);
                             }
                         });
