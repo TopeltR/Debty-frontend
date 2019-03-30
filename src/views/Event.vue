@@ -7,7 +7,7 @@
                 <b-row>
                     <add-bill :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
                     <add-bill :state="addBillState" :event="event"/>
-                    <debt-distribution :state="debtDistributionState" :debts="debts"/>
+                    <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
                     <b-col sm='12' md='6'>
                         <div class='header'>
                             <h1>
@@ -57,16 +57,23 @@
                             </tbody>
                         </table>
                     </b-col>
-                    <b-col cols="6" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='primary' v-on:click='editing = true'>Edit</b-btn>
+                    <b-col v-if="event.closedAt == null">
+                        <b-row>
+                            <b-col v-if="isOwner()" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
+                                <b-btn class="wide mt-4" variant='danger' v-on:click='calculateDistributedDebts'>Close
+                                    event...
+                                </b-btn>
+                            </b-col>
+                            <b-col v-if="isOwner()" cols="6" offset="0" md="2" offset-md="0">
+                                <b-btn class="wide mt-4" variant='primary' v-on:click='editing = true'>Edit</b-btn>
+                            </b-col>
+                            <b-col cols="6" offset="0" md="2" offset-md="0">
+                                <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
+                            </b-col>
+                        </b-row>
                     </b-col>
-                    <b-col cols="6" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
-                    </b-col>
-                    <b-col class="mb-3" cols="12" offset="0" md="2" offset-md="0">
-                        <b-btn class="wide mt-4" variant='danger' v-on:click='calculateDistributedDebts'>Close
-                            event...
-                        </b-btn>
+                    <b-col v-else>
+                        This event has been closed.
                     </b-col>
                 </b-row>
             </background>
@@ -77,7 +84,6 @@
 <script>
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
-    import router from '@/router';
     import userStore from '../stores/UserStore';
     import EventForm from '@/components/EventForm.vue';
     import AddBill from '@/components/AddBill.vue';
@@ -95,7 +101,9 @@
                 people: [],
                 bills: [],
                 createdAt: null,
+                closedAt: null,
             },
+            user: null,
             selectedBill: undefined,
             editing: false,
             addBillState: {showing: false},
@@ -137,9 +145,10 @@
                 },
             ],
         }),
-        mounted() {
+        async mounted() {
             this.event.id = Number(this.$route.params.id);
-            this.getEvent(this.event.id);
+            await this.getEvent(this.event.id);
+            this.user = await userStore.getUser();
 
             for (const button of this.buttons) {
                 button.handler = button.handler.bind(this);
@@ -149,6 +158,9 @@
             }
         },
         methods: {
+            isOwner() {
+                return this.user != null && this.event.owner != null && this.user.id === this.event.owner.id;
+            },
             addBill() {
                 this.addBillState.showing = false;
                 this.addBillState.showing = true;
@@ -157,34 +169,20 @@
                 this.addBillStates[id] = {showing: false};
                 return this.addBillStates[id];
             },
-            getEvent(eventId) {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.get('/events/' + eventId)
-                        .then((response) => {
-                            self.event = response.data;
-                            self.event.id = eventId;
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
+            async getEvent(eventId) {
+                const response = await this.$http.get('/events/' + eventId);
+                this.event = response.data;
+                this.event.id = eventId;
             },
             openBillModal(bill) {
                 this.selectedBill = bill;
                 this.seeBillState.showing = false;
                 this.seeBillState.showing = true;
             },
-            calculateDistributedDebts() {
-                this.$http.get('/events/' + this.event.id + '/debts').then(
-                    (response) => {
-                        this.debts = response.data;
-                        this.closeEvent();
-                    },
-                ).catch(() => {
-                    alert('You are not logged in!');
-                    router.push('/');
-                });
+            async calculateDistributedDebts() {
+                const response = await this.$http.get('/events/' + this.event.id + '/debts');
+                this.debts = response.data;
+                this.closeEvent();
             },
             closeEvent() {
                 this.debtDistributionState.showing = false;
