@@ -40,7 +40,7 @@
                                     <b>Status:</b>
                                 </b-col>
                                 <b-col md="6">
-                                    {{ debt.status }}
+                                    <debt-status :status="debt.status"></debt-status>
                                 </b-col>
                             </b-row>
                             <b-row class="mt-3 pb-3 border-bottom-1">
@@ -173,10 +173,11 @@
     import userStore from '@/stores/UserStore';
     import BCol from "bootstrap-vue/src/components/layout/col";
     import BButton from "bootstrap-vue/src/components/button/button";
+    import DebtStatus from "../components/DebtStatus";
 
     export default {
         name: 'CreateEvent',
-        components: {BButton, BCol, BRow, Background, Navbar, Autocomplete},
+        components: {DebtStatus, BButton, BCol, BRow, Background, Navbar, Autocomplete},
         data: () => ({
             debtId: null,
             debt: {},
@@ -271,9 +272,8 @@
                 this.save();
             },
             payDebt() {
-                return this.debt.receiver != null && this.user != null
-                    && this.debt.receiver.id !== this.user.id
-                    && this.debt.status === this.debtStatus.PAID;
+                this.debt.status = this.debtStatus.PAID;
+                this.save();
             },
             confirmPayment() {
                 this.debt.status = this.debtStatus.CONFIRMED;

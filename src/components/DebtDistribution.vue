@@ -61,7 +61,7 @@
             },
             eventId: {
                 type: Number,
-            }
+            },
         },
         watch: {
             state: {

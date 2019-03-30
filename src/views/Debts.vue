@@ -29,6 +29,7 @@
                             <th scope='col'>Sum</th>
                             <th scope='col'>Title</th>
                             <th scope='col'>To/From</th>
+                            <th scope='col'>Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,6 +43,9 @@
                             <td>{{debt.title}}</td>
                             <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}} {{debt.receiver.lastName}}</td>
                             <td v-else-if='debt.type === "incoming"'>{{debt.payer.firstName}} {{debt.payer.lastName}}</td>
+                            <td>
+                                <debt-status :status="debt.status"></debt-status>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -59,10 +63,11 @@
     import Background from '@/components/Background.vue';
     import router from '@/router';
     import userStore from '../stores/UserStore';
+    import DebtStatus from "../components/DebtStatus";
 
     export default {
         name: 'events',
-        components: {Navbar, Background},
+        components: {DebtStatus, Navbar, Background},
 
         mounted() {
             this.getDebts();
