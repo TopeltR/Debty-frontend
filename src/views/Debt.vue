@@ -1,84 +1,116 @@
 <template>
-    <div>
+    <b-col>
         <navbar></navbar>
         <background>
             <b-row v-if="!editing">
-                <b-col sm="12" md="6" offset-md="3">
-                    <b-row class="mt-5">
-                        <b-col>
-                            <h1> {{ debt.title }} </h1>
+                <b-col sm="12" md="6" offset-md="3" class="mt-5">
+                    <b-col class="card shadow mb-5">
+                        <b-col class="card-body col-md-8 offset-md-2">
+                            <div class="text-center">
+                                <h1 class="mt-3 mb-5"> {{ debt.title }} </h1>
+                            </div>
+                            <b-row class="mt-5 pb-3 border-bottom-1">
+                                <b-col md="6">
+                                    <b>Debtor:</b>
+                                </b-col>
+                                <b-col md="6">
+                                    {{ getUserFullName(debt.payer) }}
+                                    <small v-if="isOwner(debt.payer)">(owner)</small>
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-3 pb-3 border-bottom-1">
+                                <b-col md="6">
+                                    <b>Receiver:</b>
+                                </b-col>
+                                <b-col md="6">
+                                    {{ getUserFullName(debt.receiver) }}
+                                    <small v-if="isOwner(debt.receiver)">(owner)</small>
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-3 pb-3 border-bottom-1">
+                                <b-col md="6">
+                                    <b>Sum:</b>
+                                </b-col>
+                                <b-col md="6">
+                                    {{ debt.sum }}€
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-3 pb-3 border-bottom-1">
+                                <b-col md="6">
+                                    <b>Status:</b>
+                                </b-col>
+                                <b-col md="6">
+                                    <debt-status :status="debt.status"></debt-status>
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-3 pb-3 border-bottom-1">
+                                <b-col md="6">
+                                    <b>Created:</b>
+                                </b-col>
+                                <b-col md="6">
+                                    {{ new Date(debt.createdAt).toLocaleString() }}
+                                </b-col>
+                            </b-row>
+                            <b-row v-if="debt.modifiedAt !== debt.createdAt" class="mt-3">
+                                <b-col md="6">
+                                    <b>Modified:</b>
+                                </b-col>
+                                <b-col md="6">
+                                    {{ new Date(debt.modifiedAt).toLocaleString() }}
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-5" v-if="debt.owner != null && user != null && debt.owner.id === user.id">
+                                <b-col cols="6">
+                                    <b-button variant="danger" class="w-100" v-on:click="deleteDebt">Delete</b-button>
+                                </b-col>
+                                <b-col cols="6">
+                                    <b-button variant="secondary" class="w-100" v-on:click="editDebt">Edit</b-button>
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-5" v-if="canAcceptDecline()">
+                                <b-col cols="6">
+                                    <b-button variant="secondary" class="w-100" v-on:click="decline">Decline</b-button>
+                                </b-col>
+                                <b-col cols="6">
+                                    <b-button variant="primary" class="w-100" v-on:click="accept">Accept</b-button>
+                                </b-col>
+                            </b-row>
+                            <b-row class="mt-3" v-if="canConfirm()">
+                                <b-col>
+                                    <b-button variant="primary" class="w-100" v-on:click="confirmPayment()">
+                                        Confirm payment
+                                    </b-button>
+                                </b-col>
+                            </b-row>
+                            <b-row v-if="canPay()" class="mt-5">
+                                <h2>Pay</h2>
+                                <b-row class="mt-2">
+                                    <b-col cols="4">
+                                        <img v-on:click="payWithSEB" src="../assets/seb-logo.png" class="bank-link"/>
+                                    </b-col>
+                                    <b-col cols="4">
+                                        <img v-on:click="payWithLHV" class="lhv bank-link"
+                                             src="../assets/lhv_logo.jpg"/>
+                                    </b-col>
+                                    <b-col cols="4">
+                                        <img v-on:click="payWithSwed" class="swed bank-link"
+                                             src="../assets/swedbank-logo.png"/>
+                                    </b-col>
+                                </b-row>
+                            </b-row>
+                            <b-row class="mt-4" v-if="canPay()">
+                                <b-col>
+                                    <b-button variant="primary" class="w-100" v-on:click="payDebt()">
+                                        I have paid
+                                    </b-button>
+                                </b-col>
+                            </b-row>
                         </b-col>
-                    </b-row>
-                    <b-row class="mt-4">
-                        <b-col cols="3">
-                            <b>Debtor:</b>
-                        </b-col>
-                        <b-col cols="9">
-                            {{ getUserFullName(debt.payer) }}
-                            <small v-if="debt.payer != null && debt.owner != null && debt.payer.id === debt.owner.id">
-                                (owner)
-                            </small>
-                        </b-col>
-                    </b-row>
-                    <b-row class="mt-4">
-                        <b-col cols="3">
-                            <b>Receiver:</b>
-                        </b-col>
-                        <b-col cols="9">
-                            {{ getUserFullName(debt.receiver) }}
-                            <small v-if="debt.receiver != null && debt.owner != null && debt.receiver.id === debt.owner.id">
-                                (owner)
-                            </small>
-                        </b-col>
-                    </b-row>
-                    <b-row class="mt-4">
-                        <b-col cols="3">
-                            <b>Sum: </b>
-                        </b-col>
-                        <b-col cols="9">
-                            {{ debt.sum }}€
-                        </b-col>
-                    </b-row>
-                    <b-row class="mt-4">
-                        <b-col cols="3">
-                            <b>Status: </b>
-                        </b-col>
-                        <b-col cols="9">
-                            {{ debt.status }}
-                        </b-col>
-                    </b-row>
-                    <b-row class="mt-4">
-                        <b-col cols="3">
-                            <b>Created:</b>
-                        </b-col>
-                        <b-col cols="9">
-                            {{ new Date(debt.createdAt).toLocaleString() }}
-                        </b-col>
-                    </b-row>
-                    <b-row v-if="debt.modifiedAt !== debt.createdAt" class="mt-4">
-                        <b-col cols="3">
-                            <b>Modified:</b>
-                        </b-col>
-                        <b-col cols="9">
-                            {{ new Date(debt.modifiedAt).toLocaleString() }}
-                        </b-col>
-                    </b-row>
-                    <b-row class="mt-3" v-if="debt.owner != null && user != null && debt.owner.id === user.id">
-                        <b-col>
-                            <b-button variant="danger" class="mt-3 w-25" v-on:click="deleteDebt">Delete</b-button>
-                            <b-button variant="primary" class="mt-3 w-25 ml-2" v-on:click="editDebt">Edit</b-button>
-                        </b-col>
-                    </b-row>
-                    <b-row class="mt-4" v-if="canAcceptDecline()">
-                        <b-col>
-                            <b-button class="w-25" variant="secondary" v-on:click="decline">Decline</b-button>
-                            <b-button class="w-25 ml-2" variant="primary" v-on:click="accept">Accept</b-button>
-                        </b-col>
-                    </b-row>
+                    </b-col>
                 </b-col>
             </b-row>
             <b-row v-else>
-                <b-col sm="12" md="6" offset-md="3" class="w-100">
+                <b-col md="6" offset-md="3" class="w-100">
                     <b-row class="mt-5">
                         <form @submit.prevent='createDebt' class='w-100'>
                             <div class='form-group'>
@@ -87,7 +119,7 @@
                                        placeholder='Enter debt title'>
                             </div>
                             <div class='form-group'
-                                 v-if="debt.receiver != null && debt.owner != null && debt.receiver.id === debt.owner.id">
+                                 v-if="isOwner(debt.receiver)">
                                 <label>From:</label>
 
                                 <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
@@ -95,7 +127,7 @@
                                               :key-extractor='getUserFullName'></autocomplete>
                             </div>
                             <div class='form-group'
-                                 v-if="debt.payer != null && debt.owner != null && debt.payer.id === debt.owner.id">
+                                 v-if="isOwner(debt.payer)">
                                 <label>To:</label>
 
                                 <autocomplete id='receiver' v-model='debt.receiver' :placeholder='"Name"' :field='field'
@@ -115,7 +147,7 @@
                                 </b-row>
                             </div>
                             <b-row class='mt-4'
-                                   v-if="debt.payer != null && user != null && debt.payer.id === user.id">
+                                   v-if="isPayer()">
                                 <b-col cols="6">
                                     <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                                 </b-col>
@@ -128,16 +160,8 @@
                     </b-row>
                 </b-col>
             </b-row>
-            <b-row v-if="canPay()">
-                <b-col cols="12" md="9" offset-md="3" class="mt-5">
-                    <h2>Pay</h2>
-                    <img v-on:click="payWithSEB" src="../assets/seb-logo.png"/>
-                    <img v-on:click="payWithLHV" class="lhv" src="../assets/lhv_logo.jpg"/>
-                    <img v-on:click="payWithSwed" class="swed" src="../assets/swedbank-logo.png"/>
-                </b-col>
-            </b-row>
         </background>
-    </div>
+    </b-col>
 </template>
 
 <script>
@@ -148,10 +172,12 @@
     import Autocomplete from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
     import BCol from "bootstrap-vue/src/components/layout/col";
+    import BButton from "bootstrap-vue/src/components/button/button";
+    import DebtStatus from "../components/DebtStatus";
 
     export default {
         name: 'CreateEvent',
-        components: {BCol, BRow, Background, Navbar, Autocomplete},
+        components: {DebtStatus, BButton, BCol, BRow, Background, Navbar, Autocomplete},
         data: () => ({
             debtId: null,
             debt: {},
@@ -194,24 +220,38 @@
             editDebt() {
                 this.editing = true;
             },
-            canPay() {
-                return this.user != null && this.debt.payer != null
-                && this.user.id === this.debt.payer.id
-                && this.debt.status !== this.debtStatus.NEW;
+            isOwner(user) {
+                return user != null && this.debt.owner != null && user.id === this.debt.owner.id;
+            },
+            isPayer() {
+                return this.debt.payer != null && this.user != null && this.debt.payer.id === this.user.id;
             },
             canAcceptDecline() {
                 return this.debt.owner != null && this.user != null
                     && this.debt.owner.id !== this.user.id
                     && this.debt.status === this.debtStatus.NEW;
             },
-            async saveDebt() {
+            canPay() {
+                return this.user != null && this.debt.payer != null
+                    && this.user.id === this.debt.payer.id
+                    && this.debt.status === this.debtStatus.ACCEPTED;
+            },
+            canConfirm() {
+                return this.user != null && this.debt.receiver != null
+                    && this.user.id === this.debt.receiver.id
+                    && this.debt.status === this.debtStatus.PAID;
+            },
+            saveDebt() {
                 if (this.debt.payer === null) {
                     this.debt.payer = {
                         firstName: this.field.value,
                     };
                 }
-                await this.$http.post('/debts/', this.debt);
                 this.editing = false;
+                this.save();
+            },
+            async save() {
+                await this.$http.post('/debts/', this.debt);
             },
             async deleteDebt() {
                 if (confirm("Are you sure?")) {
@@ -223,13 +263,21 @@
                 this.editing = false;
                 this.loadDebt();
             },
-            async decline() {
+            decline() {
                 this.debt.status = this.debtStatus.DECLINED;
-                await this.$http.post('/debts', this.debt);
+                this.save();
             },
-            async accept() {
+            accept() {
                 this.debt.status = this.debtStatus.ACCEPTED;
-                await this.$http.post('/debts', this.debt);
+                this.save();
+            },
+            payDebt() {
+                this.debt.status = this.debtStatus.PAID;
+                this.save();
+            },
+            confirmPayment() {
+                this.debt.status = this.debtStatus.CONFIRMED;
+                this.save();
             },
             payWithLHV() {
                 const url = `https://www.lhv.ee/portfolio/payment_out.cfm?
@@ -256,8 +304,18 @@
 </script>
 <style scoped>
     img {
-        height: 60px;
+        height: 50px;
         margin-right: 15px;
+    }
+
+    .bank-link {
+        border: solid black 1px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .bank-link:hover {
+        box-shadow: 0 0 11px rgba(33, 33, 33, .2);
     }
 
     .lhv {
@@ -275,5 +333,9 @@
             height: 46px;
             margin-right: 5px;
         }
+    }
+
+    .border-bottom-1 {
+        border-bottom: lightgray solid 1px;
     }
 </style>

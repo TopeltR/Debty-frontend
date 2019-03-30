@@ -19,6 +19,10 @@
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
+        padding-top: 70px;
     }
 </style>

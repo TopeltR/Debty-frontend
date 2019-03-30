@@ -3,8 +3,8 @@
         <navbar/>
         <background>
             <div v-if="events.length > 0">
-                <h1 class='header'>My events</h1>
-                <div class='search-wrapper'>
+                <h1 class='pt-4'>My events</h1>
+                <div class='search-wrapper mr-4 mt-4 mb-4'>
                     <input class='form-control' type='text' v-model='search' placeholder='Search'/>
                 </div>
                 <div id='table'>
@@ -22,7 +22,7 @@
                         <tr v-for="event in filteredList" @click="goToEvent(event.id)">
                             <td>{{event.title}}</td>
                             <td>{{event.description}}</td>
-                            <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
+                            <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
                             <td class='d-none d-md-table-cell'>{{event.created}}</td>
                             <td class='d-none d-md-table-cell'>{{event.closed}}</td>
 
@@ -93,13 +93,6 @@
 </script>
 
 <style scoped>
-    .header {
-        padding-top: 30px
-    }
-
-   .search-wrapper {
-       margin: 30px 30px 30px 0;
-   }
 
    .form-control {
        width: 300px !important;

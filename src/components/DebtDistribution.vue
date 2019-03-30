@@ -9,8 +9,8 @@
         </div>
         <div class="col-10 offset-1">
             <b-row>
-                <b-col cols="12" class='TM30px'>
-                    <b-row v-for="debt in debts" class="MV15px">
+                <b-col cols="12">
+                    <b-row v-for="debt in debts" class="mt-2 mb-2">
                         <b-col sm="12" md="3"><b>{{ debt.sum }} €</b></b-col>
                         <b-col sm="12" md="9">
                             {{ getFullName(debt.payer) }}
@@ -24,10 +24,10 @@
         <div class="col-12" slot="modal-footer">
             <b-row>
                 <b-col cols="6">
-                    <b-button class="wide" variant="secondary" v-on:click="cancel">Cancel</b-button>
+                    <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="wide" variant="primary" v-on:click="closeEvent">Close event</b-button>
+                    <b-button class="w-100" variant="primary" v-on:click="closeEvent">Close event</b-button>
                 </b-col>
             </b-row>
         </div>
@@ -50,6 +50,9 @@
             debts: {
                 type: Array,
             },
+            eventId: {
+                type: Number,
+            },
         },
         watch: {
             state: {
@@ -67,11 +70,11 @@
             getFullName(person) {
                 return person.firstName + ' ' + person.lastName;
             },
-            closeEvent() {
-                this.$http.post('/events/' + this.eventId + '/bills', this.bill)
-                    .then((response) => {
-                        this.state.showing = false;
-                    }); // TODO What is u doing here?
+            async closeEvent() {
+                await this.$http.post('/events/' + this.eventId + '/close');
+                this.state.showing = false;
+                router.push('/events/' + this.eventId); // TODO: spaghetti broke
+
             },
             cancel() {
                 this.state.showing = false;
@@ -81,15 +84,6 @@
 </script>
 
 <style scoped>
-    .wide {
-        width: 100%;
-    }
-
-    .MV15px {
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-
     .arrow-margin {
         margin: 6px 10px 0 10px;
     }

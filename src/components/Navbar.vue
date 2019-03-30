@@ -1,8 +1,7 @@
 <template>
     <b-container fluid>
-        <b-row class='PB65px'>
-            <b-navbar class='fixed-top' style='background-color: #E8E8E8; width:100%' type='light' variant=''
-                      toggleable='sm'>
+        <b-row>
+            <b-navbar class='fixed-top w-100 bg-light-gray' type='light' toggleable='sm'>
                 <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
                 <b-collapse is-nav id='nav_collapse'>
@@ -77,13 +76,11 @@
         font-size: 30px;
     }
 
-    .PB65px {
-        padding-bottom: 65px;
-    }
-
     .bg-lime {
         background-color: limegreen !important;
     }
 
-
+    .bg-light-gray {
+        background-color: #E8E8E8;
+    }
 </style>
