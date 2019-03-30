@@ -58,7 +58,7 @@
         watch: {
             state: {
                 deep: true,
-                handler: function(state) {
+                handler(state) {
                     if (state.showing) {
                         this.$refs.modal.show();
                     } else {

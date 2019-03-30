@@ -84,9 +84,9 @@
                     width: 12,
                     offset: 0,
                     name: "Create event",
-                    handler: (eventForm, userStore) => {
+                    handler: (eventForm, store) => {
                         if (eventForm.title && eventForm.description) {
-                            userStore.getUser().then((user) => {
+                            store.getUser().then((user) => {
                                 eventForm.people.push(user);
                                 eventForm.$http.post('/events', {
                                     title: eventForm.title,
@@ -123,9 +123,8 @@
                 });
             }
 
-            for (let i = 0; i < this.buttons.length; i++) {
-                let button = this.buttons[i];
-                let handler = button.handler;
+            for (const button of this.buttons) {
+                const handler = button.handler;
                 button.handler = () => {
                     handler(this, userStore);
                 };
@@ -141,9 +140,9 @@
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
-                userStore.getUser().then((user) => {
+                userStore.getUser().then((currentUser) => {
                     if (this.user && this.user.firstName && !this.people.map((user) => user.email).includes(this.user.email)
-                        && this.user.email !== user.email) {
+                        && this.user.email !== currentUser.email) {
                         this.people.push(this.user);
                         this.allPeople = this.allPeople.filter((person) => !this.people.includes(person));
                         this.field.value = '';

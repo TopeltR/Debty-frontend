@@ -1,7 +1,8 @@
 <template>
     <b-container fluid>
         <b-row class='PB65px'>
-            <b-navbar class='fixed-top' style='background-color: #E8E8E8; width:100%' type='light' variant='' toggleable='sm'>
+            <b-navbar class='fixed-top' style='background-color: #E8E8E8; width:100%' type='light' variant=''
+                      toggleable='sm'>
                 <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
                 <b-collapse is-nav id='nav_collapse'>
@@ -23,7 +24,7 @@
                     <b-navbar-nav>
                         <b-nav-item to='/contacts'>
                             Contacts
-                                <font-awesome-icon v-if="notification === true" class='limegreen m-0' icon='envelope' />
+                            <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notification_amount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav>
@@ -45,6 +46,7 @@
         name: 'Navbar',
         data: () => ({
             notification: false,
+            notification_amount: 0,
         }),
         mounted() {
             this.getNotificationCount();
@@ -54,14 +56,15 @@
                 router.push('/home');
             },
             async getNotificationCount() {
-                 const user = await userStore.getUser();
-                    this.$http.get('/contact/waiting/' + user.id)
-                        .then((data) => {
-                            if (data.data.length > 0) {
-                                this.notification = true;
-                            }
-                        }).catch(() => {
-                            router.push('/');
+                const user = await userStore.getUser();
+                this.$http.get('/contact/waiting/' + user.id)
+                    .then((data) => {
+                        if (data.data.length > 0) {
+                            this.notification = true;
+                            this.notification_amount = data.data.length;
+                        }
+                    }).catch(() => {
+                        router.push('/');
                     },
                 );
             },
@@ -78,11 +81,14 @@
         font-weight: bolder;
         font-size: 30px;
     }
+
     .PB65px {
         padding-bottom: 65px;
     }
-    .MT5 {
-        padding-bottom: 5px;
+
+    .bg-lime {
+        background-color: limegreen !important;
     }
+
 
 </style>

@@ -41,6 +41,14 @@
                     </b-row>
                     <b-row class="mt-4">
                         <b-col cols="3">
+                            <b>Status: </b>
+                        </b-col>
+                        <b-col cols="9">
+                            {{ debt.status }}
+                        </b-col>
+                    </b-row>
+                    <b-row class="mt-4">
+                        <b-col cols="3">
                             <b>Created:</b>
                         </b-col>
                         <b-col cols="9">
@@ -61,6 +69,12 @@
                             <b-button variant="primary" class="mt-3 w-25 ml-2" v-on:click="editDebt">Edit</b-button>
                         </b-col>
                     </b-row>
+                    <b-row class="mt-4" v-if="canAcceptDecline()">
+                        <b-col>
+                            <b-button class="w-25" variant="secondary" v-on:click="decline">Decline</b-button>
+                            <b-button class="w-25 ml-2" variant="primary" v-on:click="accept">Accept</b-button>
+                        </b-col>
+                    </b-row>
                 </b-col>
             </b-row>
             <b-row v-else>
@@ -74,7 +88,7 @@
                             </div>
                             <div class='form-group'
                                  v-if="debt.receiver != null && debt.owner != null && debt.receiver.id === debt.owner.id">
-                                <label>Debtor:</label>
+                                <label>From:</label>
 
                                 <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
                                               :items='contacts'
@@ -82,7 +96,7 @@
                             </div>
                             <div class='form-group'
                                  v-if="debt.payer != null && debt.owner != null && debt.payer.id === debt.owner.id">
-                                <label>Receiver:</label>
+                                <label>To:</label>
 
                                 <autocomplete id='receiver' v-model='debt.receiver' :placeholder='"Name"' :field='field'
                                               :items='contacts'
@@ -100,7 +114,8 @@
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>
                             </div>
-                            <b-row class='mt-4'>
+                            <b-row class='mt-4'
+                                   v-if="debt.payer != null && user != null && debt.payer.id === user.id">
                                 <b-col cols="6">
                                     <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                                 </b-col>
@@ -108,13 +123,14 @@
                                     <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
                                 </b-col>
                             </b-row>
+
                         </form>
                     </b-row>
                 </b-col>
             </b-row>
-            <b-row v-if="isPayer()">
+            <b-row v-if="canPay()">
                 <b-col cols="12" md="9" offset-md="3" class="mt-5">
-                    <h2>Maksa</h2>
+                    <h2>Pay</h2>
                     <img v-on:click="payWithSEB" src="../assets/seb-logo.png"/>
                     <img v-on:click="payWithLHV" class="lhv" src="../assets/lhv_logo.jpg"/>
                     <img v-on:click="payWithSwed" class="swed" src="../assets/swedbank-logo.png"/>
@@ -143,6 +159,13 @@
             contacts: [],
             field: {value: ''},
             user: null,
+            debtStatus: {
+                NEW: 'NEW',
+                ACCEPTED: 'ACCEPTED',
+                DECLINED: 'DECLINED',
+                PAID: 'PAID',
+                CONFIRMED: 'CONFIRMED',
+            },
         }),
         async mounted() {
             this.debtId = Number(this.$route.params.id);
@@ -171,8 +194,15 @@
             editDebt() {
                 this.editing = true;
             },
-            isPayer() {
-                return this.user == null ? false : (this.user.email === this.debt.payer.email)
+            canPay() {
+                return this.user != null && this.debt.payer != null
+                && this.user.id === this.debt.payer.id
+                && this.debt.status !== this.debtStatus.NEW;
+            },
+            canAcceptDecline() {
+                return this.debt.owner != null && this.user != null
+                    && this.debt.owner.id !== this.user.id
+                    && this.debt.status === this.debtStatus.NEW;
             },
             async saveDebt() {
                 if (this.debt.payer === null) {
@@ -193,17 +223,34 @@
                 this.editing = false;
                 this.loadDebt();
             },
+            async decline() {
+                this.debt.status = this.debtStatus.DECLINED;
+                await this.$http.post('/debts', this.debt);
+            },
+            async accept() {
+                this.debt.status = this.debtStatus.ACCEPTED;
+                await this.$http.post('/debts', this.debt);
+            },
             payWithLHV() {
-                const url = `https://www.lhv.ee/portfolio/payment_out.cfm?i_receiver_name=${this.debt.receiver.bankAccount.name}&amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}&amp;i_amount=${this.debt.amount}&amp;i_payment_desc=${this.debt.title}&amp`;
+                const url = `https://www.lhv.ee/portfolio/payment_out.cfm?
+                i_receiver_name=${this.debt.receiver.bankAccount.name}
+                &amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}
+                &amp;i_amount=${this.debt.amount}
+                &amp;i_payment_desc=${this.debt.title}&amp`;
                 window.location.href = encodeURI(url);
             },
             payWithSEB() {
-                const url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST&field1=benname&value1=${this.debt.receiver.bankAccount.name}&field3=benacc&value3=${this.debt.receiver.bankAccount.number}&field10=desc&value10=${this.debt.title}&value11=&field5=amount&value5=${this.debt.amount}&paymtype=REMSEBEE&field6=currency&value6=EUR`;
+                const url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST
+                &field1=benname&value1=${this.debt.receiver.bankAccount.name}
+                &field3=benacc&value3=${this.debt.receiver.bankAccount.number}
+                &field10=desc&value10=${this.debt.title}
+                &value11=&field5=amount&value5=${this.debt.amount}
+                &paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 window.location.href = encodeURI(url);
             },
             payWithSwed() {
                 window.location.href = "https://www.swedbank.ee/private";
-            }
+            },
         },
     };
 </script>
@@ -223,7 +270,7 @@
         margin-right: 0;
     }
 
-    @media(max-width: 768px) {
+    @media (max-width: 768px) {
         img {
             height: 46px;
             margin-right: 5px;

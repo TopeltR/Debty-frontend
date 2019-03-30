@@ -1,60 +1,55 @@
 <template>
     <div>
         <navbar/>
-            <background>
-                <div class='search-wrapper'>
-                    <b-row>
-                        <h2>Add contact</h2>
-                        <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
-                        <b-tooltip target="info"
-                                   title="Create an Event by giving it an informative title and contacts, then add your contacts to it."
-                                   placement="bottom"></b-tooltip>
-                    </b-row>
-                    <b-row class='pt-4'>
-                        <b-col sm='12' md='6' class='ML-15'>
-                            <autocomplete id='search ' v-model='contact' :placeholder='"Name"' :field='field'
-                                          :items='availableContacts'
-                                          :key-extractor='getUserFullName'></autocomplete>
-                        </b-col>
-                        <b-col>
-                            <button type='button' v-on:click='addContact'
-                                    class='btn btn-primary wide'> Add contact</button>
-                        </b-col>
-                    </b-row>
-                </div>
-                <b-row class='MT30'>
-                    <b-col>
-
-                            <b-list-group>
-                                <h2>Requests</h2>
-                                <div v-if='requests.length > 0'>
-                                    <b-list-group-item v-for='r in requests'> {{r.firstName}} {{r.lastName}}
-                                        <div v-if='r.type === "INC"'>
-                                            <span class='float-right MT-20'>
-                                                <span class='btn btn-default'>
-                                                    <font-awesome-icon icon='check' class='green icons'  v-on:click='acceptContact(r.id)'/>
-                                                </span>
-                                            </span>
-                                            <span class='float-right MT-20'>
-                                                <span class='btn btn-default'>
-                                                    <font-awesome-icon icon='times' class='red icons' v-on:click='removeRequest(r.id)'/>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div v-else></div>
-                                    </b-list-group-item>
-                                </div>
-                                <div v-else class='mt-3'>
-                                    <h3>No incoming requests right now.</h3>
-                                </div>
-                            </b-list-group>
-
+        <background>
+            <div class='search-wrapper pt-4'>
+                <b-row class='ml-0'>
+                    <h2>Add contact</h2>
+                    <font-awesome-icon id="info" icon='info-circle' class='ml-1'></font-awesome-icon>
+                    <b-tooltip target="info"
+                               title="Create an Event by giving it an informative title and contacts, then add your contacts to it."
+                               placement="bottom">
+                    </b-tooltip>
+                </b-row>
+                <b-row class='pt-4'>
+                    <b-col sm='12' md='6'>
+                        <autocomplete id='search ' v-model='contact' :placeholder='"Name"' :field='field'
+                                      :items='availableContacts'
+                                      :key-extractor='getUserFullName'>
+                        </autocomplete>
                     </b-col>
-                <b-col>
+                    <b-col class='pt-3 pt-md-0'>
+                        <button type='button' v-on:click='addContact'
+                                class='btn btn-primary wide'> Add contact
+                        </button>
+                    </b-col>
+                </b-row>
+            </div>
+            <b-row class='mt-5'>
+                <b-col md='6'>
                     <b-list-group>
-                        <div v-if="userContacts.length > 0">
+                        <h2>Requests</h2>
+                        <div v-if='requests.length > 0'>
+                            <b-list-group-item v-for='request in requests'> {{r.firstName}} {{r.lastName}}
+                                <span v-if='request.type === "INC"'>
+                                    <font-awesome-icon icon='check' class='color-green ml-1 icons float-right'
+                                                       v-on:click='acceptContact(request.id)'/>
+                                    <font-awesome-icon icon='times' class='color-red icons float-right' v-on:click='removeRequest(request.id)'/>
+                                </span>
+                            </b-list-group-item>
+                        </div>
+                        <div v-else class='mt-3'>
+                            <h4>No incoming requests right now.</h4>
+                        </div>
+                    </b-list-group>
+
+                </b-col>
+                <b-col md='6'>
+                    <b-list-group>
                         <h2>My contacts</h2>
-                        <b-list-group-item v-for='c in userContacts' > {{c.firstName}} {{c.lastName}} </b-list-group-item>
+                        <div v-if="userContacts.length > 0">
+                            <b-list-group-item v-for='c in userContacts'> {{c.firstName}} {{c.lastName}}
+                            </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
                             <h3>No contacts yet, add contacts from search</h3>
@@ -87,9 +82,9 @@
             };
         },
         mounted() {
-          this.getWaitingContacts();
-          this.getContacts();
-          this.getPersonContacts();
+            this.getWaitingContacts();
+            this.getContacts();
+            this.getPersonContacts();
         },
         methods: {
             getUserFullName(user) {
@@ -112,7 +107,7 @@
                         .then((data) => {
                             this.requests = data.data;
                             this.requests.forEach((request) => {
-                                Object.assign(request, { type: 'INC' });
+                                Object.assign(request, {type: 'INC'});
                             });
                         }).catch(() => {
                             router.push('/');
@@ -120,20 +115,18 @@
                     );
                 });
             },
-            addContact() {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.post('/contact/add/' + user.id + '/' + this.contact.id)
-                        .then(this.getContacts).then(() => {
-                            this.field.value = '';
-                            Object.assign(this.contact, { type: 'OUT' });
-                            this.requests.push(this.contact);
-                        })
-                        .catch(() => {
+            async addContact() {
+                this.user = await userStore.getUser();
+                this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id)
+                    .then(this.getContacts).then(() => {
+                    this.field.value = '';
+                    Object.assign(this.contact, {type: 'OUT'});
+                    this.requests.push(this.contact);
+                })
+                    .catch(() => {
                             router.push('/');
                         },
                     );
-                });
             },
             getPersonContacts() {
                 const self = this;
@@ -147,8 +140,9 @@
                     );
                 });
             },
-            acceptContact(id) {
-                this.$http.post('/contact/accept/' + id)
+            async acceptContact(id) {
+                this.user = await userStore.getUser();
+                this.$http.post('/contact/accept/' + id + "/" + this.user.id)
                     .then(() => {
                         this.getPersonContacts();
                         this.getWaitingContacts();
@@ -157,51 +151,42 @@
                     },
                 );
             },
-            removeRequest(id) {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.delete('/contact/remove/' + user.id + '/' + id)
-                        .then(() => {
-                            this.getWaitingContacts();
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
-                });
+            async removeRequest(id) {
+                this.user = await userStore.getUser();
+                this.$http.delete('/contact/remove/' + this.user.id + '/' + id)
+                    .then(() => {
+                        this.getWaitingContacts();
+                    }).catch(() => {
+                        router.push('/');
+                    },
+                );
             },
         },
     };
 </script>
 
 <style scoped>
-    .search-wrapper{
-        padding-top: 20px;
+    .search-wrapper {
         display: table;
         margin: 0 auto;
     }
+
     #search {
         width: 100%;
     }
-    .MT30 {
-        margin-top: 40px;
-    }
-    .green {
+
+    .color-green {
         color: limegreen;
     }
-    .red {
-        color:red;
+
+    .color-red {
+        color: red;
     }
+
     .icons {
         width: 22px !important;
         height: 22px !important;
     }
-    .MT-20 {
-        margin-top:-20px;
-    }
-    .ML-15 {
-        margin-left: -15px;
-    }
-
 
 
 </style>

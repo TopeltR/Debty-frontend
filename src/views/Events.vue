@@ -25,6 +25,7 @@
                             <td class=''>{{event.owner.firstName}} {{event.owner.lastName}}</td>
                             <td class='d-none d-md-table-cell'>{{event.created}}</td>
                             <td class='d-none d-md-table-cell'>{{event.closed}}</td>
+
                         </tr>
                         </tbody>
                     </table>
