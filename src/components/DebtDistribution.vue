@@ -2,8 +2,8 @@
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
             Optimized debts
-            <font-awesome-icon id="info" icon='info-circle' class="info"></font-awesome-icon>
-            <b-tooltip target="info"
+            <font-awesome-icon id="debt-dist-info" icon='info-circle' class="info"></font-awesome-icon>
+            <b-tooltip target="debt-dist-info"
                        title="When you have decided to close this event, the following debts will be saved."
                        placement="bottom"></b-tooltip>
         </div>
