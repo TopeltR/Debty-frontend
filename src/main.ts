@@ -22,7 +22,7 @@ import {
     faPlus,
     faSave,
     faSignOutAlt,
-    faTimes
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faEdit);

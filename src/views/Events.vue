@@ -88,7 +88,7 @@
                 });
             },
             getDateString(date) {
-                return date !== null ? new Date(date).toLocaleString() : ''
+                return date !== null ? new Date(date).toLocaleString() : '';
             },
             goToEventCreation() {
                 router.push('/events/create');

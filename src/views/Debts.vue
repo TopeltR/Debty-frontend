@@ -6,6 +6,11 @@
                 <h1 class='header pt-4'>My debts
                     <font-awesome-icon icon='plus' class='ml-3 mt-2 green' v-on:click='createNewDebt'/>
                 </h1>
+                <b-row>
+                    <b-col>
+                        <h4>Total balance: {{totalBalance}}€</h4>
+                    </b-col>
+                </b-row>
                 <b-row class='mt-4 mb-4'>
                     <b-col class="col-12 col-md-3">
                         <input class='form-control' type='text' v-model='search' placeholder='Search'
@@ -72,12 +77,15 @@
     import router from '@/router';
     import userStore from '../stores/UserStore';
     import DebtStatus from "../components/DebtStatus";
+    import BRow from "bootstrap-vue/src/components/layout/row";
 
     export default {
         name: 'events',
-        components: {DebtStatus, Navbar, Background},
+        components: {BRow, DebtStatus, Navbar, Background},
 
-        mounted() {
+        async mounted() {
+            this.user = await userStore.getUser();
+            this.totalBalance = await this.getBalance();
             this.getDebts();
         },
         data() {
@@ -85,6 +93,7 @@
                 loaded: false,
                 debts: [],
                 filteredDebts: [],
+                totalBalance: 0,
                 search: '',
                 user: {},
                 allStatuses: ["NEW", "ACCEPTED", "DECLINED", "PAID", "CONFIRMED"],
@@ -98,9 +107,12 @@
             goToDebt(id) {
                 router.push('/debts/' + id);
             },
+            async getBalance() {
+                const response = await this.$http.get("/debts/user/" + this.user.id + "/total");
+                return response.data;
+            },
             async getDebts() {
-                this.user = await userStore.getUser();
-                this.$http.get('debts/user/' + this.user.id)
+                this.$http.get('/debts/user/' + this.user.id)
                     .then((response) => {
                         response.data.forEach((debt) => {
                             if (debt.payer.id === this.user.id) {

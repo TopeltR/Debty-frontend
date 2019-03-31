@@ -55,7 +55,8 @@
                                 <p class="red MT29px" v-bind:style='{display: notMatchDisplayProperty}'>Sum and
                                     participations
                                     don't match!</p>
-                                <p class="red MT29px" v-bind:style="{display: errorDisplayProperty}">Not all required fields filled</p>
+                                <p class="red MT29px" v-bind:style="{display: errorDisplayProperty}">Not all required
+                                    fields filled</p>
                             </div>
                         </form>
                     </b-row>
@@ -119,7 +120,7 @@
             },
             selectedBill(bill) {
                 for (const payment of bill.billPayments) {
-                    const person = bill.people.find((p) => p.email == payment.person.email);
+                    const person = bill.people.find((p) => p.email === payment.person.email);
                     person.participation = payment.sum;
                 }
 
@@ -128,7 +129,7 @@
                 this.buyer = this.bill.buyer;
                 this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
                 this.addPersonState.people = this.bill.people;
-            }
+            },
         },
         async mounted() {
             this.user = await userStore.getUser();
@@ -180,11 +181,13 @@
             getFullName(person) {
                 return person.firstName + ' ' + person.lastName;
             },
-            roundToTwoDecimalPoints(number) {
-                return Math.round(number * 100) / 100
+            roundToTwoDecimalPoints(nr) {
+                return Math.round(nr * 100) / 100;
             },
             displayNotMatchMessage() {
-                const match = this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation)).reduce((a, b) => a + b, 0)) === this.roundToTwoDecimalPoints(Number(this.bill.sum));
+                const match = this.roundToTwoDecimalPoints(
+                    this.addPersonState.people.map((u) => Number(u.participation))
+                        .reduce((a, b) => a + b, 0)) === this.roundToTwoDecimalPoints(Number(this.bill.sum));
                 if (!match) {
                     this.notMatchDisplayProperty = 'block';
                 } else {
