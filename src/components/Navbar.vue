@@ -31,6 +31,12 @@
                             Profile
                         </b-nav-item>
                     </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto">
+                        <span> Welcome, <b>{{ getUserName() }}</b></span>
+                        <font-awesome-icon v-on:click="logOut" icon="sign-out-alt"
+                                           class="icon ml-4 mr-2 mt-1"></font-awesome-icon>
+                        <span v-on:click="logOut">Sign out</span>
+                    </b-navbar-nav>
                 </b-collapse>
             </b-navbar>
         </b-row>
@@ -40,14 +46,18 @@
 <script>
     import router from '@/router';
     import userStore from '../stores/UserStore';
+    import BNavbar from "bootstrap-vue/src/components/navbar/navbar";
 
     export default {
         name: 'Navbar',
+        components: {BNavbar},
         data: () => ({
+            user: null,
             notification: false,
             notificationAmount: 0,
         }),
-        mounted() {
+        async mounted() {
+            this.user = await userStore.getUser();
             this.getNotificationCount();
         },
         methods: {
@@ -55,12 +65,21 @@
                 router.push('/home');
             },
             async getNotificationCount() {
-                const user = await userStore.getUser();
-                const data = await this.$http.get('/contact/waiting/' + user.id);
-                if (data.data.length > 0) {
+                const response = await this.$http.get('/contact/waiting/' + this.user.id);
+                if (response.data.length > 0) {
                     this.notification = true;
-                    this.notificationAmount = data.data.length;
+                    this.notificationAmount = response.data.length;
                 }
+            },
+            getUserName() {
+                if (this.user == null) {
+                    return '';
+                }
+                return this.user.firstName + ' ' + this.user.lastName;
+            },
+            logOut() {
+                this.$http.post('/signout');
+                router.push('/');
             },
         },
     };
@@ -82,5 +101,9 @@
 
     .bg-light-gray {
         background-color: #E8E8E8;
+    }
+
+    .icon {
+        font-size: 20px;
     }
 </style>
