@@ -139,7 +139,7 @@
             },
             async acceptContact(id) {
                 this.user = await userStore.getUser();
-                this.$http.post('/contact/accept/' + id + "/" + this.user.id)
+                this.$http.post('/contact/accept/' + this.user.id + "/" + id)
                     .then(() => {
                         this.getPersonContacts();
                         this.getWaitingContacts();
@@ -152,8 +152,8 @@
                 this.user = await userStore.getUser();
                 this.$http.delete('/contact/remove/' + this.user.id + '/' + contact.id)
                     .then(() => {
-
                         this.getWaitingContacts();
+                        this.getPersonContacts();
                     }).catch(() => {
                         router.push('/');
                     },

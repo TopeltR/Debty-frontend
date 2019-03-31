@@ -205,6 +205,7 @@
             async loadDebt() {
                 const debtResponse = await this.$http.get('/debts/' + this.debtId);
                 this.debt = debtResponse.data;
+                console.log(this.debt);
                 if (this.debt.payer.id === this.debt.owner.id) {
                     this.field.value = this.getUserFullName(this.debt.receiver);
                 } else {
@@ -283,7 +284,7 @@
                 const url = `https://www.lhv.ee/portfolio/payment_out.cfm?
                 i_receiver_name=${this.debt.receiver.bankAccount.name}
                 &amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}
-                &amp;i_amount=${this.debt.amount}
+                &amp;i_amount=${this.debt.sum}
                 &amp;i_payment_desc=${this.debt.title}&amp`;
                 window.location.href = encodeURI(url);
             },
@@ -292,7 +293,7 @@
                 &field1=benname&value1=${this.debt.receiver.bankAccount.name}
                 &field3=benacc&value3=${this.debt.receiver.bankAccount.number}
                 &field10=desc&value10=${this.debt.title}
-                &value11=&field5=amount&value5=${this.debt.amount}
+                &value11=&field5=amount&value5=${this.debt.sum}
                 &paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 window.location.href = encodeURI(url);
             },
