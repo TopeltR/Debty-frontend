@@ -55,6 +55,7 @@
                                 <p class="red MT29px" v-bind:style='{display: notMatchDisplayProperty}'>Sum and
                                     participations
                                     don't match!</p>
+                                <p class="red MT29px" v-bind:style="{display: errorDisplayProperty}">Not all required fields filled</p>
                             </div>
                         </form>
                     </b-row>
@@ -152,6 +153,7 @@
             participationChanged: false,
             billChanged: false,
             notMatchDisplayProperty: 'none',
+            errorDisplayProperty: 'none',
             bill: {
                 title: '',
                 description: '',
@@ -198,6 +200,7 @@
             },
             async save() {
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
+                    this.errorDisplayProperty = 'none';
                     this.bill.people = this.addPersonState.people;
 
                     for (const person of this.bill.people) {
@@ -214,6 +217,8 @@
                     this.state.showing = true;
                     this.state.showing = false;
                     this.resetFields();
+                } else {
+                    this.errorDisplayProperty = 'block';
                 }
             },
             cancel() {
