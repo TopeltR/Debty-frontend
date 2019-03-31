@@ -16,7 +16,7 @@
 
 <script>
     import Autocomplete from '@/components/Autocomplete.vue';
-    import userStore from '../stores/UserStore.ts';
+    import userStore from "../stores/UserStore";
 
     export default {
         name: "AddPerson",
@@ -40,10 +40,9 @@
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
-            async addPerson() {
-                const currentUser = await userStore.getUser();
+            addPerson() {
                 if (this.user && this.user.firstName && !this.state.people.map((user) => user.email)
-                    .includes(this.user.email) && this.user.email !== currentUser.email) {
+                    .includes(this.user.email)) {
                     this.state.people.push(this.user);
                     this.state.allPeople = this.state.allPeople.filter((person) => !this.state.people.includes(person));
                     this.field.value = '';

@@ -125,6 +125,7 @@
                                     title: eventForm.title,
                                     people: eventForm.people,
                                     description: eventForm.description,
+                                    bills: eventForm.bills,
                                     owner: user,
                                 }).then((result) => {
                                     this.event = result.data;
