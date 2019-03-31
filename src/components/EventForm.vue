@@ -63,7 +63,6 @@
 </template>
 
 <script>
-    import User from '../entities/User';
     import router from '../router.ts';
     import Background from '@/components/Background';
     import Navbar from '@/components/Navbar';
@@ -128,15 +127,15 @@
                 };
             }
             const user = await userStore.getUser();
-            const data = await this.$http.get('/contact/id/' + user.id);
-            this.allPeople = data.data.filter((u) => u.email !== user.email);
+            const response = await this.$http.get('/contact/id/' + user.id);
+            this.allPeople = response.data.filter((u) => u.email !== user.email);
         },
         methods: {
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
             addPerson() {
-                //TODO: replace this functionality with addPerson component
+                // TODO: replace this functionality with addPerson component
                 const currentUser = userStore.getUser();
                 if (this.user && this.user.firstName && !this.people.map((user) => user.email).includes(this.user.email)
                     && this.user.email !== currentUser.email) {
