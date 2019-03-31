@@ -72,4 +72,6 @@ describe('CreateDebt', () => {
 
         expect(createDebt.html()).toMatchSnapshot();
     })
+
+
 });

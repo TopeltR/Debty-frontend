@@ -1,9 +1,10 @@
 <template>
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
-            Add bill
-            <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
-            <b-tooltip target="info"
+            {{pageTitle}}
+            <font-awesome-icon v-if="!selectedBill" id="add-bill-info" icon='info-circle'
+                               class="ml-1"></font-awesome-icon>
+            <b-tooltip v-if="!selectedBill" target="add-bill-info"
                        title="Here you can add bill to the event, remember to add participants!"
                        placement="bottom"></b-tooltip>
         </div>
@@ -31,26 +32,28 @@
                             <div class="form-group inline-form">
                                 <label class="PR5px" for="sum">Sum:</label>
                                 <input type="text" class="inline form-control skinny" id="sum" v-model="bill.sum"
-                                       required="">
+                                       required="" v-on:change="displayNotMatchMessage">
                                 <span class="ml-1">€</span>
                             </div>
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length > 0'>Participants:</p>
                                 <ul>
-                                    <li v-for='person in addPersonState.people'>
+                                    <li v-for='person in addPersonState.people' v-bind:key='person.id'>
                                         <div class="form-group inline-form">
                                             <label class="PR5px col-9 col-md-6" :for="person.firstName">{{
                                                 getFullName(person)
                                                 }}</label>
-                                            <input type="text" class="inline form-control skinny participation col-3"
-                                                   :id="person.firstName" v-model="person.participation" required="">
+                                            <input type="number" class="inline form-control skinny participation col-3"
+                                                   :id="person.firstName" v-model="person.participation" required=""
+                                                   v-on:change="displayNotMatchMessage">
                                             <span class="ml-1 col-1">€</span>
                                         </div>
                                     </li>
                                 </ul>
                                 <label for='user'>Add participants:</label>
                                 <add-person id="user" :state="addPersonState"/>
-                                <p class="red MT29px" v-bind:style='{display: displayProperty}'>Sum and participations
+                                <p class="red MT29px" v-bind:style='{display: notMatchDisplayProperty}'>Sum and
+                                    participations
                                     don't match!</p>
                             </div>
                         </form>
@@ -73,10 +76,8 @@
 
 <script>
     import AddPerson from '@/components/AddPerson.vue';
-    import router from '../router.ts';
     import Autocomplete from "./Autocomplete";
     import userStore from "../stores/UserStore";
-
 
     export default {
         name: 'AddBill',
@@ -104,20 +105,6 @@
                 type: Object,
             },
         },
-        computed: {
-            participantsLength() {
-                return this.addPersonState.people.length;
-            },
-            billSum() {
-                return Number(this.bill.sum);
-            },
-            participations() {
-                return this.addPersonState.people.map((u) => Number(u.participation));
-            },
-            sumAndParticipationsMatch() {
-                return this.participations.reduce((a, b) => a + b, 0) === this.billSum;
-            },
-        },
         watch: {
             state: {
                 deep: true,
@@ -129,47 +116,42 @@
                     }
                 },
             },
-            sumAndParticipationsMatch(yes) {
-                if (!yes) {
-                    this.displayProperty = 'block';
-                } else {
-                    this.displayProperty = 'none';
-                }
-            },
             selectedBill(bill) {
                 for (const payment of bill.billPayments) {
-                    const person = bill.people.find((p) => p.email === payment.person.email);
+                    const person = bill.people.find((p) => p.email == payment.person.email);
                     person.participation = payment.sum;
                 }
-                this.bill = bill;
+
+                this.bill = {...bill};
+                this.initialBill = {...bill};
                 this.buyer = this.bill.buyer;
                 this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
                 this.addPersonState.people = this.bill.people;
-            },
+            }
         },
         async mounted() {
             this.user = await userStore.getUser();
-            this.$http.get('/contact/id/' + this.user.id).then((data) => {
-                this.allPeople = data.data.filter((u) => u.email !== this.user.email).map((u) => {
-                    u.participation = 0;
-                    return u;
-                });
-                // Copy, can't be same
-                this.addPersonState.allPeople = this.allPeople.map((u) => u);
-            }).catch((error) => {
-                router.push('/');
+            const data = await this.$http.get('/contact/id/' + this.user.id);
+            data.data.push(this.user);
+            this.allPeople = data.data.map((u) => {
+                u.participation = 0;
+                return u;
             });
+            // Copy, can't be same
+            this.addPersonState.allPeople = this.allPeople.filter((u) => !this.bill.people.includes(u));
             this.addPersonState.people = this.bill.people;
 
         },
         data: () => ({
+            initialBill: {},
+            pageTitle: 'Add bill',
             user: {},
             field: {value: ''},
             allPeople: [],
             buyer: {},
             participationChanged: false,
             billChanged: false,
-            displayProperty: 'none',
+            notMatchDisplayProperty: 'none',
             bill: {
                 title: '',
                 description: '',
@@ -196,6 +178,24 @@
             getFullName(person) {
                 return person.firstName + ' ' + person.lastName;
             },
+            roundToTwoDecimalPoints(number) {
+                return Math.round(number * 100) / 100
+            },
+            displayNotMatchMessage() {
+                const match = this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation)).reduce((a, b) => a + b, 0)) === this.roundToTwoDecimalPoints(Number(this.bill.sum));
+                if (!match) {
+                    this.notMatchDisplayProperty = 'block';
+                } else {
+                    this.notMatchDisplayProperty = 'none';
+                }
+            },
+            resetFields() {
+                this.bill = this.initialBill;
+                this.buyer = {};
+                this.field.value = '';
+                this.addPersonState.people = [];
+                this.user = {};
+            },
             async save() {
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
                     this.bill.people = this.addPersonState.people;
@@ -213,9 +213,11 @@
                     this.event.bills = response.data.bills;
                     this.state.showing = true;
                     this.state.showing = false;
+                    this.resetFields();
                 }
             },
             cancel() {
+                this.resetFields();
                 this.state.showing = true;
                 this.state.showing = false;
             },
