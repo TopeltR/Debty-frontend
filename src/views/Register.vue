@@ -5,7 +5,7 @@
                 <form @submit.prevent='register'>
                     <div class='form-group text-right'>
                         <b-row>
-                            <b-col :class='{ "hasError": $v.form.email.$error }'>
+                            <b-col>
                                 <input type='text' class='form-control' id='email' placeholder='Email'
                                        v-model='form.email'>
                             </b-col>
@@ -24,7 +24,7 @@
                             <b-col>
                                 <input type='password' class='form-control' id='passwordConfirm'
                                        placeholder='Repeat password'
-                                       v-model='form.passwordConfirm'>
+                                       v-model='form.passwordConfirmation'>
                             </b-col>
                         </b-row>
                     </div>
@@ -85,17 +85,12 @@
     export default {
         name: 'Register',
         components: {Background},
-        validations: {
-            form: {
-                email: {required, email},
-                password: {required, min: minLength(8)},
-            },
-        },
+
         data: () => ({
             form: {
                 email: '',
                 password: '',
-                passwordConfirm: '',
+                passwordConfirmation: '',
                 firstName: '',
                 lastName: '',
             },
