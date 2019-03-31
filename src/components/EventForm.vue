@@ -5,9 +5,9 @@
             <b-row>
                 <b-col sm='12' md='6' offset-md='3' class='TM30px'>
                     <b-row>
-                        <h2>Create Event</h2>
-                        <font-awesome-icon id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
-                        <b-tooltip target="info"
+                        <h2>Create event</h2>
+                        <font-awesome-icon v-if="!eventId" id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
+                        <b-tooltip v-if="!eventId" target="info"
                                    title="Create an Event by giving it an informative title and contacts, then add your contacts to it."
                                    placement="bottom"></b-tooltip>
                     </b-row>
@@ -103,6 +103,8 @@
             },
         },
         data: () => ({
+            pageTitle: 'Create event',
+            tooltipDisplayProperty: 'block',
             title: '',
             description: '',
             bills: [],
@@ -118,6 +120,8 @@
                 this.description = data.description;
                 this.people = data.people;
                 this.bills = data.bills;
+                this.pageTitle = 'Edit event';
+                this.tooltipDisplayProperty = 'none';
             }
 
             for (const button of this.buttons) {
