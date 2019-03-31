@@ -127,6 +127,7 @@
         },
         methods: {
             async save() {
+                console.log(this.user);
                 const response = await this.$http.put("/users", this.user);
                 this.user = response.data;
                 this.user.password = '';

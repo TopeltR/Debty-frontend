@@ -205,7 +205,6 @@
             async loadDebt() {
                 const debtResponse = await this.$http.get('/debts/' + this.debtId);
                 this.debt = debtResponse.data;
-                console.log(this.debt);
                 if (this.debt.payer.id === this.debt.owner.id) {
                     this.field.value = this.getUserFullName(this.debt.receiver);
                 } else {
