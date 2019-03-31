@@ -8,31 +8,43 @@
                 </b-col>
                 <b-col cols="12" md="6" offset-md="3">
                     <div v-if="!editing" class="edit">
-                        <form @submit.prevent='' class='wide'>
-                            <div class='form-group'>
-                                <label for='first'>Name:</label>
-                                <b-row>
-                                    <b-col cols="12">
-                                        <div>{{user.firstName + ' ' + user.lastName}}</div>
-                                    </b-col>
-                                </b-row>
-                            </div>
-                            <div v-if="user.bankAccount" class='form-group'>
-                                <label for='first'>Bank account:</label>
-                                <b-row>
-                                    <b-col cols="12">
-                                        <div>{{user.bankAccount.number}}</div>
-                                    </b-col>
-                                    <b-col cols="12">
-                                        <div>{{user.bankAccount.name}}</div>
-                                    </b-col>
-                                </b-row>
-                            </div>
-                            <div class='form-group'>
-                                <label for='email'>Email:</label>
-                                <div>{{user.email}}</div>
-                            </div>
-                        </form>
+
+                        <b-col class="card shadow mb-5">
+                            <form @submit.prevent='' class='w-100 card-body'>
+                                <div class='form-group'>
+                                    <b-row class="pb-3 border-bottom-1">
+                                        <b-col md="6">
+                                            <label for='first'>Name:</label>
+                                        </b-col>
+                                        <b-col md="6">
+                                            {{user.firstName + ' ' + user.lastName}}
+                                        </b-col>
+                                    </b-row>
+                                </div>
+                                <div v-if="user.bankAccount" class='w-100'>
+                                    <b-row class="pb-3 border-bottom-1">
+                                        <b-col md="6">
+                                            <label for='first'>Bank account:</label>
+                                        </b-col>
+                                        <b-col md="6">
+                                            <div>{{user.bankAccount.name}}</div>
+                                            <div>{{user.bankAccount.number}}</div>
+                                        </b-col>
+                                    </b-row>
+                                </div>
+                                <div class='form-group'>
+                                    <b-row class="pb-3">
+                                        <b-col md="6">
+                                            <label for='email'>Email:</label>
+                                        </b-col>
+                                        <b-col md="6">
+                                            <div>{{user.email}}</div>
+                                        </b-col>
+                                    </b-row>
+
+                                </div>
+                            </form>
+                        </b-col>
                     </div>
                     <div v-else class="info">
                         <div class='form-group'>
@@ -141,9 +153,8 @@
 </script>
 
 <style scoped>
-    .title-col {
-        margin-top: 20px;
-        margin-bottom: 20px;
+    .border-bottom-1 {
+        border-bottom: lightgray solid 1px;
     }
 
     label {
