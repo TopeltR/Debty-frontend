@@ -93,6 +93,8 @@
                 this.$http.get('/events/all').then(
                     (response) => {
                         this.events = response.data;
+                        this.events = this.events.filter((event) =>
+                            event.people.some((person) => person.id === this.user.id));
                     },
                 );
             },

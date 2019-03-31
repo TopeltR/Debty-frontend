@@ -3,38 +3,56 @@
         <navbar/>
         <background>
             <b-row>
-                <b-col cols="12" md="6" offset-md="3" class="title-col">
-                    <h1>Kasutajaprofiil</h1>
-                </b-col>
+
                 <b-col cols="12" md="6" offset-md="3">
                     <div v-if="!editing" class="edit">
-                        <form @submit.prevent='' class='wide'>
-                            <div class='form-group'>
-                                <label for='first'>Name:</label>
-                                <b-row>
-                                    <b-col cols="12">
-                                        <div>{{user.firstName + ' ' + user.lastName}}</div>
-                                    </b-col>
-                                </b-row>
-                            </div>
-                            <div v-if="user.bankAccount" class='form-group'>
-                                <label for='first'>Bank account:</label>
-                                <b-row>
-                                    <b-col cols="12">
-                                        <div>{{user.bankAccount.number}}</div>
-                                    </b-col>
-                                    <b-col cols="12">
-                                        <div>{{user.bankAccount.name}}</div>
-                                    </b-col>
-                                </b-row>
-                            </div>
-                            <div class='form-group'>
-                                <label for='email'>Email:</label>
-                                <div>{{user.email}}</div>
-                            </div>
-                        </form>
+                        <b-col class="card shadow my-5">
+                            <form @submit.prevent='' class='w-100 card-body'>
+                                <div class="text-center">
+                                    <h2 class="pt-2 pb-5">User profile</h2>
+                                </div>
+                                <div class='form-group'>
+                                    <b-row class="pb-3 border-bottom-1">
+                                        <b-col md="6">
+                                            <label for='first'>Name:</label>
+                                        </b-col>
+                                        <b-col md="6">
+                                            {{user.firstName + ' ' + user.lastName}}
+                                        </b-col>
+                                    </b-row>
+                                </div>
+                                <div v-if="user.bankAccount" class='w-100'>
+                                    <b-row class="pb-3 border-bottom-1">
+                                        <b-col md="6">
+                                            <label for='first'>Bank account:</label>
+                                        </b-col>
+                                        <b-col md="6">
+                                            <div>{{user.bankAccount.name}}</div>
+                                            <div>{{user.bankAccount.number}}</div>
+                                        </b-col>
+                                    </b-row>
+                                </div>
+                                <div class='form-group'>
+                                    <b-row class="py-3">
+                                        <b-col md="6">
+                                            <label for='email'>Email:</label>
+                                        </b-col>
+                                        <b-col md="6">
+                                            <div>{{user.email}}</div>
+                                        </b-col>
+                                    </b-row>
+
+                                </div>
+                            </form>
+                            <b-row v-if="!editing" class="mb-4">
+                                <b-col cols="6">
+                                    <b-button class="w-100" variant="primary" v-on:click="editing = true">Edit</b-button>
+                                </b-col>
+                            </b-row>
+                        </b-col>
                     </div>
-                    <div v-else class="info">
+                    <div v-else class="info mt-5">
+                        <h2 class="mb-3">Edit user profile</h2>
                         <div class='form-group'>
                             <label for='first'>Name:</label>
                             <b-row>
@@ -84,7 +102,7 @@
                                    placeholder='Enter password again'>
                         </div>
                     </div>
-                    <b-row v-if="editing">
+                    <b-row v-if="editing" class="mt-3">
                         <b-col cols="6">
                             <b-button class="w-100" variant="primary" v-on:click="save">Save</b-button>
                         </b-col>
@@ -92,11 +110,7 @@
                             <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                         </b-col>
                     </b-row>
-                    <b-row v-else>
-                        <b-col cols="6">
-                            <b-button class="w-100" variant="primary" v-on:click="editing = true">Edit</b-button>
-                        </b-col>
-                    </b-row>
+
                 </b-col>
             </b-row>
         </background>
@@ -141,9 +155,8 @@
 </script>
 
 <style scoped>
-    .title-col {
-        margin-top: 20px;
-        margin-bottom: 20px;
+    .border-bottom-1 {
+        border-bottom: lightgray solid 1px;
     }
 
     label {
