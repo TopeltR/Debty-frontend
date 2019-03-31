@@ -77,8 +77,8 @@
                 }
                 return this.user.firstName + ' ' + this.user.lastName;
             },
-            logOut() {
-                this.$http.post('/signout');
+            async logOut() {
+                await this.$http.post('/signout');
                 router.push('/');
             },
         },
