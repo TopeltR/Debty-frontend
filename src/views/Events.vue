@@ -2,38 +2,40 @@
     <div>
         <navbar/>
         <background>
-            <div v-if="events.length > 0">
-                <h1 class='pt-4'>My events</h1>
-                <div class='search-wrapper mr-4 mt-4 mb-4'>
-                    <input class='form-control' type='text' v-model='search' placeholder='Search'/>
-                </div>
-                <div id='table'>
-                    <table class='table table-bordered table-hover'>
-                        <thead>
-                        <tr>
-                            <th scope='col'>Title</th>
-                            <th scope='col'>Description</th>
-                            <th scope='col'>Owner name</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Created at</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="event in filteredList" @click="goToEvent(event.id)">
-                            <td>{{event.title}}</td>
-                            <td>{{event.description}}</td>
-                            <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
-                            <td class='d-none d-md-table-cell'>{{event.created}}</td>
-                            <td class='d-none d-md-table-cell'>{{event.closed}}</td>
+            <div v-if='loaded'>
+                <div v-if="events.length > 0">
+                    <h1 class='pt-4'>My events</h1>
+                    <div class='search-wrapper mr-4 mt-4 mb-4'>
+                        <input class='form-control' type='text' v-model='search' placeholder='Search'/>
+                    </div>
+                    <div id='table'>
+                        <table class='table table-bordered table-hover'>
+                            <thead>
+                            <tr>
+                                <th scope='col'>Title</th>
+                                <th scope='col'>Description</th>
+                                <th scope='col'>Owner name</th>
+                                <th class='d-none d-md-table-cell' scope='col'>Created at</th>
+                                <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="event in filteredList" @click="goToEvent(event.id)">
+                                <td>{{event.title}}</td>
+                                <td>{{event.description}}</td>
+                                <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
+                                <td class='d-none d-md-table-cell'>{{event.created}}</td>
+                                <td class='d-none d-md-table-cell'>{{event.closed}}</td>
 
-                        </tr>
-                        </tbody>
-                    </table>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div v-else class="text-center p-5">
-                <h1>You don't have any events yet, grab your friends and create one!</h1>
-                <b-btn class="m-5" v-on:click="goToEventCreation">Create event!</b-btn>
+                <div v-else class="text-center p-5">
+                    <h1>You don't have any events yet, grab your friends and create one!</h1>
+                    <b-btn class="m-5" v-on:click="goToEventCreation">Create event!</b-btn>
+                </div>
             </div>
         </background>
     </div>
@@ -56,7 +58,7 @@
             return {
                 events: [],
                 search: '',
-
+                loaded: false,
             };
         },
         methods: {
@@ -69,6 +71,7 @@
                     self.$http.get('http://localhost:8080/events/user/' + user.id)
                         .then((data) => {
                             self.events = data.data;
+                            this.loaded = true;
                         }).catch(() => {
                             router.push('/');
                         },

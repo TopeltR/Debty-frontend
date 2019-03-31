@@ -49,7 +49,8 @@
                     <b-list-group>
                         <h2>My contacts</h2>
                         <div v-if="userContacts.length > 0">
-                            <b-list-group-item v-for='c in userContacts'> {{c.firstName}} {{c.lastName}}
+                            <b-list-group-item v-for='contact in userContacts'> {{contact.firstName}} {{contact.lastName}}
+                                <font-awesome-icon icon='times' class='color-red icons float-right' v-on:click='removeRequest(contact)'/>
                             </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
@@ -147,10 +148,11 @@
                     },
                 );
             },
-            async removeRequest(id) {
+            async removeRequest(contact) {
                 this.user = await userStore.getUser();
-                this.$http.delete('/contact/remove/' + this.user.id + '/' + id)
+                this.$http.delete('/contact/remove/' + this.user.id + '/' + contact.id)
                     .then(() => {
+
                         this.getWaitingContacts();
                     }).catch(() => {
                         router.push('/');
