@@ -4,15 +4,13 @@
         <background>
             <div v-if='loaded'>
                 <div v-if="events.length > 0">
-                    <h1 class='pt-4'>My events</h1>
+                    <h1 class='pt-4'>My events <font-awesome-icon icon='plus' class=' ml-3 mt-2 green' v-on:click='createNewEvent'/></h1>
                     <div class='search-wrapper mr-4 mt-4 mb-4'>
                         <b-row>
                             <b-col md="6">
                                 <input class='form-control' type='text' v-model='search' placeholder='Search'/>
                             </b-col>
-                            <b-col md="6" class="float-right">
-                                <font-awesome-icon icon='plus' class='fa-2x float-right mt-2 green' v-on:click='createNewEvent'/>
-                            </b-col>
+
                         </b-row>
 
                     </div>
