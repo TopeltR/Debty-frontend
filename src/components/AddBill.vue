@@ -202,7 +202,7 @@
 
                     for (const person of this.bill.people) {
                         this.bill.billPayments.push({
-                            person: person,
+                            person,
                             sum: person.participation,
                         });
                     }

@@ -2,38 +2,48 @@
     <div>
         <navbar/>
         <background>
-            <div v-if="events.length > 0">
-                <h1 class='pt-4'>My events</h1>
-                <div class='search-wrapper mr-4 mt-4 mb-4'>
-                    <input class='form-control' type='text' v-model='search' placeholder='Search'/>
-                </div>
-                <div id='table'>
-                    <table class='table table-bordered table-hover'>
-                        <thead>
-                        <tr>
-                            <th scope='col'>Title</th>
-                            <th scope='col'>Description</th>
-                            <th scope='col'>Owner name</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Created at</th>
-                            <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="event in filteredList" @click="goToEvent(event.id)">
-                            <td>{{event.title}}</td>
-                            <td>{{event.description}}</td>
-                            <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
-                            <td class='d-none d-md-table-cell'>{{event.created}}</td>
-                            <td class='d-none d-md-table-cell'>{{event.closed}}</td>
+            <div v-if='loaded'>
+                <div v-if="events.length > 0">
+                    <h1 class='pt-4'>My events</h1>
+                    <div class='search-wrapper mr-4 mt-4 mb-4'>
+                        <b-row>
+                            <b-col md="6">
+                                <input class='form-control' type='text' v-model='search' placeholder='Search'/>
+                            </b-col>
+                            <b-col md="6" class="float-right">
+                                <font-awesome-icon icon='plus' class='fa-2x float-right mt-2 green' v-on:click='createNewEvent'/>
+                            </b-col>
+                        </b-row>
 
-                        </tr>
-                        </tbody>
-                    </table>
+                    </div>
+                    <div id='table'>
+                        <table class='table table-bordered table-hover'>
+                            <thead>
+                            <tr>
+                                <th scope='col'>Title</th>
+                                <th scope='col'>Description</th>
+                                <th scope='col'>Owner name</th>
+                                <th class='d-none d-md-table-cell' scope='col'>Created at</th>
+                                <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="event in filteredList" @click="goToEvent(event.id)">
+                                <td>{{event.title}}</td>
+                                <td>{{event.description}}</td>
+                                <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
+                                <td class='d-none d-md-table-cell'>{{getDateString(event.createdAt)}}</td>
+                                <td class='d-none d-md-table-cell'>{{getDateString(event.closedAt)}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div v-else class="text-center p-5">
-                <h1>You don't have any events yet, grab your friends and create one!</h1>
-                <b-btn class="m-5" v-on:click="goToEventCreation">Create event!</b-btn>
+                <div v-else class="text-center p-5">
+                    <h1>You don't have any events yet, grab your friends and create one!</h1>
+                    <b-btn class="m-5" v-on:click="goToEventCreation">Create event!</b-btn>
+                </div>
             </div>
         </background>
     </div>
@@ -56,10 +66,13 @@
             return {
                 events: [],
                 search: '',
-
+                loaded: false,
             };
         },
         methods: {
+            createNewEvent() {
+                router.push('/events/create');
+            },
             goToEvent(id) {
                 router.push('/events/' + id);
             },
@@ -69,11 +82,15 @@
                     self.$http.get('http://localhost:8080/events/user/' + user.id)
                         .then((data) => {
                             self.events = data.data;
+                            this.loaded = true;
                         }).catch(() => {
                             router.push('/');
                         },
                     );
                 });
+            },
+            getDateString(date) {
+                return date !== null ? new Date(date).toLocaleString() : ''
             },
             goToEventCreation() {
                 router.push('/events/create');
@@ -94,7 +111,20 @@
 
 <style scoped>
 
-   .form-control {
+    .menu-list-button {
+        width: 100%;
+        background-color: white;
+        color: black;
+        font-size: 25px;
+        border-color: lightgray;
+        border-radius: 5px 5px 5px 5px !important;
+    }
+
+    .green {
+        color: limegreen;
+    }
+
+    .form-control {
        width: 300px !important;
    }
 </style>

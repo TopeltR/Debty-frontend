@@ -3,7 +3,7 @@
         <navbar></navbar>
         <background>
             <b-row v-if="!editing">
-                <b-col sm="12" md="6" offset-md="3" class="mt-5">
+                <b-col sm="12" md="8" offset-md="2" lg="6" offset-lg="3" class="mt-5">
                     <b-col class="card shadow mb-5">
                         <b-col class="card-body col-md-8 offset-md-2">
                             <div class="text-center">
@@ -28,18 +28,18 @@
                                 </b-col>
                             </b-row>
                             <b-row class="mt-3 pb-3 border-bottom-1">
-                                <b-col md="6">
+                                <b-col cols="6">
                                     <b>Sum:</b>
                                 </b-col>
-                                <b-col md="6">
+                                <b-col cols="6">
                                     {{ debt.sum }}€
                                 </b-col>
                             </b-row>
                             <b-row class="mt-3 pb-3 border-bottom-1">
-                                <b-col md="6">
+                                <b-col cols="6">
                                     <b>Status:</b>
                                 </b-col>
-                                <b-col md="6">
+                                <b-col cols="6">
                                     <debt-status :status="debt.status"></debt-status>
                                 </b-col>
                             </b-row>
@@ -59,7 +59,7 @@
                                     {{ new Date(debt.modifiedAt).toLocaleString() }}
                                 </b-col>
                             </b-row>
-                            <b-row class="mt-5" v-if="debt.owner != null && user != null && debt.owner.id === user.id">
+                            <b-row class="mt-5" v-if="isOwner(user)">
                                 <b-col cols="6">
                                     <b-button variant="danger" class="w-100" v-on:click="deleteDebt">Delete</b-button>
                                 </b-col>
@@ -110,10 +110,11 @@
                 </b-col>
             </b-row>
             <b-row v-else>
-                <b-col md="6" offset-md="3" class="w-100">
+                <b-col cols="10" offset="1" md="6" offset-md="3" class="w-100">
                     <b-row class="mt-5">
-                        <form @submit.prevent='createDebt' class='w-100'>
-                            <div class='form-group'>
+                        <form @submit.prevent='saveDebt' class='w-100'>
+                            <h1>Edit debt</h1>
+                            <div class='form-group pt-3'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='debt.title' id='title'
                                        placeholder='Enter debt title'>
@@ -147,7 +148,7 @@
                                 </b-row>
                             </div>
                             <b-row class='mt-4'
-                                   v-if="isPayer()">
+                                   v-if="isOwner(user)">
                                 <b-col cols="6">
                                     <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                                 </b-col>
@@ -283,7 +284,7 @@
                 const url = `https://www.lhv.ee/portfolio/payment_out.cfm?
                 i_receiver_name=${this.debt.receiver.bankAccount.name}
                 &amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}
-                &amp;i_amount=${this.debt.amount}
+                &amp;i_amount=${this.debt.sum}
                 &amp;i_payment_desc=${this.debt.title}&amp`;
                 window.location.href = encodeURI(url);
             },
@@ -292,7 +293,7 @@
                 &field1=benname&value1=${this.debt.receiver.bankAccount.name}
                 &field3=benacc&value3=${this.debt.receiver.bankAccount.number}
                 &field10=desc&value10=${this.debt.title}
-                &value11=&field5=amount&value5=${this.debt.amount}
+                &value11=&field5=amount&value5=${this.debt.sum}
                 &paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 window.location.href = encodeURI(url);
             },

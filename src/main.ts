@@ -9,18 +9,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import {
+    faArrowDown,
+    faArrowRight,
+    faArrowUp,
+    faCheck,
+    faEdit,
+    faEnvelope,
+    faInfoCircle,
+    faPlus,
+    faSave,
+    faSignOutAlt,
+    faTimes
+} from '@fortawesome/free-solid-svg-icons';
 
 library.add(faEdit);
 library.add(faSave);
@@ -32,6 +35,7 @@ library.add(faInfoCircle);
 library.add(faCheck);
 library.add(faTimes);
 library.add(faEnvelope);
+library.add(faSignOutAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 axios.defaults.baseURL = 'http://localhost:8080';
