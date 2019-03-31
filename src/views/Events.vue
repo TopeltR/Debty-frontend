@@ -24,8 +24,8 @@
                                 <td>{{event.title}}</td>
                                 <td>{{event.description}}</td>
                                 <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
-                                <td class='d-none d-md-table-cell'>{{event.created}}</td>
-                                <td class='d-none d-md-table-cell'>{{event.closed}}</td>
+                                <td class='d-none d-md-table-cell'>{{new Date(event.createdAt).toLocaleString()}}</td>
+                                <td class='d-none d-md-table-cell'>{{new Date(event.closedAt).toLocaleString()}}</td>
 
                             </tr>
                             </tbody>
