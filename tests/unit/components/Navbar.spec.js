@@ -6,6 +6,8 @@ import BootstrapVue from 'bootstrap-vue';
 
 describe('Navbar', () => {
     Vue.use(BootstrapVue);
+    console.error = jest.fn();
+
     const get = jest.fn(() => Promise.resolve({data: [1, 2, 3]}));
     Vue.prototype.$http = {get};
     userStore.getUser = jest.fn(() => Promise.resolve({id: 1}));
@@ -13,6 +15,7 @@ describe('Navbar', () => {
     describe('getNotificationCount', () => {
         it('should request friend requests from /contact/waiting/{user.id} and set notificationAmount to length of returned array', async () => {
             const navbar = mount(Navbar);
+            await Vue.nextTick();
 
             await navbar.vm.getNotificationCount();
 

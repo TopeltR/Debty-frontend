@@ -46,11 +46,9 @@
 <script>
     import router from '@/router';
     import userStore from '../stores/UserStore';
-    import BNavbar from "bootstrap-vue/src/components/navbar/navbar";
 
     export default {
         name: 'Navbar',
-        components: {BNavbar},
         data: () => ({
             user: null,
             notification: false,
