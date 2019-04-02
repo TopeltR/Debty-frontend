@@ -35,6 +35,8 @@
 </template>
 
 <script>
+    import router from '../router.ts';
+
     export default {
         name: 'DebtDistribution',
         props: {

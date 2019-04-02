@@ -5,8 +5,8 @@
             <navbar/>
             <background>
                 <b-row>
-                    <add-bill :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
-                    <add-bill :state="addBillState" :event="event"/>
+                    <add-bill :key="selectedBill ? selectedBill.id : -1" :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
+                    <add-bill :key="addBillClickCount" :state="addBillState" :event="event"/>
                     <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
                     <b-col sm='12' md='6'>
                         <div class='header'>
@@ -72,7 +72,7 @@
                             </b-col>
                         </b-row>
                     </b-col>
-                    <b-col v-else>
+                    <b-col class="pb-5" v-else>
                         This event has been closed.
                     </b-col>
                 </b-row>
@@ -105,6 +105,7 @@
             },
             user: null,
             selectedBill: undefined,
+            addBillClickCount: 0,
             editing: false,
             addBillState: {showing: false},
             seeBillState: {showing: false},
@@ -162,7 +163,9 @@
             isOwner() {
                 return this.user != null && this.event.owner != null && this.user.id === this.event.owner.id;
             },
-            addBill() {
+            async addBill() {
+                this.addBillClickCount++;
+                await this.$nextTick();
                 this.addBillState.showing = false;
                 this.addBillState.showing = true;
             },

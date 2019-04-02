@@ -118,17 +118,8 @@
                     }
                 },
             },
-            selectedBill(bill) {
-                for (const payment of bill.billPayments) {
-                    const person = bill.people.find((p) => p.email === payment.person.email);
-                    person.participation = payment.sum;
-                }
-
-                this.bill = {...bill};
-                this.initialBill = {...bill};
-                this.buyer = this.bill.buyer;
-                this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
-                this.addPersonState.people = this.bill.people;
+            selectedBill() {
+                this.setSelectedBillInfo();
             },
         },
         async mounted() {
@@ -143,6 +134,7 @@
             this.addPersonState.allPeople = this.allPeople.filter((u) => !this.bill.people.includes(u));
             this.addPersonState.people = this.bill.people;
 
+            this.setSelectedBillInfo();
         },
         data: () => ({
             initialBill: {},
@@ -170,6 +162,24 @@
             },
         }),
         methods: {
+            setSelectedBillInfo() {
+                if (this.selectedBill) {
+                    const bill = this.selectedBill;
+                    for (const payment of bill.billPayments) {
+                        const person = bill.people.find((p) => p.email === payment.person.email);
+                        person.participation = payment.sum;
+                    }
+
+                    this.bill = {...bill};
+                    if (!this.bill.people) {
+                        this.bill.people = [];
+                    }
+                    this.initialBill = {...bill};
+                    this.buyer = this.bill.buyer;
+                    this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
+                    this.addPersonState.people = this.bill.people;
+                }
+            },
             updateBuyer() {
                 if (this.buyer && this.buyer.firstName) {
                     this.addPersonState.people.removeElement(this.bill.buyer, (person) => person.email);
@@ -194,13 +204,6 @@
                     this.notMatchDisplayProperty = 'none';
                 }
             },
-            resetFields() {
-                this.bill = this.initialBill;
-                this.buyer = {};
-                this.field.value = '';
-                this.addPersonState.people = [];
-                this.user = {};
-            },
             async save() {
                 if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
                     this.errorDisplayProperty = 'none';
@@ -217,15 +220,14 @@
 
                     const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
                     this.event.bills = response.data.bills;
+
                     this.state.showing = true;
                     this.state.showing = false;
-                    this.resetFields();
                 } else {
                     this.errorDisplayProperty = 'block';
                 }
             },
             cancel() {
-                this.resetFields();
                 this.state.showing = true;
                 this.state.showing = false;
             },

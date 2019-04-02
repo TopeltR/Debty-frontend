@@ -79,7 +79,14 @@
                 userStore.getUser().then((user) => {
                     self.$http.get('http://localhost:8080/events/user/' + user.id)
                         .then((data) => {
-                            self.events = data.data;
+                            self.events = data.data.sort((event1, event2) => {
+                                if (event1.closedAt != null && event2.closedAt == null) {
+                                    return 1;
+                                }
+                                if (event2.closedAt != null && event1.closedAt == null) {
+                                    return -1;
+                                }
+                            });
                             this.loaded = true;
                         }).catch(() => {
                             router.push('/');
