@@ -82,7 +82,7 @@
                                 },
                             );
                         }
-                    }).catch((error) => {
+                    }).catch(() => {
                         this.displayProperty = 'block';
                 });
             },

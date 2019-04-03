@@ -128,8 +128,8 @@
                                     description: eventForm.description,
                                     bills: eventForm.bills,
                                     owner: user,
-                                }).then((result) => {
-                                    this.event = result.data;
+                                }).then((response) => {
+                                    this.event = response.data;
                                     this.editing = false;
                                 });
                             });

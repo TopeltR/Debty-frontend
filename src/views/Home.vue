@@ -10,7 +10,8 @@
                             <b-col sm='12'>
                                 <b-btn v-b-toggle.events class='menu-list-button'>
                                     <span class='float-left'>Events</span>
-                                    <font-awesome-icon icon='plus' class='float-right mt-2 green' v-on:click='createNewEvent'/>
+                                    <font-awesome-icon icon='plus' class='float-right mt-2 green'
+                                                       v-on:click='createNewEvent'/>
                                 </b-btn>
                             </b-col>
                         </b-row>
@@ -26,7 +27,8 @@
                             <b-col sm='12'>
                                 <b-btn v-b-toggle.debts class='menu-list-button'>
                                     <span class='float-left'>Debts</span>
-                                    <font-awesome-icon icon='plus' class='float-right mt-2 green' v-on:click='createNewDebt'/>
+                                    <font-awesome-icon icon='plus' class='float-right mt-2 green'
+                                                       v-on:click='createNewDebt'/>
                                 </b-btn>
                             </b-col>
                         </b-row>
@@ -73,39 +75,32 @@
             },
             async getDebts() {
                 this.user = await userStore.getUser();
-                this.$http.get('/debts/all').then(
-                    (response) => {
-                        response.data.forEach((debt) => {
-                            if (debt.payer.id === this.user.id) {
-                                Object.assign(debt, {type: 'out'});
-                                this.debts.push(debt);
-                            } else if (debt.receiver.id === this.user.id) {
-                                Object.assign(debt, {type: 'in'});
-                                this.debts.push(debt);
-                            }
-                        });
-                        this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
-                            || debt.receiver.id === this.user.id);
-                    },
-                );
-            },
-            getEvents() {
-                this.$http.get('/events/all').then(
-                    (response) => {
-                        this.events = response.data;
-                        this.events = this.events.filter((event) =>
-                            event.people.some((person) => person.id === this.user.id));
-                    },
-                );
-            },
-            openBankAccountModal() {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    if (user.bankAccount === null) {
-                        self.addBankAccountState.showing = false;
-                        self.addBankAccountState.showing = true;
+                const response = await this.$http.get('/debts/all');
+
+                response.data.forEach((debt) => {
+                    if (debt.payer.id === this.user.id) {
+                        Object.assign(debt, {type: 'out'});
+                        this.debts.push(debt);
+                    } else if (debt.receiver.id === this.user.id) {
+                        Object.assign(debt, {type: 'in'});
+                        this.debts.push(debt);
                     }
                 });
+                this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
+                    || debt.receiver.id === this.user.id);
+            },
+            async getEvents() {
+                const response = await this.$http.get('/events/all');
+                this.events = response.data;
+                this.events = this.events.filter((event) =>
+                    event.people.some((person) => person.id === this.user.id));
+            },
+            async openBankAccountModal() {
+                const user = await userStore.getUser();
+                if (user.bankAccount === null) {
+                    this.addBankAccountState.showing = false;
+                    this.addBankAccountState.showing = true;
+                }
             },
         },
     };
