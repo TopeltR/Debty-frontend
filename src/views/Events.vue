@@ -15,7 +15,7 @@
 
                     </div>
                     <div id='table'>
-                        <table class='table table-bordered table-hover'>
+                        <table class='table table-responsive table-bordered table-hover'>
                             <thead>
                             <tr>
                                 <th scope='col'>Title</th>

@@ -32,7 +32,7 @@
                     </b-col>
                 </b-row>
                 <div id='table'>
-                    <table class='table table-bordered table-hover' id='debts'>
+                    <table class='table table-responsive-sm table-bordered table-hover' id='debts'>
                         <thead>
                         <tr>
                             <th scope='col'>Sum</th>
@@ -166,4 +166,11 @@
     .text-grey {
         color: grey;
     }
+
+    @media(max-width: 768px) {
+        #debts {
+            width: 100%;
+        }
+    }
+
 </style>

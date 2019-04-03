@@ -68,7 +68,7 @@
                                 <b-btn class="wide mt-4" variant='primary' v-on:click='editing = true'>Edit</b-btn>
                             </b-col>
                             <b-col cols="6" offset="0" md="2" offset-md="0">
-                                <b-btn class="wide mt-4" variant='primary' v-on:click='addBill'>Add bill</b-btn>
+                                <b-btn class="wide mt-4 mb-3" variant='primary' v-on:click='addBill'>Add bill</b-btn>
                             </b-col>
                         </b-row>
                     </b-col>

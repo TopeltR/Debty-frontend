@@ -31,8 +31,11 @@ exports[`Navbar should render 1`] = `
               Profile
             </a></li>
         </ul>
-        <ul class="navbar-nav ml-auto"><span> Welcome, <b></b></span>
-          <font-awesome-icon icon="sign-out-alt" class="icon ml-4 mr-2 mt-1"></font-awesome-icon> <span>Sign out</span></ul>
+        <ul class="navbar-nav ml-auto"><span class="d-none d-md-block mr-4 mt-2"> Welcome, <b></b></span>
+          <li class="nav-item"><a target="_self" href="#" class="nav-link">
+              <font-awesome-icon icon="sign-out-alt" class="icon"></font-awesome-icon> <span>Sign out</span>
+            </a></li>
+        </ul>
       </div>
     </nav>
   </div>

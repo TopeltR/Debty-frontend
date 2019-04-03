@@ -50,7 +50,7 @@ describe('CreateDebt', () => {
             const createDebt = mount(CreateDebt);
             createDebt.vm.formData.payer = user;
 
-            await createDebt.vm.createDebt();
+            await createDebt.vm.saveDebt();
 
             expect(post).toHaveBeenCalledWith('/debts', {
                 owner: {
