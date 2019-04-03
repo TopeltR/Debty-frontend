@@ -32,10 +32,12 @@
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto">
-                        <span> Welcome, <b>{{ getUserName() }}</b></span>
-                        <font-awesome-icon v-on:click="logOut" icon="sign-out-alt"
-                                           class="icon ml-4 mr-2 mt-1"></font-awesome-icon>
-                        <span v-on:click="logOut">Sign out</span>
+                        <span class="d-none d-md-block mr-4 mt-2"> Welcome, <b>{{ getUserName() }}</b></span>
+                        <b-nav-item>
+                            <font-awesome-icon v-on:click="logOut" icon="sign-out-alt"
+                                               class="icon"></font-awesome-icon>
+                            <span v-on:click="logOut">Sign out</span>
+                        </b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
             </b-navbar>
