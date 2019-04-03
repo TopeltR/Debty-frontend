@@ -39,6 +39,7 @@
 
     export default {
         name: 'DebtDistribution',
+
         props: {
             state: {
                 type: Object,

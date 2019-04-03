@@ -195,9 +195,9 @@
             this.debtId = Number(this.$route.params.id);
             this.loadDebt();
 
-            const usersResponse = await this.$http.get('/users/all');
             this.user = await userStore.getUser();
-            this.contacts = usersResponse.data.filter((u) => u.email !== this.user.email);
+            const usersResponse = await this.$http.get('/contacts/id/' + this.user.id);
+            this.contacts = usersResponse.data.filter((user) => user.email !== this.user.email);
         },
         methods: {
             async loadDebt() {
