@@ -84,6 +84,13 @@
                     if (event2.closedAt != null && event1.closedAt == null) {
                         return -1;
                     }
+                    if (event1.createdAt < event2.createdAt) {
+                        return 1;
+                    }
+                    if (event2.createdAt < event1.createdAt) {
+                        return -1;
+                    }
+                    return 0;
                 });
                 this.loaded = true;
             },

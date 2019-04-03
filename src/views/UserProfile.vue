@@ -6,7 +6,7 @@
 
                 <b-col cols="12" md="6" offset-md="3">
                     <div v-if="!editing" class="edit">
-                        <b-col class="card shadow my-5">
+                        <b-col class="p-md-5 card shadow my-5">
                             <form @submit.prevent='' class='w-100 card-body'>
                                 <div class="text-center">
                                     <h2 class="pt-2 pb-5">User profile</h2>
@@ -45,7 +45,7 @@
                                 </div>
                             </form>
                             <b-row v-if="!editing" class="mb-4">
-                                <b-col cols="6">
+                                <b-col cols="12" md="6" offset-md="3">
                                     <b-button class="w-100" variant="primary" v-on:click="editing = true">Edit</b-button>
                                 </b-col>
                             </b-row>

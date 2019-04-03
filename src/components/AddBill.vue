@@ -195,9 +195,9 @@
                 return Math.round(nr * 100) / 100;
             },
             displayNotMatchMessage() {
-                const match = this.roundToTwoDecimalPoints(
-                    this.addPersonState.people.map((u) => Number(u.participation))
-                        .reduce((a, b) => a + b, 0)) === this.roundToTwoDecimalPoints(Number(this.bill.sum));
+                const match =
+                    this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation))
+                        .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0)) === this.roundToTwoDecimalPoints(Number(this.bill.sum));
                 if (!match) {
                     this.notMatchDisplayProperty = 'block';
                 } else {
@@ -205,7 +205,7 @@
                 }
             },
             async save() {
-                if (this.bill.title && this.bill.description && this.bill.people.length > 0) {
+                if (this.bill.title && this.bill.people.length > 0) {
                     this.errorDisplayProperty = 'none';
                     this.bill.people = this.addPersonState.people;
 

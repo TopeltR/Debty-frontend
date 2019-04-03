@@ -55,6 +55,9 @@
             eventId: {
                 type: Number,
             },
+            event: {
+                event: {type: Object}
+            }
         },
         watch: {
             state: {
@@ -73,10 +76,9 @@
                 return person.firstName + ' ' + person.lastName;
             },
             async closeEvent() {
-                await this.$http.post('/events/' + this.eventId + '/close');
+                const response = await this.$http.post('/events/' + this.eventId + '/close');
                 this.state.showing = false;
-                router.push('/events/' + this.eventId); // TODO: spaghetti broke
-
+                window.location.reload();
             },
             cancel() {
                 this.state.showing = false;

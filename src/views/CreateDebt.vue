@@ -12,73 +12,71 @@
                                    placement="bottom"></b-tooltip>
                     </b-row>
                     <b-row>
-                        <form @submit.prevent='createDebt' class='w-100'>
-                            <form @submit.prevent='createDebt' class='wide'>
-                                <div class='form-group pt-3'>
-                                    <label for='title'>Title:</label>
-                                    <input type='text' class='form-control' v-model='formData.title' id='title'
-                                           placeholder='Enter debt title'>
-                                </div>
-                                <div class='form-group'>
-                                    <b-row>
-                                        <b-col cols="11">
-                                            <b-row>
-                                                <b-col cols="2">
-                                                    <label>From:</label>
-                                                </b-col>
-                                                <b-col cols="10">
-                                                    <input v-if="!userIsReceiver" type='text' class='form-control'
-                                                           v-model='userName'
-                                                           disabled>
-                                                    <autocomplete v-else id='payer' v-model='formData.payer'
-                                                                  :placeholder='"Name"'
-                                                                  :field='field'
-                                                                  :items='contacts'
-                                                                  :key-extractor='getUserFullName'></autocomplete>
-                                                </b-col>
-                                            </b-row>
-                                            <b-row>
-                                                <b-col cols="2" class="mt-3">
-                                                    <label>To:</label>
-                                                </b-col>
-                                                <b-col cols="10" class="mt-3">
-                                                    <input v-if="userIsReceiver" type='text' class='form-control'
-                                                           v-model='userName'
-                                                           disabled>
-                                                    <autocomplete v-else id='receiver' v-model='formData.receiver'
-                                                                  :placeholder='"Name"'
-                                                                  :field='field'
-                                                                  :items='contacts'
-                                                                  :key-extractor='getUserFullName'></autocomplete>
-                                                </b-col>
-                                            </b-row>
-                                        </b-col>
-                                        <b-col cols="1" v-on:click="switchDebtorReceiver">
-                                            <font-awesome-icon icon='arrow-up'
-                                                               class="mt-4 p-0 limegreen"></font-awesome-icon>
-                                            <font-awesome-icon icon='arrow-down'
-                                                               class="mb-2 ml-2 limegreen"></font-awesome-icon>
-                                        </b-col>
-                                    </b-row>
-                                </div>
-                                <div class='form-group'>
-                                    <b-row>
-                                        <b-col cols='2'>
-                                            <label for='sum' class='mt-2'>Sum:</label>
-                                        </b-col>
-                                        <b-col cols='3'>
-                                            <input id='sum' type='text' class='form-control pr-0' v-model='formData.sum'
-                                                   placeholder='0'>
-                                        </b-col>
-                                        <b-col cols='1' class='mt-2 pl-0'>€</b-col>
-                                    </b-row>
-                                </div>
-                                <b-row class='mt-4 text-center'>
-                                    <b-col>
-                                        <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
+                        <form @submit.prevent="" class='w-100'>
+                            <div class='form-group pt-3'>
+                                <label for='title'>Title:</label>
+                                <input type='text' class='form-control' v-model='formData.title' id='title'
+                                       placeholder='Enter debt title'>
+                            </div>
+                            <div class='form-group'>
+                                <b-row>
+                                    <b-col cols="10" md="11">
+                                        <b-row>
+                                            <b-col cols="2">
+                                                <label>From:</label>
+                                            </b-col>
+                                            <b-col cols="10">
+                                                <input v-if="!userIsReceiver" type='text' class='form-control'
+                                                       v-model='userName'
+                                                       disabled>
+                                                <autocomplete v-else id='payer' v-model='formData.payer'
+                                                              :placeholder='"Name"'
+                                                              :field='field'
+                                                              :items='contacts'
+                                                              :key-extractor='getUserFullName'></autocomplete>
+                                            </b-col>
+                                        </b-row>
+                                        <b-row>
+                                            <b-col cols="2" class="mt-3">
+                                                <label>To:</label>
+                                            </b-col>
+                                            <b-col cols="10" class="mt-3">
+                                                <input v-if="userIsReceiver" type='text' class='form-control'
+                                                       v-model='userName'
+                                                       disabled>
+                                                <autocomplete v-else id='receiver' v-model='formData.receiver'
+                                                              :placeholder='"Name"'
+                                                              :field='field'
+                                                              :items='contacts'
+                                                              :key-extractor='getUserFullName'></autocomplete>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                    <b-col cols="2" md="1" v-on:click="switchDebtorReceiver">
+                                        <font-awesome-icon icon='arrow-up'
+                                                           class="mt-4 p-0 limegreen"></font-awesome-icon>
+                                        <font-awesome-icon icon='arrow-down'
+                                                           class="mb-2 ml-2 limegreen"></font-awesome-icon>
                                     </b-col>
                                 </b-row>
-                            </form>
+                            </div>
+                            <div class='form-group'>
+                                <b-row>
+                                    <b-col cols='2'>
+                                        <label for='sum' class='mt-2'>Sum:</label>
+                                    </b-col>
+                                    <b-col cols='3'>
+                                        <input id='sum' type='text' class='form-control pr-0' v-model='formData.sum'
+                                               placeholder='0'>
+                                    </b-col>
+                                    <b-col cols='1' class='mt-2 pl-0'>€</b-col>
+                                </b-row>
+                            </div>
+                            <b-row class='mt-4 text-center'>
+                                <b-col>
+                                    <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
+                                </b-col>
+                            </b-row>
                         </form>
                     </b-row>
                 </b-col>
@@ -125,7 +123,7 @@
             getUserFullName(user) {
                 return user.lastName == null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
-            async createDebt() {
+            async saveDebt() {
                 if (this.formData.payer === null) {
                     this.formData.payer = {
                         firstName: this.field.value,
