@@ -77,11 +77,10 @@
     import router from '@/router';
     import userStore from '../stores/UserStore';
     import DebtStatus from "../components/DebtStatus";
-    import BRow from "bootstrap-vue/src/components/layout/row";
 
     export default {
         name: 'events',
-        components: {BRow, DebtStatus, Navbar, Background},
+        components: {DebtStatus, Navbar, Background},
 
         async mounted() {
             this.user = await userStore.getUser();
@@ -112,26 +111,21 @@
                 return response.data;
             },
             async getDebts() {
-                this.$http.get('/debts/user/' + this.user.id)
-                    .then((response) => {
-                        response.data.forEach((debt) => {
-                            if (debt.payer.id === this.user.id) {
-                                Object.assign(debt, {type: 'outgoing'});
-                                this.debts.push(debt);
-                            } else if (debt.receiver.id === this.user.id) {
-                                Object.assign(debt, {type: 'incoming'});
-                                this.debts.push(debt);
-                            }
-                        });
-                        this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
-                            || debt.receiver.id === this.user.id);
-                        this.sortDebts();
-                        this.filteredDebts = this.debts;
-                        this.loaded = true;
-                    }).catch(() => {
-                        router.push('/');
-                    },
-                );
+                const response = await this.$http.get('/debts/user/' + this.user.id);
+                response.data.forEach((debt) => {
+                    if (debt.payer.id === this.user.id) {
+                        Object.assign(debt, {type: 'outgoing'});
+                        this.debts.push(debt);
+                    } else if (debt.receiver.id === this.user.id) {
+                        Object.assign(debt, {type: 'incoming'});
+                        this.debts.push(debt);
+                    }
+                });
+                this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
+                    || debt.receiver.id === this.user.id);
+                this.sortDebts();
+                this.filteredDebts = this.debts;
+                this.loaded = true;
             },
             filterStatus() {
                 this.sortDebts();

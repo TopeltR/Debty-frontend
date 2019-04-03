@@ -169,16 +169,13 @@
     import router from '../router.ts';
     import Background from '@/components/Background';
     import Navbar from '@/components/Navbar';
-    import BRow from "bootstrap-vue/src/components/layout/row";
     import Autocomplete from '@/components/Autocomplete';
     import userStore from '@/stores/UserStore';
-    import BCol from "bootstrap-vue/src/components/layout/col";
-    import BButton from "bootstrap-vue/src/components/button/button";
     import DebtStatus from "../components/DebtStatus";
 
     export default {
         name: 'CreateEvent',
-        components: {DebtStatus, BButton, BCol, BRow, Background, Navbar, Autocomplete},
+        components: {DebtStatus, Background, Navbar, Autocomplete},
         data: () => ({
             debtId: null,
             debt: {},

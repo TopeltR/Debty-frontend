@@ -1,6 +1,6 @@
 import User from '@/entities/User';
 
-import axios, {AxiosPromise} from 'axios';
+import axios from 'axios';
 
 
 class UserStore {

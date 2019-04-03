@@ -34,7 +34,8 @@
                                 <span v-if='request.type === "Incoming"'>
                                     <font-awesome-icon icon='check' class='color-green ml-1 icons float-right'
                                                        v-on:click='acceptContact(request.id)'/>
-                                    <font-awesome-icon icon='times' class='color-red icons float-right' v-on:click='removeRequest(request.id)'/>
+                                    <font-awesome-icon icon='times' class='color-red icons float-right'
+                                                       v-on:click='removeRequest(request.id)'/>
                                 </span>
                                 <div v-else></div>
                             </b-list-group-item>
@@ -49,8 +50,10 @@
                     <b-list-group>
                         <h2>My contacts</h2>
                         <div v-if="userContacts.length > 0">
-                            <b-list-group-item v-for='contact in userContacts'> {{contact.firstName}} {{contact.lastName}}
-                                <font-awesome-icon icon='times' class='color-red icons float-right' v-on:click='removeRequest(contact)'/>
+                            <b-list-group-item v-for='contact in userContacts'> {{contact.firstName}}
+                                {{contact.lastName}}
+                                <font-awesome-icon icon='times' class='color-red icons float-right'
+                                                   v-on:click='removeRequest(contact)'/>
                             </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
@@ -73,16 +76,14 @@
     export default {
         name: 'events',
         components: {Navbar, Background, Autocomplete},
-        data() {
-            return {
-                contact: {},
-                field: {value: ''},
-                availableContacts: [],
-                requests: [],
-                userContacts: [],
-                user: userStore.getUser(),
-            };
-        },
+        data: () => ({
+            contact: {},
+            field: {value: ''},
+            availableContacts: [],
+            requests: [],
+            userContacts: [],
+            user: userStore.getUser(),
+        }),
         mounted() {
             this.getWaitingContacts();
             this.getContacts();
@@ -93,71 +94,41 @@
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             async getContacts() {
-            this.user = await userStore.getUser();
-            this.$http.get('/contact/all/' + this.user.id)
-                .then((data) => {
-                    this.availableContacts = data.data;
-                }).catch(() => {
-                    router.push('/');
-                },
-            );
+                this.user = await userStore.getUser();
+                const {data} = await this.$http.get('/contact/all/' + this.user.id);
+                this.availableContacts = data;
             },
             async getWaitingContacts() {
                 this.user = await userStore.getUser();
-                this.$http.get('/contact/waiting/' + this.user.id)
-                    .then((data) => {
-                        this.requests = data.data;
-                        this.requests.forEach((request) => {
-                            Object.assign(request, {type: 'Incoming'});
-                        });
-                    }).catch(() => {
-                        router.push('/');
-                    },
-                );
+                const response = await this.$http.get('/contact/waiting/' + this.user.id);
+                this.requests = response.data;
+                this.requests.forEach((request) => {
+                    Object.assign(request, {type: 'Incoming'});
+                });
             },
             async addContact() {
                 this.user = await userStore.getUser();
-                this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id)
-                    .then(this.getContacts).then(() => {
-                    this.field.value = '';
-                    this.requests.push(this.contact);
-                })
-                    .catch(() => {
-                            router.push('/');
-                        },
-                    );
+                await this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id);
+                await this.getContacts();
+                this.field.value = '';
+                this.requests.push(this.contact);
             },
             async getPersonContacts() {
                 this.user = await userStore.getUser();
-                this.$http.get('/contact/id/' + this.user.id)
-                    .then((data) => {
-                        this.userContacts = data.data;
-                    }).catch(() => {
-                        router.push('/');
-                    },
-                );
+                const response = await this.$http.get('/contact/id/' + this.user.id);
+                this.userContacts = response.data;
             },
             async acceptContact(id) {
                 this.user = await userStore.getUser();
-                this.$http.post('/contact/accept/' + this.user.id + "/" + id)
-                    .then(() => {
-                        this.getPersonContacts();
-                        this.getWaitingContacts();
-                    }).catch(() => {
-                        router.push('/');
-                    },
-                );
+                await this.$http.post('/contact/accept/' + this.user.id + "/" + id);
+                this.getPersonContacts();
+                this.getWaitingContacts();
             },
             async removeRequest(contact) {
                 this.user = await userStore.getUser();
-                this.$http.delete('/contact/remove/' + this.user.id + '/' + contact.id)
-                    .then(() => {
-                        this.getWaitingContacts();
-                        this.getPersonContacts();
-                    }).catch(() => {
-                        router.push('/');
-                    },
-                );
+                await this.$http.delete('/contact/remove/' + this.user.id + '/' + contact.id);
+                this.getWaitingContacts();
+                this.getPersonContacts();
             },
         },
     };

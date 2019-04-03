@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Debts should render 1`] = `
+<div>
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="navbar fixed-top w-100 bg-light-gray navbar-light navbar-expand-sm"><button type="button" aria-label="Toggle navigation" aria-controls="nav_collapse" aria-expanded="false" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+        <div class="navbar-brand limegreen brand">debty</div>
+        <div id="nav_collapse" class="navbar-collapse collapse" style="display: none;">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a target="_self" href="/home" class="nav-link">
+                Home
+              </a></li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item"><a target="_self" href="/events" class="nav-link">
+                Events
+              </a></li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item"><a target="_self" href="/debts" class="nav-link">
+                Debts
+              </a></li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item"><a target="_self" href="/contacts" class="nav-link">
+                Contacts
+                <!----></a></li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item"><a target="_self" href="/profile" class="nav-link">
+                Profile
+              </a></li>
+          </ul>
+          <ul class="navbar-nav ml-auto"><span> Welcome, <b></b></span>
+            <font-awesome-icon icon="sign-out-alt" class="icon ml-4 mr-2 mt-1"></font-awesome-icon> <span>Sign out</span></ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="diagonal-background container-fluid">
+    <div class="container"></div>
+  </div>
+</div>
+`;

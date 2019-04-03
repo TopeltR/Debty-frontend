@@ -74,25 +74,18 @@
             goToEvent(id) {
                 router.push('/events/' + id);
             },
-            getEvents() {
-                const self = this;
-                userStore.getUser().then((user) => {
-                    self.$http.get('http://localhost:8080/events/user/' + user.id)
-                        .then((data) => {
-                            self.events = data.data.sort((event1, event2) => {
-                                if (event1.closedAt != null && event2.closedAt == null) {
-                                    return 1;
-                                }
-                                if (event2.closedAt != null && event1.closedAt == null) {
-                                    return -1;
-                                }
-                            });
-                            this.loaded = true;
-                        }).catch(() => {
-                            router.push('/');
-                        },
-                    );
+            async getEvents() {
+                const user = await userStore.getUser();
+                const response = await this.$http.get('/events/user/' + user.id);
+                this.events = response.data.sort((event1, event2) => {
+                    if (event1.closedAt != null && event2.closedAt == null) {
+                        return 1;
+                    }
+                    if (event2.closedAt != null && event1.closedAt == null) {
+                        return -1;
+                    }
                 });
+                this.loaded = true;
             },
             getDateString(date) {
                 return date !== null ? new Date(date).toLocaleString() : '';

@@ -78,14 +78,12 @@
     // this should go to validated fields: @input='v.$touch()'
     import router from '../router.ts';
     import Background from '../components/Background';
-    import {required, email, minLength} from 'vuelidate/lib/validators';
     import User from '../entities/User';
     import userStore from '../stores/UserStore';
 
     export default {
         name: 'Register',
         components: {Background},
-
         data: () => ({
             form: {
                 email: '',
@@ -96,15 +94,13 @@
             },
         }),
         methods: {
-            register() {
+            async register() {
                 const user = this.form;
-                this.$http.post('/register', user)
-                    .then((response) => {
-                        if (response.status === 200) {
-                            userStore.setUser(User.from(user));
-                            router.push('/home');
-                        }
-                    });
+                const response = await this.$http.post('/register', user);
+                if (response.status === 200) {
+                    userStore.setUser(User.from(user));
+                    router.push('/home');
+                }
             },
         },
     };
