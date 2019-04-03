@@ -82,17 +82,17 @@
                                     </b-button>
                                 </b-col>
                             </b-row>
-                            <b-row v-if="canPay()" class="mt-5">
+                            <b-row v-if="canPay()" class="mt-5 p-3">
                                 <h2>Pay</h2>
-                                <b-row class="mt-2">
-                                    <b-col cols="4">
+                                <b-row class="mt-2 pl-3">
+                                    <b-col cols="4" class="p-0 pr-2">
                                         <img v-on:click="payWithSEB" src="../assets/seb-logo.png" class="bank-link"/>
                                     </b-col>
-                                    <b-col cols="4">
+                                    <b-col cols="4" class="p-0 pr-1">
                                         <img v-on:click="payWithLHV" class="lhv bank-link"
-                                             src="../assets/lhv_logo.jpg"/>
+                                             src="../assets/lhv-logo.jpg"/>
                                     </b-col>
-                                    <b-col cols="4">
+                                    <b-col cols="4" class="p-0">
                                         <img v-on:click="payWithSwed" class="swed bank-link"
                                              src="../assets/swedbank-logo.png"/>
                                     </b-col>
@@ -307,18 +307,16 @@
     }
 
     .bank-link {
-        border: solid black 1px;
-        border-radius: 5px;
         width: 100%;
     }
 
     .bank-link:hover {
-        box-shadow: 0 0 11px rgba(33, 33, 33, .2);
+        box-shadow: 0 0 2px rgba(33, 33, 33, .2);
     }
 
     .lhv {
-        padding: 10px 10px 10px 10px;
         background-color: white;
+        padding: 10px;
     }
 
     .swed {
