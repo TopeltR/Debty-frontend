@@ -33,10 +33,10 @@
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto">
                         <span class="d-none d-md-block mr-4 mt-2"> Welcome, <b>{{ getUserName() }}</b></span>
-                        <b-nav-item>
-                            <font-awesome-icon v-on:click="logOut" icon="sign-out-alt"
+                        <b-nav-item v-on:click="logOut">
+                            <font-awesome-icon icon="sign-out-alt"
                                                class="icon"></font-awesome-icon>
-                            <span v-on:click="logOut">Sign out</span>
+                            <span>Sign out</span>
                         </b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>

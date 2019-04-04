@@ -209,6 +209,7 @@
                     this.errorDisplayProperty = 'none';
                     this.bill.people = this.addPersonState.people;
 
+                    this.bill.billPayments = [];
                     for (const person of this.bill.people) {
                         this.bill.billPayments.push({
                             person,
