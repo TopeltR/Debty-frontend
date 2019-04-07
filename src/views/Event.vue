@@ -66,21 +66,21 @@
                     </b-col>
                     <b-col v-if="event.closedAt == null">
                         <b-row>
-                            <b-col v-if="isOwner(user)" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
+                            <b-col v-if="isOwner(user)" md="2">
                                 <b-btn class="mt-4 w-100" variant="outline-danger"
                                        v-on:click='calculateDistributedDebts'>
                                     Close event...
                                 </b-btn>
                             </b-col>
-                            <b-col v-if="isOwner(user)" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
+                            <b-col v-if="isOwner(user)" cols="6" md="2">
                                 <b-btn class="mt-4 w-100" variant="outline-danger" v-on:click='deleteEvent'>Delete
                                 </b-btn>
                             </b-col>
-                            <b-col v-if="isOwner(user)" cols="6" offset="0" md="2" offset-md="0">
+                            <b-col v-if="isOwner(user)" cols="6" md="2">
                                 <b-btn class="mt-4 w-100" variant="outline-primary" v-on:click='editing = true'>Edit
                                 </b-btn>
                             </b-col>
-                            <b-col cols="6" offset="0" md="2" offset-md="0">
+                            <b-col md="2">
                                 <b-btn class="mt-4 mb-3 w-100" variant="outline-primary" v-on:click='addBill'>Add bill
                                 </b-btn>
                             </b-col>

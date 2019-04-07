@@ -117,7 +117,7 @@
                             <div class='form-group pt-3'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='debt.title' id='title'
-                                       placeholder='Enter debt title'>
+                                       placeholder='Enter debt title' maxlength="255">
                             </div>
                             <div class='form-group'
                                  v-if="isOwner(debt.receiver)">
@@ -142,7 +142,7 @@
                                     </b-col>
                                     <b-col cols='3'>
                                         <input id='sum' type='text' class='form-control pr-0' v-model='debt.sum'
-                                               placeholder='0'>
+                                               placeholder='0' maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>

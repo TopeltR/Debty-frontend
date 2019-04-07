@@ -3,7 +3,7 @@
         <navbar></navbar>
         <background>
             <b-row>
-                <b-col sm='12' md='6' offset-md='3' class='TM30px'>
+                <b-col sm='12' md='6' offset-md='3' class='mt-5'>
                     <b-row>
                         <h2>Create event</h2>
                         <font-awesome-icon v-if="!eventId" id="info" icon='info-circle' class="ml-1"></font-awesome-icon>
@@ -12,19 +12,19 @@
                                    placement="bottom"></b-tooltip>
                     </b-row>
                     <b-row>
-                        <form @submit.prevent='' class='wide mt-3'>
+                        <form @submit.prevent='' class='w-100 mt-3'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
-                                <input type='text' class='form-control' v-model='title' id='title' required=''
-                                       placeholder='Enter event title'>
+                                <input type='text' class='form-control' v-model='title' id='title' required
+                                       placeholder='Enter event title' maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
-                                <textarea id='description' class='form-control' v-model='description' type='text'
-                                          placeholder='Enter event description' required=''></textarea>
+                                <textarea id='description' class='form-control' v-model='description'
+                                          placeholder='Enter event description' required maxlength="255"></textarea>
                             </div>
                             <div class='form-group'>
-                                <p v-if='people.length > 0'>People:</p>
+                                <p v-if='people.length !== 0'>People:</p>
                                 <ul>
                                     <li v-for='person in people'>
                                         {{ getFullName(person) }}
@@ -32,16 +32,15 @@
                                 </ul>
                                 <label for='user'>Add people:</label>
                                 <b-row>
-                                    <b-col cols='9' class='PR0px'>
+                                    <b-col cols='9' class='pr-0'>
                                         <autocomplete id='user' v-model='user' :placeholder='"Name"' :field='field'
-                                                      :items='allPeople'
+                                                      :items='allPeople' class="mb-3"
                                                       :key-extractor='getFullName'></autocomplete>
                                     </b-col>
                                     <b-col cols='3'>
-                                        <button type='button' v-on:click='addPerson'
-                                                class='btn btn-primary wide'>
+                                        <b-btn v-on:click='addPerson' variant="primary" class='w-100'>
                                             Add
-                                        </button>
+                                        </b-btn>
                                     </b-col>
                                 </b-row>
                             </div>
@@ -49,7 +48,7 @@
                                 <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">
                                     <b-btn :variant='button.variant'
                                            v-on:click='button.handler'
-                                           class='wide'>
+                                           class='w-100'>
                                         {{button.name}}
                                     </b-btn>
                                 </b-col>
@@ -154,24 +153,4 @@
 </script>
 
 <style scoped>
-    #user {
-        margin-bottom: 5px;
-    }
-
-    #description {
-        height: 100px;
-    }
-
-    .wide {
-        width: 100%;
-    }
-
-    .PR0px {
-        padding-right: 0;
-    }
-
-    .TM30px {
-        margin-top: 30px;
-    }
-
 </style>

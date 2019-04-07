@@ -22,7 +22,7 @@
                             <b-col>
                                 <label class='label' for='email'>Email:</label>
                                 <input type='text' class='form-control' id='email' placeholder='Email'
-                                       v-model='email'>
+                                       v-model='email' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
@@ -31,7 +31,7 @@
                             <b-col>
                                 <label class='label' for='password'>Password:</label>
                                 <input type='password' class='form-control' id='password' placeholder='Password'
-                                       v-model='password'>
+                                       v-model='password' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
