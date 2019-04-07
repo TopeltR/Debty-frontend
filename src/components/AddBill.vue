@@ -142,7 +142,6 @@
             this.setSelectedBillInfo();
         },
         data: () => ({
-            initialBill: {},
             pageTitle: 'Add bill',
             user: {},
             field: {value: ''},
@@ -184,22 +183,29 @@
                     this.peopleInited = true;
                 }
             },
+            mapParticipationsFromPaymentsToPersons() {
+                const bill = this.selectedBill;
+                for (const payment of bill.billPayments) {
+                    const person = bill.people.find((p) => p.email === payment.person.email);
+                    person.participation = payment.sum;
+                }
+            },
+            initBillPeopleList() {
+                this.bill = {...this.selectedBill};
+                if (!this.bill.people) {
+                    this.bill.people = [];
+                }
+            },
+            initAddPersonPropsAndState() {
+                this.buyer = this.bill.buyer;
+                this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
+                this.addPersonState.people = this.bill.people;
+            },
             setSelectedBillInfo() {
                 if (this.selectedBill) {
-                    const bill = this.selectedBill;
-                    for (const payment of bill.billPayments) {
-                        const person = bill.people.find((p) => p.email === payment.person.email);
-                        person.participation = payment.sum;
-                    }
-
-                    this.bill = {...bill};
-                    if (!this.bill.people) {
-                        this.bill.people = [];
-                    }
-                    this.initialBill = {...bill};
-                    this.buyer = this.bill.buyer;
-                    this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
-                    this.addPersonState.people = this.bill.people;
+                    this.mapParticipationsFromPaymentsToPersons();
+                    this.initBillPeopleList();
+                    this.initAddPersonPropsAndState();
                     this.pageTitle = 'Edit bill';
                 }
             },
@@ -218,35 +224,40 @@
             roundToTwoDecimalPoints(nr) {
                 return Math.round(nr * 100) / 100;
             },
-            displayNotMatchMessage() {
-                const match =
-                    this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation))
+            participationsMatchSum() {
+                return this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation))
                         .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0))
                     === this.roundToTwoDecimalPoints(Number(this.bill.sum));
-                if (!match) {
+            },
+            displayNotMatchMessage() {
+                if (!this.participationsMatchSum()) {
                     this.notMatchDisplayProperty = 'block';
                 } else {
                     this.notMatchDisplayProperty = 'none';
                 }
             },
+            mapBillPaymentsFromPeopleParticipations() {
+                this.bill.billPayments = [];
+                for (const person of this.bill.people) {
+                    this.bill.billPayments.push({
+                        person,
+                        sum: person.participation,
+                    });
+                }
+            },
+            async saveBill() {
+                const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
+                this.event.bills = response.data.bills;
+            },
             async save() {
                 if (this.bill.title && this.bill.people.length > 0) {
                     this.errorDisplayProperty = 'none';
+
                     this.bill.people = this.addPersonState.people;
-
-                    this.bill.billPayments = [];
-                    for (const person of this.bill.people) {
-                        this.bill.billPayments.push({
-                            person,
-                            sum: person.participation,
-                        });
-                    }
-
+                    this.mapBillPaymentsFromPeopleParticipations();
                     this.bill.creator = await userStore.getUser();
 
-                    const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
-                    this.event.bills = response.data.bills;
-
+                    await this.saveBill();
                     this.closeModal();
                 } else {
                     this.errorDisplayProperty = 'block';
