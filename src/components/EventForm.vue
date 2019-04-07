@@ -131,7 +131,7 @@
                 this.fixButtonHandler(button);
             }
             const user = await userStore.getUser();
-            const response = await this.$http.get('/contact/id/' + user.id);
+            const response = await this.$http.get('/contacts/id/' + user.id);
             this.addPersonState.allPeople = response.data.filter((u) => u.email !== user.email);
         },
         methods: {

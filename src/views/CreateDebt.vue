@@ -117,7 +117,7 @@
             this.formData.owner = this.user;
             this.userName = this.getUserFullName(this.user);
 
-            const response = await this.$http.get('/contact/id/' + this.user.id);
+            const response = await this.$http.get('/contacts/id/' + this.user.id);
             this.contacts = response.data.filter((u) => u.email !== this.user.email);
         },
         methods: {

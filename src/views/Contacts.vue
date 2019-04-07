@@ -94,12 +94,12 @@
             },
             async getContacts() {
                 this.user = await userStore.getUser();
-                const {data} = await this.$http.get('/contact/all/' + this.user.id);
+                const {data} = await this.$http.get('/contacts/all/' + this.user.id);
                 this.availableContacts = data;
             },
             async getWaitingContacts() {
                 this.user = await userStore.getUser();
-                const response = await this.$http.get('/contact/waiting/' + this.user.id);
+                const response = await this.$http.get('/contacts/waiting/' + this.user.id);
                 this.requests = response.data;
                 this.requests.forEach((request) => {
                     Object.assign(request, {type: 'Incoming'});
@@ -108,25 +108,25 @@
             async addContact() {
                 this.user = await userStore.getUser();
                 if (this.contact && this.contact.id) {
-                    await this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id);
+                    await this.$http.post('/contacts/add/' + this.user.id + '/' + this.contact.id);
                     this.field.value = '';
                     this.requests.push(this.contact);
                 }
             },
             async getPersonContacts() {
                 this.user = await userStore.getUser();
-                const response = await this.$http.get('/contact/id/' + this.user.id);
+                const response = await this.$http.get('/contacts/id/' + this.user.id);
                 this.userContacts = response.data;
             },
             async acceptContact(id) {
                 this.user = await userStore.getUser();
-                await this.$http.post('/contact/accept/' + this.user.id + "/" + id);
+                await this.$http.post('/contacts/accept/' + this.user.id + "/" + id);
                 this.getPersonContacts();
                 this.getWaitingContacts();
             },
             async removeRequest(contact) {
                 this.user = await userStore.getUser();
-                await this.$http.delete('/contact/remove/' + this.user.id + '/' + contact.id);
+                await this.$http.delete('/contacts/remove/' + this.user.id + '/' + contact.id);
                 this.getWaitingContacts();
                 this.getPersonContacts();
             },

@@ -65,7 +65,7 @@
                 router.push('/home');
             },
             async getNotificationCount() {
-                const response = await this.$http.get('/contact/waiting/' + this.user.id);
+                const response = await this.$http.get('/contacts/waiting/' + this.user.id);
                 if (response.data.length > 0) {
                     this.notification = true;
                     this.notificationAmount = response.data.length;
@@ -78,7 +78,7 @@
                 return this.user.firstName + ' ' + this.user.lastName;
             },
             async logOut() {
-                await this.$http.post('/signout');
+                await this.$http.post('/users/signout');
                 localStorage.removeItem('user');
                 router.push('/');
             },
