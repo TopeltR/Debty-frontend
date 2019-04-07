@@ -134,13 +134,14 @@
                     width: 6,
                     offset: 0,
                     variant: 'primary',
+                    type: 'submit',
                     handler(eventForm, store) {
-                        if (eventForm.title && eventForm.description) {
+                        if (eventForm.title) {
                             store.getUser().then((user) => {
                                 eventForm.$http.post('/events', {
                                     id: this.event.id,
                                     title: eventForm.title,
-                                    people: eventForm.people,
+                                    people: eventForm.addPersonState.people,
                                     description: eventForm.description,
                                     bills: eventForm.bills,
                                     owner: user,
@@ -157,6 +158,7 @@
                     width: 6,
                     offset: 0,
                     variant: 'secondary',
+                    type: '',
                     handler() {
                         this.editing = false;
                     },
