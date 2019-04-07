@@ -35,7 +35,7 @@
                         <span class="d-none d-md-block mr-4 mt-2"> Welcome, <b>{{ getUserName() }}</b></span>
                         <b-nav-item v-on:click="logOut">
                             <font-awesome-icon icon="sign-out-alt"
-                                               class="icon"></font-awesome-icon>
+                                               class="icon mr-2"></font-awesome-icon>
                             <span>Sign out</span>
                         </b-nav-item>
                     </b-navbar-nav>

@@ -32,7 +32,7 @@
                             <b-row class="mx-2">
                                 <small><b>Owner: </b> {{getFullName(event.owner)}}</small>
                             </b-row>
-                            <b-row class="mx-2 mt-3">
+                            <b-row v-if="event.description.length > 0" class="mx-2 mt-3">
                                 <p>{{event.description}}</p>
                             </b-row>
                         </div>

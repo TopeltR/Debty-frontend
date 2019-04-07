@@ -129,7 +129,6 @@
                     || debt.receiver.id === this.user.id);
                 this.sortDebts();
                 this.filteredDebts = this.debts;
-                console.log(this.filteredDebts);
                 this.loaded = true;
             },
             filterStatus() {

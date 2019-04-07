@@ -41,7 +41,7 @@
                             </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
-                            <h4>No incoming requests right now.</h4>
+                            <h4>No requests right now</h4>
                         </div>
                     </b-list-group>
 
@@ -109,7 +109,6 @@
                 this.user = await userStore.getUser();
                 if (this.contact && this.contact.id) {
                     await this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id);
-                    await this.getContacts();
                     this.field.value = '';
                     this.requests.push(this.contact);
                 }
@@ -144,9 +143,4 @@
         width: 22px !important;
         height: 22px !important;
     }
-
-    /*.rounded {
-        border-radius: .25rem;
-    }*/
-
 </style>
