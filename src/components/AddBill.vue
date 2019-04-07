@@ -197,7 +197,8 @@
             displayNotMatchMessage() {
                 const match =
                     this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation))
-                        .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0)) === this.roundToTwoDecimalPoints(Number(this.bill.sum));
+                        .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0))
+                    === this.roundToTwoDecimalPoints(Number(this.bill.sum));
                 if (!match) {
                     this.notMatchDisplayProperty = 'block';
                 } else {
