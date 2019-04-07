@@ -79,6 +79,7 @@
             },
             async logOut() {
                 await this.$http.post('/signout');
+                localStorage.removeItem('user');
                 router.push('/');
             },
         },

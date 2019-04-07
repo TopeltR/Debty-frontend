@@ -12,12 +12,18 @@ class UserStore {
 
     public setUser(user: User) {
         this.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     public async getUser() {
         if (this.user === undefined) {
-            const response = await axios.get('/users/loggedIn');
-            this.user = User.from(response.data);
+            const userFromLocalStorage = localStorage.getItem('user');
+            if (userFromLocalStorage === null) {
+                const response = await axios.get('/users/loggedIn');
+                this.user = User.from(response.data);
+            } else {
+                this.user = User.from(JSON.parse(userFromLocalStorage));
+            }
         }
         return this.user;
     }

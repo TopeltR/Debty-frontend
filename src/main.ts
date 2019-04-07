@@ -40,9 +40,18 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
+axios.interceptors.response.use ((response) => {
+    return response;
+}, (error) => {
+    const path = JSON.parse(error.request.responseText).path;
+    if (!['/users/loggedIn'].includes(path)) {
+        console.error(error);
+        alert('You are not logged in!');
+        router.push('/');
+    }
+});
 
 Vue.prototype.$http = axios;
-
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
