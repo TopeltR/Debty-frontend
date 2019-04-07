@@ -169,10 +169,6 @@
                 this.addBillState.showing = false;
                 this.addBillState.showing = true;
             },
-            getAddBillState(id) {
-                this.addBillStates[id] = {showing: false};
-                return this.addBillStates[id];
-            },
             async getEvent(eventId) {
                 const response = await this.$http.get('/events/' + eventId);
                 this.event = response.data;
