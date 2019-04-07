@@ -27,7 +27,7 @@
                     <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="w-100" variant="primary" v-on:click="closeEvent">Close event</b-button>
+                    <b-button class="w-100" variant="danger" v-on:click="closeEvent">Close event</b-button>
                 </b-col>
             </b-row>
         </div>
@@ -35,8 +35,6 @@
 </template>
 
 <script>
-    import router from '../router.ts';
-
     export default {
         name: 'DebtDistribution',
 
@@ -56,9 +54,6 @@
             eventId: {
                 type: Number,
             },
-            event: {
-                event: {type: Object}
-            }
         },
         watch: {
             state: {
@@ -77,7 +72,7 @@
                 return person.firstName + ' ' + person.lastName;
             },
             async closeEvent() {
-                const response = await this.$http.post('/events/' + this.eventId + '/close');
+                await this.$http.post('/events/' + this.eventId + '/close');
                 this.state.showing = false;
                 window.location.reload();
             },
