@@ -10,9 +10,9 @@
         </div>
         <div class="col-10 offset-1">
             <b-row>
-                <b-col cols="12" class='TM30px'>
+                <div>
                     <b-row>
-                        <form @submit.prevent='' class='wide'>
+                        <form @submit.prevent='' class='w-100'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='bill.title' id='title' required=''
@@ -20,7 +20,7 @@
                             </div>
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
-                                <textarea id='description' class='form-control' v-model='bill.description' type='text'
+                                <textarea id='description' class='form-control' v-model='bill.description'
                                           placeholder='Enter bill description' required=''></textarea>
                             </div>
                             <div class="form-group">
@@ -30,46 +30,59 @@
                                               :keyExtractor="getFullName"/>
                             </div>
                             <div class="form-group inline-form">
-                                <label class="PR5px" for="sum">Sum:</label>
-                                <input type="text" class="inline form-control skinny" id="sum" v-model="bill.sum"
+                                <label for="sum" class="pr-3">Sum:</label>
+                                <input type="text" class="d-inline form-control skinny" id="sum" v-model="bill.sum"
                                        required="" v-on:change="displayNotMatchMessage">
                                 <span class="ml-1">€</span>
                             </div>
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length > 0'>Participants:</p>
-                                <ul>
-                                    <li v-for='person in addPersonState.people' v-bind:key='person.id'>
-                                        <div class="form-group inline-form">
-                                            <label class="PR5px col-9 col-md-6" :for="person.firstName">{{
-                                                getFullName(person)
-                                                }}</label>
-                                            <input type="number" class="inline form-control skinny participation col-3"
-                                                   :id="person.firstName" v-model="person.participation" required=""
-                                                   v-on:change="displayNotMatchMessage">
-                                            <span class="ml-1 col-1">€</span>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <div v-for='person in addPersonState.people' v-bind:key='person.id'>
+                                    <b-col cols="11" offset="1" class="form-group">
+                                        <b-row>
+                                            <b-col cols="5" md="6">
+                                                <label :for="person.firstName">
+                                                    {{getFullName(person)}}
+                                                    <small v-if="isOwner(person)"> (owner)</small>
+                                                </label>
+                                            </b-col>
+                                            <b-col cols="5" md="4">
+                                                <input type="number" class="form-control"
+                                                       :id="person.firstName" v-model="person.participation"
+                                                       required=""
+                                                       v-on:change="displayNotMatchMessage">
+
+                                            </b-col>
+                                            <b-col cols="1" class="pt-2">
+                                                <span>€</span>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                </div>
                                 <label for='user'>Add participants:</label>
                                 <add-person id="user" :state="addPersonState"/>
-                                <p class="red MT29px" v-bind:style='{display: notMatchDisplayProperty}'>Sum and
-                                    participations
-                                    don't match!</p>
-                                <p class="red MT29px" v-bind:style="{display: errorDisplayProperty}">Not all required
-                                    fields filled</p>
+                                <p class="text-danger mt-5" v-bind:style='{display: notMatchDisplayProperty}'>
+                                    Sum and participations don't match!</p>
+                                <p class="text-danger mt-5" v-bind:style="{display: errorDisplayProperty}">
+                                    Not all required fields filled</p>
                             </div>
                         </form>
                     </b-row>
-                </b-col>
+                </div>
             </b-row>
         </div>
         <div class="col-12" slot="modal-footer">
-            <b-row>
+            <b-row v-if="canDelete()">
                 <b-col cols="6">
-                    <b-button class="wide" variant="secondary" v-on:click="cancel">Cancel</b-button>
+                    <b-button class="w-100" variant="danger" v-on:click="deleteBill">Delete</b-button>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="wide" variant="primary" v-on:click="save">Save</b-button>
+                    <b-button class="w-100" variant="primary" v-on:click="save">Save</b-button>
+                </b-col>
+            </b-row>
+            <b-row v-else>
+                <b-col>
+                    <b-button class="w-100" variant="primary" v-on:click="save">Save</b-button>
                 </b-col>
             </b-row>
         </div>
@@ -233,36 +246,30 @@
                 this.state.showing = true;
                 this.state.showing = false;
             },
+            async deleteBill() {
+                if (confirm("Are you sure?")) {
+                    await this.$http.delete('/events/' + this.event.id + '/bills/' + this.bill.id);
+                    window.location.reload();
+                }
+            },
+            canDelete() {
+                return this.selectedBill != null &&
+                    (this.selectedBill.creator != null && this.user.id === this.selectedBill.creator.id ||
+                        this.event.owner != null && this.user.id === this.event.owner.id);
+            },
+            isOwner(user) {
+                return user != null && this.selectedBill.creator != null && user.id === this.selectedBill.creator.id;
+            },
         },
     };
 </script>
 
 <style scoped>
-    .wide {
-        width: 100%;
-    }
-
-    .PR5px {
-        padding-right: 5px;
-    }
-
-    .inline {
-        display: inline;
-    }
-
     .inline-form {
         white-space: nowrap;
     }
 
     .skinny {
         width: 70px;
-    }
-
-    .red {
-        color: red;
-    }
-
-    .MT29px {
-        margin-top: 29px;
     }
 </style>
