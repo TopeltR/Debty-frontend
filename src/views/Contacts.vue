@@ -29,7 +29,7 @@
                 <b-col md='6'>
                     <b-list-group>
                         <h2>Requests</h2>
-                        <div v-if='requests.length > 0'>
+                        <div v-if='requests.length > 0' class="shadow rounded">
                             <b-list-group-item v-for='request in requests'> {{request.firstName}} {{request.lastName}}
                                 <span v-if='request.type === "Incoming"'>
                                     <font-awesome-icon icon='check' class='limegreen ml-1 icons float-right'
@@ -49,7 +49,7 @@
                 <b-col md='6'>
                     <b-list-group>
                         <h2>My contacts</h2>
-                        <div v-if="userContacts.length > 0">
+                        <div v-if="userContacts.length > 0" class="shadow rounded">
                             <b-list-group-item v-for='contact in userContacts'> {{contact.firstName}}
                                 {{contact.lastName}}
                                 <font-awesome-icon icon='times' class='text-danger icons float-right'
@@ -107,10 +107,12 @@
             },
             async addContact() {
                 this.user = await userStore.getUser();
-                await this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id);
-                await this.getContacts();
-                this.field.value = '';
-                this.requests.push(this.contact);
+                if (this.contact && this.contact.id) {
+                    await this.$http.post('/contact/add/' + this.user.id + '/' + this.contact.id);
+                    await this.getContacts();
+                    this.field.value = '';
+                    this.requests.push(this.contact);
+                }
             },
             async getPersonContacts() {
                 this.user = await userStore.getUser();
@@ -143,5 +145,8 @@
         height: 22px !important;
     }
 
+    /*.rounded {
+        border-radius: .25rem;
+    }*/
 
 </style>

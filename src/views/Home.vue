@@ -8,14 +8,14 @@
                     <b-col class='mt-5' sm='12' md='6'>
                         <b-row>
                             <b-col sm='12'>
-                                <b-btn v-b-toggle.events class='menu-list-button'>
+                                <b-btn v-b-toggle.events class='menu-list-button shadow'>
                                     <span class='float-left'>Events</span>
                                     <font-awesome-icon icon='plus' class='float-right mt-2 green'
                                                        v-on:click='createNewEvent'/>
                                 </b-btn>
                             </b-col>
                         </b-row>
-                        <b-collapse visible id='events'>
+                        <b-collapse visible id='events' class="shadow">
                             <b-list-group>
                                 <b-list-group-item v-for='event in events' :to='"events/"+event.id'>{{ event.title }}
                                 </b-list-group-item>
@@ -25,14 +25,14 @@
                     <b-col class='mt-5' sm='12' md='6'>
                         <b-row>
                             <b-col sm='12'>
-                                <b-btn v-b-toggle.debts class='menu-list-button'>
+                                <b-btn v-b-toggle.debts class='menu-list-button shadow'>
                                     <span class='float-left'>Debts</span>
                                     <font-awesome-icon icon='plus' class='float-right mt-2 green'
                                                        v-on:click='createNewDebt'/>
                                 </b-btn>
                             </b-col>
                         </b-row>
-                        <b-collapse visible id='debts' class="mb-3">
+                        <b-collapse visible id='debts' class="mb-3 shadow">
                             <b-list-group>
                                 <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>{{ debt.title }}
                                 </b-list-group-item>
@@ -120,4 +120,11 @@
         border-radius: 5px 5px 5px 5px !important;
     }
 
+    #events {
+        border-radius: .25rem;
+    }
+
+    #debts {
+        border-radius: .25rem;
+    }
 </style>
