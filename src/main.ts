@@ -6,9 +6,9 @@ import axios from 'axios';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import userStore from '@/stores/UserStore';
+
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-
-
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {
@@ -40,12 +40,12 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
-axios.interceptors.response.use ((response) => {
+axios.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     const path = JSON.parse(error.request.responseText).path;
     if (!['/users/loggedIn'].includes(path)) {
-        alert('You are not logged in!');
+        userStore.alertUserNotLoggedIn();
         router.push('/');
         return Promise.reject(error);
     }
