@@ -104,8 +104,17 @@
                 creator: {type: Object},
             },
             event: {
-                type: Object,
+                id: {type: String},
+                people: {type: Array},
+                owner: {type: Object},
+                description: {type: String},
+                bills: {type: Object},
             },
+        },
+        computed: {
+            eventPeople() {
+                return this.event.people;
+            }
         },
         watch: {
             state: {
@@ -121,19 +130,13 @@
             selectedBill() {
                 this.setSelectedBillInfo();
             },
+            eventPeople(people) {
+                this.initPeople(people);
+            }
         },
         async mounted() {
             this.user = await userStore.getUser();
-            const data = await this.$http.get('/contact/id/' + this.user.id);
-            data.data.push(this.user);
-            this.allPeople = data.data.map((u) => {
-                u.participation = 0;
-                return u;
-            });
-            // Copy, can't be same
-            this.addPersonState.allPeople = this.allPeople.filter((u) => !this.bill.people.includes(u));
-            this.addPersonState.people = this.bill.people;
-
+            this.initPeople();
             this.setSelectedBillInfo();
         },
         data: () => ({
@@ -147,6 +150,7 @@
             billChanged: false,
             notMatchDisplayProperty: 'none',
             errorDisplayProperty: 'none',
+            peopleInited: false,
             bill: {
                 title: '',
                 description: '',
@@ -162,6 +166,19 @@
             },
         }),
         methods: {
+            initPeople(people) {
+                people = (people || this.event.people).map((u) => (u));
+                if (!this.peopleInited && people) {
+                    this.allPeople = people.map((u) => {
+                        u.participation = 0;
+                        return u;
+                    });
+                    // Copy, can't be same
+                    this.addPersonState.allPeople = this.allPeople.filter((u) => !this.bill.people.includes(u));
+                    this.addPersonState.people = this.bill.people;
+                    this.peopleInited = true;
+                }
+            },
             setSelectedBillInfo() {
                 if (this.selectedBill) {
                     const bill = this.selectedBill;
@@ -182,9 +199,10 @@
             },
             updateBuyer() {
                 if (this.buyer && this.buyer.firstName) {
-                    this.addPersonState.people.removeElement(this.bill.buyer, (person) => person.email);
                     this.bill.buyer = this.buyer;
-                    this.addPersonState.people.push(this.buyer);
+                    if (!this.addPersonState.people.map((p) => (p.email)).includes(this.buyer.email)) {
+                        this.addPersonState.people.push(this.buyer);
+                    }
                     this.buyer = {};
                 }
             },
