@@ -221,9 +221,6 @@
             isOwner(user) {
                 return user != null && this.debt.owner != null && user.id === this.debt.owner.id;
             },
-            isPayer() {
-                return this.debt.payer != null && this.user != null && this.debt.payer.id === this.user.id;
-            },
             canAcceptDecline() {
                 return this.debt.owner != null && this.user != null
                     && this.debt.owner.id !== this.user.id
