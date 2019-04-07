@@ -45,9 +45,9 @@ axios.interceptors.response.use ((response) => {
 }, (error) => {
     const path = JSON.parse(error.request.responseText).path;
     if (!['/users/loggedIn'].includes(path)) {
-        console.error(error);
         alert('You are not logged in!');
         router.push('/');
+        return Promise.reject(error);
     }
 });
 
