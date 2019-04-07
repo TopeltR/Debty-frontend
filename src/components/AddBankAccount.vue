@@ -11,12 +11,12 @@
                             <div class='form-group'>
                                 <label for='bankAccountName'>Name connected to bank account:</label>
                                 <input type='text' class='form-control' v-model='bankAccount.name' id='bankAccountName'
-                                       required='' placeholder='John Doe'>
+                                       required placeholder='John Doe' maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <label for='bankAccountNumber'>Bank account number:</label>
-                                <input type='text' class='form-control' v-model='bankAccount.number'
-                                       id='bankAccountNumber' required='' placeholder='EE1111111111111111'>
+                                <input type='text' class='form-control' v-model='bankAccount.number' maxlength="255"
+                                       id='bankAccountNumber' required placeholder='EE1111111111111111'>
                             </div>
                         </form>
                     </b-row>

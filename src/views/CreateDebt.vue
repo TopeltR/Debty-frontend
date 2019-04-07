@@ -16,7 +16,7 @@
                             <div class='form-group pt-3'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
-                                       placeholder='Enter debt title'>
+                                       placeholder='Enter debt title' maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <b-row>
@@ -27,8 +27,7 @@
                                             </b-col>
                                             <b-col cols="10">
                                                 <input v-if="!userIsReceiver" type='text' class='form-control'
-                                                       v-model='userName'
-                                                       disabled>
+                                                       v-model='userName' disabled maxlength="255">
                                                 <autocomplete v-else id='payer' v-model='formData.payer'
                                                               :placeholder='"Name"'
                                                               :field='field'
@@ -42,8 +41,7 @@
                                             </b-col>
                                             <b-col cols="10" class="mt-3">
                                                 <input v-if="userIsReceiver" type='text' class='form-control'
-                                                       v-model='userName'
-                                                       disabled>
+                                                       v-model='userName' disabled maxlength="255">
                                                 <autocomplete v-else id='receiver' v-model='formData.receiver'
                                                               :placeholder='"Name"'
                                                               :field='field'
@@ -67,7 +65,7 @@
                                     </b-col>
                                     <b-col cols='3'>
                                         <input id='sum' type='text' class='form-control pr-0' v-model='formData.sum'
-                                               placeholder='0'>
+                                               placeholder='0' maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>

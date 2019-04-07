@@ -15,13 +15,13 @@
                         <form @submit.prevent='' class='wide mt-3'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
-                                <input type='text' class='form-control' v-model='title' id='title' required=''
-                                       placeholder='Enter event title'>
+                                <input type='text' class='form-control' v-model='title' id='title' required
+                                       placeholder='Enter event title' maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
-                                <textarea id='description' class='form-control' v-model='description' type='text'
-                                          placeholder='Enter event description' required=''></textarea>
+                                <textarea id='description' class='form-control' v-model='description'
+                                          placeholder='Enter event description' required maxlength="255"></textarea>
                             </div>
                             <div class='form-group'>
                                 <p v-if='people.length > 0'>People:</p>

@@ -7,7 +7,7 @@
                         <b-row>
                             <b-col>
                                 <input type='text' class='form-control' id='email' placeholder='Email'
-                                       v-model='form.email'>
+                                       v-model='form.email' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
@@ -15,16 +15,15 @@
                         <b-row>
                             <b-col>
                                 <input type='password' class='form-control' id='password' placeholder='Password'
-                                       v-model='form.password'>
+                                       v-model='form.password' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='password' class='form-control' id='passwordConfirm'
-                                       placeholder='Repeat password'
-                                       v-model='form.passwordConfirmation'>
+                                <input type='password' class='form-control' id='passwordConfirm' maxlength="255"
+                                       placeholder='Repeat password' v-model='form.passwordConfirmation'>
                             </b-col>
                         </b-row>
                     </div>
@@ -32,7 +31,7 @@
                         <b-row>
                             <b-col>
                                 <input type='text' class='form-control' id='firstName' placeholder='First name'
-                                       v-model='form.firstName'>
+                                       v-model='form.firstName' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
@@ -40,7 +39,7 @@
                         <b-row>
                             <b-col>
                                 <input type='text' class='form-control' id='lastName' placeholder='Last name'
-                                       v-model='form.lastName'>
+                                       v-model='form.lastName' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>

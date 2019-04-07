@@ -17,13 +17,13 @@
                         <form @submit.prevent='' class='w-100'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
-                                <input type='text' class='form-control' v-model='bill.title' id='title' required=''
-                                       placeholder='Enter bill title'>
+                                <input type='text' class='form-control' v-model='bill.title' id='title' required
+                                       placeholder='Enter bill title' maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
                                 <textarea id='description' class='form-control' v-model='bill.description'
-                                          placeholder='Enter bill description' required=''></textarea>
+                                          placeholder='Enter bill description' required maxlength="255"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="buyer">Buyer:</label>
@@ -34,7 +34,7 @@
                             <div class="form-group inline-form">
                                 <label for="sum" class="pr-3">Sum:</label>
                                 <input type="text" class="d-inline form-control skinny" id="sum" v-model="bill.sum"
-                                       required="" v-on:change="displayNotMatchMessage">
+                                       required v-on:change="displayNotMatchMessage" maxlength="255">
                                 <span class="ml-1">€</span>
                             </div>
                             <div class='form-group'>
@@ -51,8 +51,7 @@
                                             <b-col cols="5" md="4">
                                                 <input type="number" class="form-control"
                                                        :id="person.firstName" v-model="person.participation"
-                                                       required=""
-                                                       v-on:change="displayNotMatchMessage">
+                                                       required maxlength="255" v-on:change="displayNotMatchMessage">
 
                                             </b-col>
                                             <b-col cols="1" class="pt-2">
@@ -129,7 +128,7 @@
         computed: {
             eventPeople() {
                 return this.event.people;
-            }
+            },
         },
         watch: {
             state: {
@@ -147,7 +146,7 @@
             },
             eventPeople(people) {
                 this.initPeople(people);
-            }
+            },
         },
         async mounted() {
             this.user = await userStore.getUser();

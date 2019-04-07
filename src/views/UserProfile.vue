@@ -57,14 +57,12 @@
                             <label for='first'>Name:</label>
                             <b-row>
                                 <b-col cols="6">
-                                    <input type='text' class='form-control float-left'
-                                           v-model='user.firstName' id="first" required=''
-                                           placeholder=''>
+                                    <input type='text' class='form-control float-left' v-model='user.firstName'
+                                           id="first" required maxlength="255">
                                 </b-col>
                                 <b-col cols="6">
                                     <input type='text' class='form-control float-right' v-model='user.lastName'
-                                           id='last' required=''
-                                           placeholder=''>
+                                           id='last' required maxlength="255">
                                 </b-col>
                             </b-row>
                         </div>
@@ -72,33 +70,30 @@
                             <label for='first'>Bank account</label>
                             <b-row>
                                 <b-col cols="6">
-                                    <input type='text' class='form-control float-left'
-                                           v-model='user.bankAccount.number' id="bank-number" required=''
-                                           placeholder=''>
+                                    <input type='text' class='form-control float-left' v-model='user.bankAccount.number'
+                                           id="bank-number" required maxlength="255">
                                 </b-col>
                                 <b-col cols="6">
-                                    <input type='text' class='form-control float-right'
-                                           v-model='user.bankAccount.name'
-                                           id='bank-name' required=''
-                                           placeholder=''>
+                                    <input type='text' class='form-control float-right' v-model='user.bankAccount.name'
+                                           id='bank-name' required maxlength="255">
                                 </b-col>
                             </b-row>
                         </div>
                         <div class='form-group'>
                             <label for='email'>Email</label>
-                            <input type='text' class='form-control' v-model='user.email' id='email' required=''
-                                   placeholder=''>
+                            <input type='text' class='form-control' v-model='user.email' id='email' required
+                                   maxlength="255">
                         </div>
                         <div class='form-group'>
                             <label for='password'>New password</label>
                             <input type='password' class='form-control' v-model='user.password' id='password'
-                                   required=''
+                                   required maxlength="255"
                                    placeholder='Enter new password'>
                         </div>
                         <div class='form-group'>
                             <label for='password-confirmation'>Password confirmation</label>
                             <input type='password' class='form-control' v-model='user.passwordConfirmation'
-                                   id='password-confirmation' required=''
+                                   id='password-confirmation' required maxlength="255"
                                    placeholder='Enter password again'>
                         </div>
                     </div>

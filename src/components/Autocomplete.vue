@@ -121,6 +121,7 @@
                 @keydown.down='onArrowDown'
                 @keydown.up='onArrowUp'
                 @keydown.enter='onEnter'
+                maxlength="255"
         />
         <ul
                 id='autocomplete-results'
