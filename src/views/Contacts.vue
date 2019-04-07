@@ -19,7 +19,7 @@
                         </autocomplete>
                     </b-col>
                     <b-col class='pt-3 pt-md-0'>
-                        <button type='button' v-on:click='addContact'
+                        <button type='button' v-on:click='sendRequest'
                                 class='btn btn-primary wide'> Add contact
                         </button>
                     </b-col>
@@ -30,34 +30,35 @@
                     <b-list-group>
                         <h2>Requests</h2>
                         <div v-if='requests.length > 0' class="shadow rounded">
-                            <b-list-group-item v-for='request in requests'> {{request.firstName}} {{request.lastName}}
-                                <span v-if='request.type === "Incoming"'>
+                            <b-list-group-item v-for='person in requests'> {{getUserFullName(person)}}
+                                <span v-if='person.type === "Incoming"'>
                                     <font-awesome-icon icon='check' class='limegreen ml-1 icons float-right'
-                                                       v-on:click='acceptContact(request.id)'/>
+                                                       v-on:click='acceptContact(person.id)'/>
                                     <font-awesome-icon icon='times' class='text-danger icons float-right'
-                                                       v-on:click='removeRequest(request.id)'/>
+                                                       v-on:click='deleteContact(person.id, user.id)'/>
                                 </span>
                                 <div v-else></div>
                             </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
-                            <h4>No requests right now</h4>
+                            <p class="h5">No requests right now</p>
                         </div>
                     </b-list-group>
 
                 </b-col>
-                <b-col md='6'>
+                <b-col md='6' class="mt-3 mt-md-0">
                     <b-list-group>
                         <h2>My contacts</h2>
                         <div v-if="userContacts.length > 0" class="shadow rounded">
-                            <b-list-group-item v-for='contact in userContacts'> {{contact.firstName}}
-                                {{contact.lastName}}
+                            <b-list-group-item v-for='contact in userContacts'>
+                                <span v-if="isUserTo(contact)">{{getUserFullName(contact.from)}}</span>
+                                <span v-else>{{getUserFullName(contact.to)}}</span>
                                 <font-awesome-icon icon='times' class='text-danger icons float-right'
-                                                   v-on:click='removeRequest(contact)'/>
+                                                   v-on:click='deleteContact(contact.from.id, contact.to.id)'/>
                             </b-list-group-item>
                         </div>
                         <div v-else class='mt-3'>
-                            <h3>No contacts yet, add contacts from search</h3>
+                            <p class="h6">No contacts yet, add contacts from search</p>
                         </div>
                     </b-list-group>
                 </b-col>
@@ -83,52 +84,59 @@
             userContacts: [],
             user: userStore.getUser(),
         }),
-        mounted() {
-            this.getWaitingContacts();
-            this.getContacts();
-            this.getPersonContacts();
+        async mounted() {
+            this.user = await userStore.getUser();
+            this.refreshAllContactsAndRequests();
         },
         methods: {
+            refreshAllContactsAndRequests() {
+                this.getPersonContacts();
+                this.getRequests();
+                this.getAvailableContacts();
+            },
             getUserFullName(user) {
                 return user.lastName === null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
-            async getContacts() {
-                this.user = await userStore.getUser();
+            isUserTo(contact) {
+                return this.user != null && contact != null && this.user.id === contact.to.id;
+            },
+            async getAvailableContacts() {
                 const {data} = await this.$http.get('/contacts/all/' + this.user.id);
                 this.availableContacts = data;
             },
-            async getWaitingContacts() {
-                this.user = await userStore.getUser();
-                const response = await this.$http.get('/contacts/waiting/' + this.user.id);
-                this.requests = response.data;
-                this.requests.forEach((request) => {
+            async getRequests() {
+                const response1 = await this.$http.get('/contacts/incoming/' + this.user.id);
+                let incomingRequests = response1.data;
+                incomingRequests.forEach((request) => {
                     Object.assign(request, {type: 'Incoming'});
                 });
+
+                const response2 = await this.$http.get('/contacts/outgoing/' + this.user.id);
+                let outgoingRequests = response2.data;
+
+                this.requests = incomingRequests.concat(outgoingRequests);
             },
-            async addContact() {
-                this.user = await userStore.getUser();
+            async getPersonContacts() {
+                const response = await this.$http.get('/contacts/' + this.user.id);
+                this.userContacts = response.data;
+            },
+
+            async sendRequest() {
                 if (this.contact && this.contact.id) {
                     await this.$http.post('/contacts/add/' + this.user.id + '/' + this.contact.id);
                     this.field.value = '';
-                    this.requests.push(this.contact);
+                    this.getAvailableContacts();
+                    this.getRequests();
                 }
             },
-            async getPersonContacts() {
-                this.user = await userStore.getUser();
-                const response = await this.$http.get('/contacts/id/' + this.user.id);
-                this.userContacts = response.data;
-            },
             async acceptContact(id) {
-                this.user = await userStore.getUser();
                 await this.$http.post('/contacts/accept/' + this.user.id + "/" + id);
                 this.getPersonContacts();
-                this.getWaitingContacts();
+                this.getRequests();
             },
-            async removeRequest(contact) {
-                this.user = await userStore.getUser();
-                await this.$http.delete('/contacts/remove/' + this.user.id + '/' + contact.id);
-                this.getWaitingContacts();
-                this.getPersonContacts();
+            async deleteContact(fromId, toId) {
+                await this.$http.delete('/contacts/remove/' + fromId + '/' + toId);
+                this.refreshAllContactsAndRequests();
             },
         },
     };

@@ -65,7 +65,7 @@
                 router.push('/home');
             },
             async getNotificationCount() {
-                const response = await this.$http.get('/contacts/waiting/' + this.user.id);
+                const response = await this.$http.get('/contacts/incoming/' + this.user.id);
                 if (response.data.length > 0) {
                     this.notification = true;
                     this.notificationAmount = response.data.length;
