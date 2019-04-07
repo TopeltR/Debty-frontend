@@ -2,11 +2,13 @@
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
             {{pageTitle}}
-            <font-awesome-icon v-if="!selectedBill" id="add-bill-info" icon='info-circle'
-                               class="ml-1"></font-awesome-icon>
-            <b-tooltip v-if="!selectedBill" target="add-bill-info"
-                       title="Here you can add bill to the event, remember to add participants!"
-                       placement="bottom"></b-tooltip>
+            <div class="d-inline" v-if="!selectedBill">
+                <font-awesome-icon id="add-bill-info" icon='info-circle'
+                                   class="ml-1"></font-awesome-icon>
+                <b-tooltip target="add-bill-info"
+                           title="Here you can add bill to the event, remember to add participants!"
+                           placement="bottom"></b-tooltip>
+            </div>
         </div>
         <div class="col-10 offset-1">
             <b-row>
@@ -195,6 +197,7 @@
                     this.buyer = this.bill.buyer;
                     this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
                     this.addPersonState.people = this.bill.people;
+                    this.pageTitle = 'Edit bill';
                 }
             },
             updateBuyer() {
