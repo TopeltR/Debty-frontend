@@ -4,19 +4,22 @@ import axios from 'axios';
 
 
 class UserStore {
-    private user: User | undefined;
+    private user: User | null;
+    private alerted: boolean;
 
     constructor() {
-        this.user = undefined;
+        this.user = null;
+        this.alerted = false;
     }
 
     public setUser(user: User) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(user));
+        this.alerted = false;
     }
 
     public async getUser() {
-        if (this.user === undefined) {
+        if (this.user === null) {
             const userFromLocalStorage = localStorage.getItem('user');
             if (userFromLocalStorage === null) {
                 const response = await axios.get('/users/loggedIn');
@@ -26,6 +29,13 @@ class UserStore {
             }
         }
         return this.user;
+    }
+
+    public alertUserNotLoggedIn() {
+        if (!this.alerted) {
+            alert('You are not logged in!');
+            this.alerted = true;
+        }
     }
 }
 
