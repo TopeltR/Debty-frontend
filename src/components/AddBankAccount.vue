@@ -24,12 +24,12 @@
             </b-row>
         </div>
         <div class="col-12" slot="modal-footer">
-            <b-row>
+            <b-row class="mx-2">
                 <b-col cols="6">
-                    <b-button class="wide" variant="secondary" v-on:click="cancel">Cancel</b-button>
+                    <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="wide" variant="primary" type="submit">Save</b-button>
+                    <b-button class="w-100" variant="primary" type="submit">Save</b-button>
                 </b-col>
             </b-row>
         </div>

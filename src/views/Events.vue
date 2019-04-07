@@ -40,7 +40,7 @@
                 </div>
                 <div v-else class="text-center p-5">
                     <h1>You don't have any events yet, grab your friends and create one!</h1>
-                    <b-btn class="m-5" v-on:click="goToEventCreation">Create event!</b-btn>
+                    <b-btn class="m-5 btn-limegreen px-3 py-2" v-on:click="goToEventCreation">Create event!</b-btn>
                 </div>
             </div>
         </background>
@@ -129,5 +129,15 @@
 
     .card:hover {
         border: solid 1px limegreen;
+    }
+
+    .btn-limegreen {
+        background-color: limegreen;
+        border-color: limegreen;
+    }
+
+    .btn-limegreen:hover {
+        background-color: #30b530;
+        border-color: #30b530;
     }
 </style>
