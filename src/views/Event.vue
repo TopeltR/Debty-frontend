@@ -5,7 +5,7 @@
             <navbar/>
             <background>
                 <b-row>
-                    <add-bill :key="selectedBill ? selectedBill.id : -1" :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
+                    <add-bill :key="selectedBillCount" :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
                     <add-bill :key="addBillClickCount" :state="addBillState" :event="event"/>
                     <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
                     <b-col sm='12' md='6'>
@@ -116,6 +116,7 @@
             user: null,
             selectedBill: undefined,
             addBillClickCount: 0,
+            selectedBillCount: 0,
             editing: false,
             addBillState: {showing: false},
             seeBillState: {showing: false},
@@ -184,7 +185,9 @@
                 this.event = response.data;
                 this.event.id = eventId;
             },
-            openBillModal(bill) {
+            async openBillModal(bill) {
+                this.selectedBillCount++;
+                await this.$nextTick();
                 this.selectedBill = bill;
                 this.seeBillState.showing = false;
                 this.seeBillState.showing = true;

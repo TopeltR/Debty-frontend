@@ -2,11 +2,13 @@
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
             {{pageTitle}}
-            <font-awesome-icon v-if="!selectedBill" id="add-bill-info" icon='info-circle'
-                               class="ml-1"></font-awesome-icon>
-            <b-tooltip v-if="!selectedBill" target="add-bill-info"
-                       title="Here you can add bill to the event, remember to add participants!"
-                       placement="bottom"></b-tooltip>
+            <div class="d-inline" v-if="!selectedBill">
+                <font-awesome-icon id="add-bill-info" icon='info-circle'
+                                   class="ml-1"></font-awesome-icon>
+                <b-tooltip target="add-bill-info"
+                           title="Here you can add bill to the event, remember to add participants!"
+                           placement="bottom"></b-tooltip>
+            </div>
         </div>
         <div class="col-10 offset-1">
             <b-row>
@@ -117,8 +119,17 @@
                 creator: {type: Object},
             },
             event: {
-                type: Object,
+                id: {type: String},
+                people: {type: Array},
+                owner: {type: Object},
+                description: {type: String},
+                bills: {type: Object},
             },
+        },
+        computed: {
+            eventPeople() {
+                return this.event.people;
+            }
         },
         watch: {
             state: {
@@ -134,23 +145,16 @@
             selectedBill() {
                 this.setSelectedBillInfo();
             },
+            eventPeople(people) {
+                this.initPeople(people);
+            }
         },
         async mounted() {
             this.user = await userStore.getUser();
-            const data = await this.$http.get('/contact/id/' + this.user.id);
-            data.data.push(this.user);
-            this.allPeople = data.data.map((u) => {
-                u.participation = 0;
-                return u;
-            });
-            // Copy, can't be same
-            this.addPersonState.allPeople = this.allPeople.filter((u) => !this.bill.people.includes(u));
-            this.addPersonState.people = this.bill.people;
-
+            this.initPeople();
             this.setSelectedBillInfo();
         },
         data: () => ({
-            initialBill: {},
             pageTitle: 'Add bill',
             user: {},
             field: {value: ''},
@@ -160,6 +164,7 @@
             billChanged: false,
             notMatchDisplayProperty: 'none',
             errorDisplayProperty: 'none',
+            peopleInited: false,
             bill: {
                 title: '',
                 description: '',
@@ -175,29 +180,54 @@
             },
         }),
         methods: {
+            closeModal() {
+                this.state.showing = false;
+            },
+            initPeople(people) {
+                people = (people || this.event.people).map((u) => (u));
+                if (!this.peopleInited && people) {
+                    this.allPeople = people.map((u) => {
+                        u.participation = 0;
+                        return u;
+                    });
+                    // Copy, can't be same
+                    this.addPersonState.allPeople = this.allPeople.filter((u) => !this.bill.people.includes(u));
+                    this.addPersonState.people = this.bill.people;
+                    this.peopleInited = true;
+                }
+            },
+            mapParticipationsFromPaymentsToPersons() {
+                const bill = this.selectedBill;
+                for (const payment of bill.billPayments) {
+                    const person = bill.people.find((p) => p.email === payment.person.email);
+                    person.participation = payment.sum;
+                }
+            },
+            initBillPeopleList() {
+                this.bill = {...this.selectedBill};
+                if (!this.bill.people) {
+                    this.bill.people = [];
+                }
+            },
+            initAddPersonPropsAndState() {
+                this.buyer = this.bill.buyer;
+                this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
+                this.addPersonState.people = this.bill.people;
+            },
             setSelectedBillInfo() {
                 if (this.selectedBill) {
-                    const bill = this.selectedBill;
-                    for (const payment of bill.billPayments) {
-                        const person = bill.people.find((p) => p.email === payment.person.email);
-                        person.participation = payment.sum;
-                    }
-
-                    this.bill = {...bill};
-                    if (!this.bill.people) {
-                        this.bill.people = [];
-                    }
-                    this.initialBill = {...bill};
-                    this.buyer = this.bill.buyer;
-                    this.field.value = this.buyer.firstName + ' ' + this.buyer.lastName;
-                    this.addPersonState.people = this.bill.people;
+                    this.mapParticipationsFromPaymentsToPersons();
+                    this.initBillPeopleList();
+                    this.initAddPersonPropsAndState();
+                    this.pageTitle = 'Edit bill';
                 }
             },
             updateBuyer() {
                 if (this.buyer && this.buyer.firstName) {
-                    this.addPersonState.people.removeElement(this.bill.buyer, (person) => person.email);
                     this.bill.buyer = this.buyer;
-                    this.addPersonState.people.push(this.buyer);
+                    if (!this.addPersonState.people.map((p) => (p.email)).includes(this.buyer.email)) {
+                        this.addPersonState.people.push(this.buyer);
+                    }
                     this.buyer = {};
                 }
             },
@@ -207,44 +237,44 @@
             roundToTwoDecimalPoints(nr) {
                 return Math.round(nr * 100) / 100;
             },
-            displayNotMatchMessage() {
-                const match =
-                    this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation))
+            participationsMatchSum() {
+                return this.roundToTwoDecimalPoints(this.addPersonState.people.map((u) => Number(u.participation))
                         .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0))
                     === this.roundToTwoDecimalPoints(Number(this.bill.sum));
-                if (!match) {
+            },
+            displayNotMatchMessage() {
+                if (!this.participationsMatchSum()) {
                     this.notMatchDisplayProperty = 'block';
                 } else {
                     this.notMatchDisplayProperty = 'none';
                 }
             },
+            mapBillPaymentsFromPeopleParticipations() {
+                this.bill.billPayments = [];
+                for (const person of this.bill.people) {
+                    this.bill.billPayments.push({
+                        person,
+                        sum: person.participation,
+                    });
+                }
+            },
+            async saveBill() {
+                const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
+                this.event.bills = response.data.bills;
+            },
             async save() {
                 if (this.bill.title && this.bill.people.length > 0) {
                     this.errorDisplayProperty = 'none';
+
                     this.bill.people = this.addPersonState.people;
-
-                    this.bill.billPayments = [];
-                    for (const person of this.bill.people) {
-                        this.bill.billPayments.push({
-                            person,
-                            sum: person.participation,
-                        });
-                    }
-
+                    this.mapBillPaymentsFromPeopleParticipations();
                     this.bill.creator = await userStore.getUser();
 
-                    const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
-                    this.event.bills = response.data.bills;
-
-                    this.state.showing = true;
-                    this.state.showing = false;
+                    await this.saveBill();
+                    this.closeModal();
                 } else {
                     this.errorDisplayProperty = 'block';
                 }
-            },
-            cancel() {
-                this.state.showing = true;
-                this.state.showing = false;
             },
             async deleteBill() {
                 if (confirm("Are you sure?")) {
