@@ -9,9 +9,9 @@
                     <add-bill :key="addBillClickCount" :state="addBillState" :event="event"/>
                     <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
                     <b-col sm='12' md='6'>
-                        <div class='header'>
+                        <div class='pt-4'>
                             <h1>
-                                <span class='eventTitle'>
+                                <span class='p-0'>
                                     {{event.title}}
                                 </span>
                             </h1>
@@ -22,20 +22,22 @@
                             </p>
                         </div>
                     </b-col>
-                    <b-col class="MDMT40px" sm='12' md='6'>
+                    <b-col class="mt-md-4" sm='12' md='6'>
                         <h2>People</h2>
-                        <div class='table-wrapper-scroll-y MDMT3vh'>
+                        <div class='table-wrapper-scroll-y mt-md-2'>
                             <table class='table table-bordered table-striped bill-table'>
                                 <tbody>
                                 <tr v-for='person in event.people'>
-                                    <td>{{person.firstName + ' ' + person.lastName}}</td>
+                                    <td>{{person.firstName + ' ' + person.lastName}}
+                                        <small v-if="isOwner(person)"> (owner)</small>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </b-col>
                 </b-row>
-                <b-row class="PT20px">
+                <b-row class="pt-2">
                     <b-col cols="12">
                         <h2>Bills</h2>
                         <table class='table table-bordered table-hover table-striped'>
@@ -59,16 +61,19 @@
                     </b-col>
                     <b-col v-if="event.closedAt == null">
                         <b-row>
-                            <b-col v-if="isOwner()" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
-                                <b-btn class="wide mt-4" variant='danger' v-on:click='calculateDistributedDebts'>Close
+                            <b-col v-if="isOwner(user)" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
+                                <b-btn class="mt-4 w-100 btn btn-outline-danger" v-on:click='calculateDistributedDebts'>
+                                    Close
                                     event...
                                 </b-btn>
                             </b-col>
-                            <b-col v-if="isOwner()" cols="6" offset="0" md="2" offset-md="0">
-                                <b-btn class="wide mt-4" variant='primary' v-on:click='editing = true'>Edit</b-btn>
+                            <b-col v-if="isOwner(user)" cols="6" offset="0" md="2" offset-md="0">
+                                <b-btn class="mt-4 w-100 btn btn-outline-primary" v-on:click='editing = true'>Edit
+                                </b-btn>
                             </b-col>
                             <b-col cols="6" offset="0" md="2" offset-md="0">
-                                <b-btn class="wide mt-4 mb-3" variant='primary' v-on:click='addBill'>Add bill</b-btn>
+                                <b-btn class="mt-4 mb-3 w-100 btn btn-outline-primary" v-on:click='addBill'>Add bill
+                                </b-btn>
                             </b-col>
                         </b-row>
                     </b-col>
@@ -160,8 +165,8 @@
             }
         },
         methods: {
-            isOwner() {
-                return this.user != null && this.event.owner != null && this.user.id === this.event.owner.id;
+            isOwner(user) {
+                return user != null && this.event.owner != null && user.id === this.event.owner.id;
             },
             async addBill() {
                 this.addBillClickCount++;
@@ -193,18 +198,6 @@
 </script>
 
 <style scoped>
-    .eventTitle {
-        padding: 0 0;
-    }
-
-    .header {
-        padding-top: 5vh;
-    }
-
-    .wide {
-        width: 100%;
-    }
-
     .table-wrapper-scroll-y {
         display: block;
         max-height: 200px;
@@ -213,17 +206,7 @@
         margin-top: 5vh;
     }
 
-    .PT20px {
-        padding-top: 20px;
-    }
-
-    @media (min-width: 768px) {
-        .MDMT40px {
-            margin-top: 40px;
-        }
-
-        .MDMT3vh {
-            margin-top: 3vh;
-        }
+    .btn {
+        background: transparent;
     }
 </style>
