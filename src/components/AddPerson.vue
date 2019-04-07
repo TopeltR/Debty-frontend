@@ -1,7 +1,7 @@
 <template>
     <b-row>
         <b-col cols='8' col-md="9">
-            <autocomplete id='user' v-model='user' :placeholder='"Name"' :field='field'
+            <autocomplete :required='false' id='user' v-model='user' :placeholder='"Name"' :field='field'
                           :items='state.allPeople'
                           :keyExtractor="getFullName"/>
         </b-col>
