@@ -68,7 +68,7 @@
         <div class="col-12" slot="modal-footer">
             <b-row>
                 <b-col cols="6">
-                    <b-button class="wide" variant="secondary" v-on:click="cancel">Cancel</b-button>
+                    <b-button class="wide" variant="secondary" v-on:click="closeModal">Cancel</b-button>
                 </b-col>
                 <b-col cols="6">
                     <b-button class="wide" variant="primary" v-on:click="save">Save</b-button>
@@ -168,6 +168,9 @@
             },
         }),
         methods: {
+            closeModal() {
+                this.state.showing = false;
+            },
             initPeople(people) {
                 people = (people || this.event.people).map((u) => (u));
                 if (!this.peopleInited && people) {
@@ -244,16 +247,11 @@
                     const response = await this.$http.post('/events/' + this.event.id + '/bills', this.bill);
                     this.event.bills = response.data.bills;
 
-                    this.state.showing = true;
-                    this.state.showing = false;
+                    this.closeModal();
                 } else {
                     this.errorDisplayProperty = 'block';
                 }
-            },
-            cancel() {
-                this.state.showing = true;
-                this.state.showing = false;
-            },
+            }
         },
     };
 </script>
