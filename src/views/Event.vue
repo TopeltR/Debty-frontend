@@ -62,17 +62,21 @@
                     <b-col v-if="event.closedAt == null">
                         <b-row>
                             <b-col v-if="isOwner(user)" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
-                                <b-btn class="mt-4 w-100 btn btn-outline-danger" v-on:click='calculateDistributedDebts'>
-                                    Close
-                                    event...
+                                <b-btn class="mt-4 w-100" variant="outline-danger"
+                                       v-on:click='calculateDistributedDebts'>
+                                    Close event...
+                                </b-btn>
+                            </b-col>
+                            <b-col v-if="isOwner(user)" class="mb-3" cols="12" offset="0" md="2" offset-md="0">
+                                <b-btn class="mt-4 w-100" variant="outline-danger" v-on:click='deleteEvent'>Delete
                                 </b-btn>
                             </b-col>
                             <b-col v-if="isOwner(user)" cols="6" offset="0" md="2" offset-md="0">
-                                <b-btn class="mt-4 w-100 btn btn-outline-primary" v-on:click='editing = true'>Edit
+                                <b-btn class="mt-4 w-100" variant="outline-primary" v-on:click='editing = true'>Edit
                                 </b-btn>
                             </b-col>
                             <b-col cols="6" offset="0" md="2" offset-md="0">
-                                <b-btn class="mt-4 mb-3 w-100 btn btn-outline-primary" v-on:click='addBill'>Add bill
+                                <b-btn class="mt-4 mb-3 w-100" variant="outline-primary" v-on:click='addBill'>Add bill
                                 </b-btn>
                             </b-col>
                         </b-row>
@@ -87,6 +91,7 @@
 </template>
 
 <script>
+    import router from '@/router';
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import userStore from '../stores/UserStore';
@@ -193,6 +198,12 @@
                 this.debtDistributionState.showing = false;
                 this.debtDistributionState.showing = true;
             },
+            async deleteEvent() {
+                if (confirm("Are you sure?")) {
+                    await this.$http.delete('/events/' + this.event.id);
+                    router.push('/events');
+                }
+            },
         },
     };
 </script>
@@ -204,9 +215,5 @@
         overflow-y: auto;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         margin-top: 5vh;
-    }
-
-    .btn {
-        background: transparent;
     }
 </style>
