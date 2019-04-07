@@ -1,12 +1,12 @@
 <template>
     <background>
-        <b-row class='PT15vh flex-md-row-reverse'>
+        <b-row class='pt-md-5 flex-md-row-reverse'>
             <b-col sm='12' md='5' offset-md='1'>
-                <form @submit.prevent='register'>
+                <form @submit.prevent='register()'>
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='text' class='form-control' id='email' placeholder='Email'
+                                <input type='text' class='form-control' id='email' placeholder='Email' required
                                        v-model='form.email' maxlength="255">
                             </b-col>
                         </b-row>
@@ -15,7 +15,7 @@
                         <b-row>
                             <b-col>
                                 <input type='password' class='form-control' id='password' placeholder='Password'
-                                       v-model='form.password' maxlength="255">
+                                       required v-model='form.password' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
@@ -23,7 +23,7 @@
                         <b-row>
                             <b-col>
                                 <input type='password' class='form-control' id='passwordConfirm' maxlength="255"
-                                       placeholder='Repeat password' v-model='form.passwordConfirmation'>
+                                       required placeholder='Repeat password' v-model='form.passwordConfirmation'>
                             </b-col>
                         </b-row>
                     </div>
@@ -31,7 +31,7 @@
                         <b-row>
                             <b-col>
                                 <input type='text' class='form-control' id='firstName' placeholder='First name'
-                                       v-model='form.firstName' maxlength="255">
+                                       required v-model='form.firstName' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
@@ -39,15 +39,15 @@
                         <b-row>
                             <b-col>
                                 <input type='text' class='form-control' id='lastName' placeholder='Last name'
-                                       v-model='form.lastName' maxlength="255">
+                                       required v-model='form.lastName' maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
                     <b-row>
                         <b-col sm='12' md='5'>
-                            <b-btn variant='primary' type='submit' class='wide'>Register</b-btn>
+                            <b-btn variant='primary' type='submit' class='w-100'>Register</b-btn>
                         </b-col>
-                        <b-col sm='12' md='7' class='MT7 mob-text-center'>
+                        <b-col sm='12' md='7' class='mt-3 text-center text-md-left mob-text-center'>
                             <router-link to='/'>
                                 <a>Already a member?</a>
                             </router-link>
@@ -106,25 +106,4 @@
 </script>
 
 <style scoped>
-    .PT15vh {
-        padding-top: 15vh;
-    }
-
-    .MT7 {
-        margin-top: 7px;
-    }
-
-    .wide {
-        width: 100%;
-    }
-
-    @media (max-width: 767px) {
-        .PT15vh {
-            padding-top: 0;
-        }
-
-        .mob-text-center {
-            text-align: center;
-        }
-    }
 </style>

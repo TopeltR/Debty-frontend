@@ -14,7 +14,7 @@
             <b-row>
                 <div>
                     <b-row>
-                        <form @submit.prevent='' class='w-100'>
+                        <form @submit.prevent='save()' class='w-100'>
                             <div class='form-group'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='bill.title' id='title' required
@@ -28,7 +28,7 @@
                             <div class="form-group">
                                 <label for="buyer">Buyer:</label>
                                 <autocomplete id="buyer" v-model="buyer" :field="field" v-on:input="updateBuyer"
-                                              :items="allPeople"
+                                              :items="allPeople" :required="true"
                                               :keyExtractor="getFullName"/>
                             </div>
                             <div class="form-group inline-form">
@@ -64,8 +64,6 @@
                                 <add-person id="user" :state="addPersonState"/>
                                 <p class="text-danger mt-5" v-bind:style='{display: notMatchDisplayProperty}'>
                                     Sum and participations don't match!</p>
-                                <p class="text-danger mt-5" v-bind:style="{display: errorDisplayProperty}">
-                                    Not all required fields filled</p>
                             </div>
                         </form>
                     </b-row>
@@ -75,15 +73,15 @@
         <div class="col-12" slot="modal-footer">
             <b-row v-if="canDelete()">
                 <b-col cols="6">
-                    <b-button class="w-100" variant="danger" v-on:click="deleteBill">Delete</b-button>
+                    <b-btn class="w-100" variant="danger" v-on:click="deleteBill">Delete</b-btn>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="w-100" variant="primary" v-on:click="save">Save</b-button>
+                    <b-btn class="w-100" variant="primary" type="submit">Save</b-btn>
                 </b-col>
             </b-row>
             <b-row v-else>
                 <b-col>
-                    <b-button class="w-100" variant="primary" v-on:click="save">Save</b-button>
+                    <b-btn class="w-100" variant="primary" type="submit">Save</b-btn>
                 </b-col>
             </b-row>
         </div>

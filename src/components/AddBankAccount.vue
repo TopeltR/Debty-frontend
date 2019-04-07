@@ -5,9 +5,9 @@
         </div>
         <div class="col-10 offset-1">
             <b-row>
-                <b-col cols="12" class='TM30px'>
+                <b-col cols="12" class='mt-4'>
                     <b-row>
-                        <form @submit.prevent='' class='wide'>
+                        <form @submit.prevent='saveBankAccount()' class='w-100'>
                             <div class='form-group'>
                                 <label for='bankAccountName'>Name connected to bank account:</label>
                                 <input type='text' class='form-control' v-model='bankAccount.name' id='bankAccountName'
@@ -29,7 +29,7 @@
                     <b-button class="wide" variant="secondary" v-on:click="cancel">Cancel</b-button>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="wide" variant="primary" v-on:click="saveBankAccount">Save</b-button>
+                    <b-button class="wide" variant="primary" type="submit">Save</b-button>
                 </b-col>
             </b-row>
         </div>
@@ -87,7 +87,4 @@
 </script>
 
 <style scoped>
-    .wide {
-        width: 100%;
-    }
 </style>

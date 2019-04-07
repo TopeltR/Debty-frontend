@@ -31,6 +31,11 @@
                 required: false,
                 default: () => ({value: ''}),
             },
+            required: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
 
         data() {
@@ -117,6 +122,7 @@
                 :placeholder='placeholder'
                 class='form-control'
                 @input='onChange'
+                :required="required"
                 v-model='field.value'
                 @keydown.down='onArrowDown'
                 @keydown.up='onArrowUp'

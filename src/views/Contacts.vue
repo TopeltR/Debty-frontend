@@ -2,7 +2,7 @@
     <div>
         <navbar/>
         <background>
-            <div class='search-wrapper pt-4'>
+            <div class='d-table my-0 mx-auto pt-4'>
                 <b-row class='ml-0'>
                     <h2>Add contact</h2>
                     <font-awesome-icon id="info" icon='info-circle' class='ml-1'></font-awesome-icon>
@@ -13,8 +13,8 @@
                 </b-row>
                 <b-row class='pt-4'>
                     <b-col sm='12' md='6'>
-                        <autocomplete id='search ' v-model='contact' :placeholder='"Name"' :field='field'
-                                      :items='availableContacts'
+                        <autocomplete id='search ' v-model='contact' :placeholder='"Name"' :field='field' class="w-100"
+                                      :items='availableContacts' :required='true'
                                       :key-extractor='getUserFullName'>
                         </autocomplete>
                     </b-col>
@@ -32,9 +32,9 @@
                         <div v-if='requests.length > 0'>
                             <b-list-group-item v-for='request in requests'> {{request.firstName}} {{request.lastName}}
                                 <span v-if='request.type === "Incoming"'>
-                                    <font-awesome-icon icon='check' class='color-green ml-1 icons float-right'
+                                    <font-awesome-icon icon='check' class='limegreen ml-1 icons float-right'
                                                        v-on:click='acceptContact(request.id)'/>
-                                    <font-awesome-icon icon='times' class='color-red icons float-right'
+                                    <font-awesome-icon icon='times' class='text-danger icons float-right'
                                                        v-on:click='removeRequest(request.id)'/>
                                 </span>
                                 <div v-else></div>
@@ -52,7 +52,7 @@
                         <div v-if="userContacts.length > 0">
                             <b-list-group-item v-for='contact in userContacts'> {{contact.firstName}}
                                 {{contact.lastName}}
-                                <font-awesome-icon icon='times' class='color-red icons float-right'
+                                <font-awesome-icon icon='times' class='text-danger icons float-right'
                                                    v-on:click='removeRequest(contact)'/>
                             </b-list-group-item>
                         </div>
@@ -70,7 +70,6 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import Autocomplete from '@/components/Autocomplete.vue';
-    import router from '@/router';
     import userStore from '../stores/UserStore';
 
     export default {
@@ -135,21 +134,8 @@
 </script>
 
 <style scoped>
-    .search-wrapper {
-        display: table;
-        margin: 0 auto;
-    }
-
-    #search {
-        width: 100%;
-    }
-
-    .color-green {
+    .limegreen {
         color: limegreen;
-    }
-
-    .color-red {
-        color: red;
     }
 
     .icons {

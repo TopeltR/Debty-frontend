@@ -12,11 +12,11 @@
                                    placement="bottom"></b-tooltip>
                     </b-row>
                     <b-row>
-                        <form @submit.prevent="" class='w-100'>
+                        <form @submit.prevent="saveDebt()" class='w-100'>
                             <div class='form-group pt-3'>
                                 <label for='title'>Title:</label>
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
-                                       placeholder='Enter debt title' maxlength="255">
+                                       placeholder='Enter debt title' required maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <b-row>
@@ -27,11 +27,12 @@
                                             </b-col>
                                             <b-col cols="10">
                                                 <input v-if="!userIsReceiver" type='text' class='form-control'
-                                                       v-model='userName' disabled maxlength="255">
+                                                       v-model='userName' disabled required maxlength="255">
                                                 <autocomplete v-else id='payer' v-model='formData.payer'
                                                               :placeholder='"Name"'
                                                               :field='field'
                                                               :items='contacts'
+                                                              :required='true'
                                                               :key-extractor='getUserFullName'></autocomplete>
                                             </b-col>
                                         </b-row>
@@ -41,12 +42,14 @@
                                             </b-col>
                                             <b-col cols="10" class="mt-3">
                                                 <input v-if="userIsReceiver" type='text' class='form-control'
-                                                       v-model='userName' disabled maxlength="255">
+                                                       v-model='userName' disabled required maxlength="255">
                                                 <autocomplete v-else id='receiver' v-model='formData.receiver'
                                                               :placeholder='"Name"'
                                                               :field='field'
                                                               :items='contacts'
-                                                              :key-extractor='getUserFullName'></autocomplete>
+                                                              :required='true'
+                                                              :key-extractor='getUserFullName'
+                                                ></autocomplete>
                                             </b-col>
                                         </b-row>
                                     </b-col>
@@ -65,14 +68,14 @@
                                     </b-col>
                                     <b-col cols='3'>
                                         <input id='sum' type='text' class='form-control pr-0' v-model='formData.sum'
-                                               placeholder='0' maxlength="255">
+                                               placeholder='0' required maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>
                             </div>
                             <b-row class='mt-4 text-center'>
                                 <b-col>
-                                    <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
+                                    <b-btn type="submit" class="w-100" variant="primary">Save</b-btn>
                                 </b-col>
                             </b-row>
                         </form>
@@ -124,6 +127,10 @@
             async saveDebt() {
                 if (this.formData.payer === null) {
                     this.formData.payer = {
+                        firstName: this.field.value,
+                    };
+                } else {
+                    this.formData.receiver = {
                         firstName: this.field.value,
                     };
                 }

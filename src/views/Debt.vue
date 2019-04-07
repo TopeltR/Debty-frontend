@@ -86,14 +86,15 @@
                                 <h2>Pay</h2>
                                 <b-row class="mt-2 pl-3">
                                     <b-col cols="4" class="p-0 pr-2">
-                                        <img v-on:click="payWithSEB" src="../assets/seb-logo.png" class="bank-link"/>
+                                        <img v-on:click="payWithSEB" src="../assets/seb-logo.png"
+                                             class="w-100 bank-link"/>
                                     </b-col>
                                     <b-col cols="4" class="p-0 pr-1">
-                                        <img v-on:click="payWithLHV" class="lhv bank-link"
+                                        <img v-on:click="payWithLHV" class="p-2 w-100 bank-link"
                                              src="../assets/lhv-logo.jpg"/>
                                     </b-col>
                                     <b-col cols="4" class="p-0">
-                                        <img v-on:click="payWithSwed" class="swed bank-link"
+                                        <img v-on:click="payWithSwed" class="swed w-100 bank-link mr-0"
                                              src="../assets/swedbank-logo.png"/>
                                     </b-col>
                                 </b-row>
@@ -303,29 +304,15 @@
         margin-right: 15px;
     }
 
-    .bank-link {
-        width: 100%;
-    }
-
-    .bank-link:hover {
-        box-shadow: 0 0 2px rgba(33, 33, 33, .2);
-    }
-
-    .lhv {
-        background-color: white;
-        padding: 10px;
-    }
-
-    .swed {
-        background-color: white;
-        margin-right: 0;
-    }
-
     @media (max-width: 768px) {
         img {
             height: 46px;
             margin-right: 5px;
         }
+    }
+
+    .bank-link:hover {
+        box-shadow: 0 0 2px rgba(33, 33, 33, .2);
     }
 
     .border-bottom-1 {
