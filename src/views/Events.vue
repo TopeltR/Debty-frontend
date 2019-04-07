@@ -4,39 +4,38 @@
         <background>
             <div v-if='loaded'>
                 <div v-if="events.length > 0">
-                    <h1 class='pt-4'>My events <font-awesome-icon icon='plus' class=' ml-3 mt-2 green' v-on:click='createNewEvent'/></h1>
+                    <h1 class='pt-4'>My events
+                        <font-awesome-icon icon='plus' class=' ml-3 mt-2 limegreen' v-on:click='createNewEvent'/>
+                    </h1>
                     <div class='search-wrapper mr-4 mt-4 mb-4'>
                         <b-row>
                             <b-col md="6">
                                 <input class='form-control' type='text' v-model='search' placeholder='Search'
                                        maxlength="255"/>
                             </b-col>
-
                         </b-row>
-
                     </div>
-                    <div id='table'>
-                        <table class='table table-responsive table-bordered table-hover'>
-                            <thead>
-                            <tr>
-                                <th scope='col'>Title</th>
-                                <th scope='col'>Description</th>
-                                <th scope='col'>Owner name</th>
-                                <th class='d-none d-md-table-cell' scope='col'>Created at</th>
-                                <th class='d-none d-md-table-cell' scope='col'>Closed at</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="event in filteredList" @click="goToEvent(event.id)">
-                                <td>{{event.title}}</td>
-                                <td>{{event.description}}</td>
-                                <td class="">{{event.owner.firstName}} {{event.owner.lastName}}</td>
-                                <td class='d-none d-md-table-cell'>{{getDateString(event.createdAt)}}</td>
-                                <td class='d-none d-md-table-cell'>{{getDateString(event.closedAt)}}</td>
-
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div v-for="event in filteredList" @click="goToEvent(event.id)" class="card my-3 shadow">
+                        <div class="card-body">
+                            <b-row>
+                                <b-col md="6">
+                                    <h4 class="ml-2">{{event.title}}</h4>
+                                </b-col>
+                                <b-col md="6" class="d-none d-md-block text-right">
+                                    <b>Created: </b> {{getDateString(event.createdAt)}}
+                                    <span v-if="event.closedAt">
+                                    <br>
+                                    <b>Closed: </b> {{getDateString(event.closedAt)}}
+                                    </span>
+                                </b-col>
+                            </b-row>
+                            <b-row class="mx-2">
+                                <small><b>Owner: </b> {{getFullName(event.owner)}}</small>
+                            </b-row>
+                            <b-row class="mx-2 mt-3">
+                                <p>{{event.description}}</p>
+                            </b-row>
+                        </div>
                     </div>
                 </div>
                 <div v-else class="text-center p-5">
@@ -53,10 +52,11 @@
     import Background from '@/components/Background.vue';
     import router from '@/router';
     import userStore from '../stores/UserStore';
+    import BRow from "bootstrap-vue/src/components/layout/row";
 
     export default {
         name: 'events',
-        components: {Navbar, Background},
+        components: {BRow, Navbar, Background},
 
         mounted() {
             this.getEvents();
@@ -101,6 +101,9 @@
             goToEventCreation() {
                 router.push('/events/create');
             },
+            getFullName(person) {
+                return person.firstName + ' ' + person.lastName;
+            },
         },
         computed: {
             filteredList() {
@@ -116,21 +119,15 @@
 </script>
 
 <style scoped>
-
-    .menu-list-button {
-        width: 100%;
-        background-color: white;
-        color: black;
-        font-size: 25px;
-        border-color: lightgray;
-        border-radius: 5px 5px 5px 5px !important;
-    }
-
-    .green {
+    .limegreen {
         color: limegreen;
     }
 
     .form-control {
-       width: 300px !important;
-   }
+        width: 300px !important;
+    }
+
+    .card:hover {
+        border: solid 1px limegreen;
+    }
 </style>

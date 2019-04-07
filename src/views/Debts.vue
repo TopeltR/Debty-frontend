@@ -135,7 +135,16 @@
                     this.filteredDebts = this.debts.filter((debt) => debt.status === this.selectedStatus);
                 }
             },
-            filterSearch() {
+            sortDebts() {
+                this.debts.sort((a, b) => {
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+            },
+        },
+        computed: {
+            async filterSearch() {
                 this.sortDebts();
                 this.filteredDebts = this.debts.filter((debt) => {
                     return debt.title.toLowerCase().includes(this.search.toLowerCase()) ||
@@ -143,13 +152,6 @@
                         debt.payer.lastName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.receiver.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
                         debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase());
-                });
-            },
-            sortDebts() {
-                this.debts.sort((a, b) => {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(b.createdAt) - new Date(a.createdAt);
                 });
             },
         },
