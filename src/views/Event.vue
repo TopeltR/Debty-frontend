@@ -5,7 +5,8 @@
             <navbar/>
             <background>
                 <b-row>
-                    <add-bill :key="selectedBillCount" :selectedBill="selectedBill" :state="seeBillState" :event="event"/>
+                    <add-bill :key="selectedBillCount" :selectedBill="selectedBill" :state="seeBillState"
+                              :event="event"/>
                     <add-bill :key="addBillClickCount" :state="addBillState" :event="event"/>
                     <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
                     <b-col sm='12' md='6'>
@@ -39,25 +40,29 @@
                 </b-row>
                 <b-row class="pt-2">
                     <b-col cols="12">
-                        <h2>Bills</h2>
-                        <table class='table table-bordered table-hover table-striped'>
-                            <thead>
-                            <tr class='d-none d-md-table-row'>
-                                <th scope='col'>Title</th>
-                                <th scope='col'>Sum (€)</th>
-                                <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
-                                <th class='d-none d-md-table-cell' scope='col'>Participants</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="bill in event.bills" v-if="bill !== undefined" @click="openBillModal(bill)">
-                                <td>{{bill.title}}</td>
-                                <td>{{bill.sum}}</td>
-                                <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}} {{bill.buyer.lastName}}</td>
-                                <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div>
+                            <h2>Bills</h2>
+                            <table class='table table-bordered table-hover table-striped'>
+                                <thead>
+                                <tr class='d-none d-md-table-row'>
+                                    <th scope='col'>Title</th>
+                                    <th scope='col'>Sum (€)</th>
+                                    <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
+                                    <th class='d-none d-md-table-cell' scope='col'>Participants</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="bill in event.bills" v-if="bill !== undefined" @click="openBillModal(bill)">
+                                    <td>{{bill.title}}</td>
+                                    <td>{{bill.sum}}</td>
+                                    <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}}
+                                        {{bill.buyer.lastName}}
+                                    </td>
+                                    <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </b-col>
                     <b-col v-if="event.closedAt == null">
                         <b-row>

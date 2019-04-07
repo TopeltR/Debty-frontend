@@ -31,8 +31,8 @@
                         </div>
                     </b-col>
                 </b-row>
-                <div id='table'>
-                    <table class='table table-responsive-sm table-bordered table-hover' id='debts'>
+                <div id='table' class="shadow p-0 p-sm-4 mt-2 mb-2">
+                    <table class='table table-responsive-sm table-bordered table-hover table-borderless' id='debts'>
                         <thead>
                         <tr>
                             <th scope='col'>Sum</th>
@@ -158,7 +158,6 @@
 </script>
 
 <style scoped>
-
     .green {
         color: limegreen;
     }
@@ -167,10 +166,21 @@
         color: grey;
     }
 
-    @media(max-width: 768px) {
+    @media(max-width: 576px) {
         #debts {
             width: 100%;
         }
+        #table {
+            margin: -30px;
+        }
     }
 
+    #table {
+        background-color: white;
+        border-radius: .25rem;
+    }
+
+    table {
+        border: none;
+    }
 </style>
