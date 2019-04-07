@@ -31,7 +31,7 @@
                         </div>
                     </b-col>
                 </b-row>
-                <div id='table' class="shadow p-0 p-sm-4 mt-2 mb-2">
+                <div id='table' class="shadow p-sm-3 mt-2 mb-2">
                     <table class='table table-responsive-sm table-bordered table-hover table-borderless' id='debts'>
                         <thead>
                         <tr>
@@ -41,28 +41,32 @@
                             <th scope='col'>Status</th>
                         </tr>
                         </thead>
-                        <tbody>
-                            <tr v-if="filteredDebts.length > 0" v-for="debt in filteredDebts" @click="goToDebt(debt.id)">
-                                <td v-if="debt.receiver.id === user.id">
-                                    <div class="text-success">
-                                        +{{debt.sum}} €
-                                    </div>
-                                </td>
-                                <td v-else> -{{debt.sum}} €</td>
-                                <td>{{debt.title}}</td>
-                                <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}}
-                                    {{debt.receiver.lastName}}
-                                </td>
-                                <td v-else-if='debt.type === "incoming"'>{{debt.payer.firstName}}
-                                    {{debt.payer.lastName}}
-                                </td>
-                                <td>
-                                    <debt-status :status="debt.status"></debt-status>
-                                </td>
-                            </tr>
-                            <td v-else colspan="4">
-                                <span class="text-grey">You have no debts, start by clicking on plus sign!</span>
+                        <tbody v-if="filteredDebts.length > 0">
+                        <tr v-for="debt in filteredDebts" @click="goToDebt(debt.id)">
+                            <td v-if="debt.receiver.id === user.id">
+                                <div class="text-success">
+                                    +{{debt.sum}} €
+                                </div>
                             </td>
+                            <td v-else> -{{debt.sum}} €</td>
+                            <td>{{debt.title}}</td>
+                            <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}}
+                                {{debt.receiver.lastName}}
+                            </td>
+                            <td v-else-if='debt.type === "incoming"'>{{debt.payer.firstName}}
+                                {{debt.payer.lastName}}
+                            </td>
+                            <td>
+                                <debt-status :status="debt.status"></debt-status>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody v-else>
+                        <tr class="no-hover">
+                            <td colspan="4">
+                                <span class="text-grey">You have no debts, start by clicking on the plus sign!</span>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -125,6 +129,7 @@
                     || debt.receiver.id === this.user.id);
                 this.sortDebts();
                 this.filteredDebts = this.debts;
+                console.log(this.filteredDebts);
                 this.loaded = true;
             },
             filterStatus() {
@@ -168,10 +173,11 @@
         color: grey;
     }
 
-    @media(max-width: 576px) {
+    @media (max-width: 576px) {
         #debts {
             width: 100%;
         }
+
         #table {
             margin: -30px;
         }
@@ -184,5 +190,9 @@
 
     table {
         border: none;
+    }
+
+    .no-hover:hover {
+        background-color: white !important;
     }
 </style>
