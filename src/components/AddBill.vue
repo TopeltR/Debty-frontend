@@ -12,28 +12,28 @@
         </div>
         <div class="col-10 offset-1">
             <b-row>
-                <div>
+                <b-col cols="12">
                     <b-row>
                         <form @submit.prevent='save()' class='w-100'>
                             <div class='form-group'>
-                                <label for='title'>Title:</label>
+                                <label for='title'>Title*:</label>
                                 <input type='text' class='form-control' v-model='bill.title' id='title' required
-                                       placeholder='Enter bill title' maxlength="255">
+                                       placeholder='Enter bill title' minlength="1" maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
                                 <textarea id='description' class='form-control' v-model='bill.description'
-                                          placeholder='Enter bill description' required maxlength="255"></textarea>
+                                          placeholder='Enter bill description' maxlength="255"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="buyer">Buyer:</label>
+                                <label for="buyer">Buyer*:</label>
                                 <autocomplete id="buyer" v-model="buyer" :field="field" v-on:input="updateBuyer"
                                               :items="allPeople" :required="true"
                                               :keyExtractor="getFullName"/>
                             </div>
                             <div class="form-group inline-form">
-                                <label for="sum" class="pr-3">Sum:</label>
-                                <input type="text" class="d-inline form-control skinny" id="sum" v-model="bill.sum"
+                                <label for="sum" class="pr-3">Sum*:</label>
+                                <input type="number" class="d-inline form-control skinny" id="sum" v-model="bill.sum"
                                        required v-on:change="displayNotMatchMessage" maxlength="255">
                                 <span class="ml-1">€</span>
                             </div>
@@ -62,12 +62,12 @@
                                 </div>
                                 <label for='user'>Add participants:</label>
                                 <add-person id="user" :state="addPersonState"/>
-                                <p class="text-danger mt-5" v-bind:style='{display: notMatchDisplayProperty}'>
+                                <p class="text-danger mt-5" :key="notMatchDisplayProperty" v-bind:style='{display: notMatchDisplayProperty}'>
                                     Sum and participations don't match!</p>
                             </div>
                         </form>
                     </b-row>
-                </div>
+                </b-col>
             </b-row>
         </div>
         <div class="col-12" slot="modal-footer">

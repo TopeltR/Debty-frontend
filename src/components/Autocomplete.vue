@@ -1,7 +1,7 @@
 <!--Taken from https://alligator.io/vuejs/vue-autocomplete-component/-->
 <script>
     export default {
-        name: 'autocomplete',
+        name: 'Autocomplete',
 
         props: {
             keyExtractor: {
@@ -62,7 +62,7 @@
                 }
             },
             filterResults() {
-                // first uncapitalize all the things
+                // First uncapitalize all the things
                 this.results = this.items.filter((item) => {
                     return this.keyExtractor(item).toLowerCase().indexOf(this.field.value.toLowerCase()) > -1;
                 });

@@ -10,8 +10,7 @@
                     <div class='search-wrapper mr-4 mt-4 mb-4'>
                         <b-row>
                             <b-col md="6">
-                                <input class='form-control' type='text' v-model='search' placeholder='Search'
-                                       maxlength="255"/>
+                                <input class='form-control' type='text' v-model='search' placeholder='Search'/>
                             </b-col>
                         </b-row>
                     </div>

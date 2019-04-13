@@ -21,8 +21,8 @@
                         <b-row>
                             <b-col>
                                 <label class='label' for='email'>Email:</label>
-                                <input type='text' class='form-control' id='email' placeholder='Email' required
-                                       v-model='email' maxlength="255">
+                                <input type='email' class='form-control' id='email' placeholder='Email' required
+                                       v-model='email' minlength="5" maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
@@ -67,24 +67,12 @@
         }),
 
         methods: {
-            login() {
-                const bodyFormData = new FormData();
-                bodyFormData.set('username', this.email);
-                bodyFormData.set('password', this.password);
-
-                this.$http.post('/login', bodyFormData, {headers: {'Content-Type': 'multipart/form-data'}})
-                    .then((response) => {
-                        if (response.status === 200) {
-                            this.$http.get('/users/email/' + this.email).then(
-                                (resp) => {
-                                    userStore.setUser(User.from(resp.data));
-                                    router.push('/home');
-                                },
-                            );
-                        }
-                    }).catch(() => {
-                        this.displayProperty = 'block';
-                });
+            async login() {
+                try {
+                    await userStore.logIn(this.email, this.password);
+                } catch (e) {
+                    this.displayProperty = 'block';
+                }
             },
         },
     };

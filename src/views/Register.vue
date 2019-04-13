@@ -6,40 +6,40 @@
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='text' class='form-control' id='email' placeholder='Email' required
-                                       v-model='form.email' maxlength="255">
+                                <input type='email' class='form-control' id='email' placeholder='Email*' required
+                                       v-model='form.email' minlength="5" maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='password' class='form-control' id='password' placeholder='Password'
-                                       required v-model='form.password' maxlength="255">
+                                <input type='password' class='form-control' id='password' placeholder='Password*'
+                                       required v-model='form.password' minlength="8" maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='password' class='form-control' id='passwordConfirm' maxlength="255"
-                                       required placeholder='Repeat password' v-model='form.passwordConfirmation'>
+                                <input type='password' class='form-control' id='passwordConfirm' minlength="8" maxlength="255"
+                                       required placeholder='Repeat password*' v-model='form.passwordConfirmation'>
                             </b-col>
                         </b-row>
                     </div>
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='text' class='form-control' id='firstName' placeholder='First name'
-                                       required v-model='form.firstName' maxlength="255">
+                                <input type='text' class='form-control' id='firstName' placeholder='First name*'
+                                       required v-model='form.firstName' minlength="1" maxlength="255">
                             </b-col>
                         </b-row>
                     </div>
                     <div class='form-group text-right'>
                         <b-row>
                             <b-col>
-                                <input type='text' class='form-control' id='lastName' placeholder='Last name'
-                                       required v-model='form.lastName' maxlength="255">
+                                <input type='text' class='form-control' id='lastName' placeholder='Last name*'
+                                       required v-model='form.lastName' minlength="1" maxlength="255">
                             </b-col>
                         </b-row>
                     </div>

@@ -77,10 +77,8 @@
                 }
                 return this.user.firstName + ' ' + this.user.lastName;
             },
-            async logOut() {
-                await this.$http.post('/users/signout');
-                localStorage.removeItem('user');
-                router.push('/');
+            logOut() {
+                userStore.logOut();
             },
         },
     };

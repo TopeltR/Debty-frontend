@@ -106,13 +106,13 @@
             },
             async getRequests() {
                 const response1 = await this.$http.get('/contacts/incoming/' + this.user.id);
-                let incomingRequests = response1.data;
+                const incomingRequests = response1.data;
                 incomingRequests.forEach((request) => {
                     Object.assign(request, {type: 'Incoming'});
                 });
 
                 const response2 = await this.$http.get('/contacts/outgoing/' + this.user.id);
-                let outgoingRequests = response2.data;
+                const outgoingRequests = response2.data;
 
                 this.requests = incomingRequests.concat(outgoingRequests);
             },

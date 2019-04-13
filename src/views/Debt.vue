@@ -116,34 +116,38 @@
                         <form @submit.prevent='saveDebt' class='w-100'>
                             <h1>Edit debt</h1>
                             <div class='form-group pt-3'>
-                                <label for='title'>Title:</label>
+                                <label for='title'>Title*:</label>
                                 <input type='text' class='form-control' v-model='debt.title' id='title'
-                                       placeholder='Enter debt title' maxlength="255">
+                                       placeholder='Enter debt title' required minlength="1" maxlength="255">
                             </div>
                             <div class='form-group'
                                  v-if="isOwner(debt.receiver)">
-                                <label>From:</label>
+                                <label>From*:</label>
 
                                 <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
-                                              :items='contacts'
+                                              :items='contacts' :required="true"
                                               :key-extractor='getUserFullName'></autocomplete>
                             </div>
                             <div class='form-group'
                                  v-if="isOwner(debt.payer)">
-                                <label>To:</label>
+                                <label>To*:</label>
 
-                                <autocomplete id='receiver' v-model='debt.receiver' :placeholder='"Name"' :field='field'
+                                <autocomplete id='receiver'
+                                              v-model='debt.receiver'
+                                              :placeholder='"Name"'
+                                              :field='field'
                                               :items='contacts'
+                                              :required='true'
                                               :key-extractor='getUserFullName'></autocomplete>
                             </div>
                             <div class='form-group'>
                                 <b-row>
                                     <b-col cols='2'>
-                                        <label for='sum' class='mt-2'>Sum:</label>
+                                        <label for='sum' class='mt-2'>Sum*:</label>
                                     </b-col>
                                     <b-col cols='3'>
-                                        <input id='sum' type='text' class='form-control pr-0' v-model='debt.sum'
-                                               placeholder='0' maxlength="255">
+                                        <input id='sum' type='number' class='form-control pr-0' v-model='debt.sum'
+                                               placeholder='0' required minlength="1" maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>
@@ -157,7 +161,6 @@
                                     <b-button class="w-100" variant="primary" v-on:click="saveDebt">Save</b-button>
                                 </b-col>
                             </b-row>
-
                         </form>
                     </b-row>
                 </b-col>
