@@ -14,7 +14,7 @@
             <b-row>
                 <b-col cols="12">
                     <b-row>
-                        <form @submit.prevent='save()' class='w-100'>
+                        <form @submit.prevent='save()' ref="form" class='w-100'>
                             <div class='form-group'>
                                 <label for='title'>Title*:</label>
                                 <input type='text' class='form-control' v-model='bill.title' id='title' required
@@ -76,12 +76,12 @@
                     <b-btn class="w-100" variant="danger" v-on:click="deleteBill">Delete</b-btn>
                 </b-col>
                 <b-col cols="6">
-                    <b-btn class="w-100" variant="primary" type="submit">Save</b-btn>
+                    <b-btn class="w-100" variant="primary" v-on:click="submit">Save</b-btn>
                 </b-col>
             </b-row>
             <b-row v-else>
                 <b-col>
-                    <b-btn class="w-100" variant="primary" type="submit">Save</b-btn>
+                    <b-btn class="w-100" variant="primary" v-on:click="submit">Save</b-btn>
                 </b-col>
             </b-row>
         </div>
@@ -293,6 +293,14 @@
                     && this.selectedBill.creator != null
                     && user.id === this.selectedBill.creator.id;
             },
+            submit() {
+                const form = this.$refs.form;
+                if(!form.checkValidity()) {
+                    form.reportValidity();
+                } else {
+                    this.save();
+                }
+            }
         },
     };
 </script>
