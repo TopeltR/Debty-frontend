@@ -19,8 +19,8 @@
                         </autocomplete>
                     </b-col>
                     <b-col class='pt-3 pt-md-0'>
-                        <button type='button' v-on:click='sendRequest'
-                                class='btn btn-primary wide'> Add contact
+                        <button type='button' v-on:click='sendRequest' class='btn btn-primary wide'>
+                            Add contact
                         </button>
                     </b-col>
                 </b-row>
