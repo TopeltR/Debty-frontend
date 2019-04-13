@@ -51,7 +51,7 @@
                                     {{ new Date(debt.createdAt).toLocaleString() }}
                                 </b-col>
                             </b-row>
-                            <b-row v-if="debt.modifiedAt !== debt.createdAt" class="mt-3">
+                            <b-row v-if="debt.modifiedAt !== debt.createdAt" class="mt-3 mb-4">
                                 <b-col md="6">
                                     <b>Modified:</b>
                                 </b-col>
@@ -147,7 +147,7 @@
                                     </b-col>
                                     <b-col cols='3'>
                                         <input id='sum' type='number' class='form-control pr-0' v-model='debt.sum'
-                                               placeholder='0' required minlength="1" maxlength="255">
+                                               placeholder='0' required min="0" maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>

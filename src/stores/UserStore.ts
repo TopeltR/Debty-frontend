@@ -32,6 +32,15 @@ class UserStore {
         return this.user;
     }
 
+    public async isLoggedIn() {
+        try {
+            await this.getUser();
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
     public async logIn(email: string, password: string) {
         const bodyFormData = new FormData();
         bodyFormData.set('username', email);

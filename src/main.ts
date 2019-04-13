@@ -1,59 +1,24 @@
 import Vue from 'vue';
 import App from './App.vue';
+import Config from '@/config';
 import router from './router';
-import BootstrapVue from 'bootstrap-vue';
 import axios from 'axios';
 
+import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import userStore from '@/stores/UserStore';
-
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {
-    faArrowDown,
-    faArrowRight,
-    faArrowUp,
-    faCheck,
-    faEdit,
-    faEnvelope,
-    faInfoCircle,
-    faPlus,
-    faSave,
-    faSignOutAlt,
-    faTimes,
-} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faEdit);
-library.add(faSave);
-library.add(faPlus);
-library.add(faArrowRight);
-library.add(faArrowDown);
-library.add(faArrowUp);
-library.add(faInfoCircle);
-library.add(faCheck);
-library.add(faTimes);
-library.add(faEnvelope);
-library.add(faSignOutAlt);
+new Config(axios, library).configure();
+
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
-axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.withCredentials = true;
-axios.interceptors.response.use((response) => {
-    return response;
-}, (error) => {
-    const path = JSON.parse(error.request.responseText).path;
-    if (!['/users/loggedIn'].includes(path)) {
-        userStore.alertUserNotLoggedIn();
-        router.push('/');
-        return Promise.reject(error);
-    }
-});
+Vue.use(BootstrapVue);
 
 Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
-Vue.use(BootstrapVue);
 
 new Vue({
     router,
