@@ -33,7 +33,8 @@
                             </div>
                             <div class="form-group inline-form">
                                 <label for="sum" class="pr-3">Sum*:</label>
-                                <input type="number" class="d-inline form-control skinny" id="sum" v-model="bill.sum"
+                                <input type="number" step="0.01" class="d-inline form-control skinny" id="sum"
+                                       v-model="bill.sum"
                                        required v-on:change="displayNotMatchMessage" min="0" maxlength="255">
                                 <span class="ml-1">€</span>
                             </div>
@@ -50,9 +51,9 @@
                                             </b-col>
                                             <b-col cols="5" md="4">
                                                 <input type="number" class="form-control"
-                                                       :id="person.firstName" v-model="person.participation"
-                                                       required min="0" maxlength="255" v-on:change="displayNotMatchMessage">
-
+                                                       :id="person.firstName" step="0.01" v-model="person.participation"
+                                                       required min="0" maxlength="255"
+                                                       v-on:change="displayNotMatchMessage">
                                             </b-col>
                                             <b-col cols="1" class="pt-2">
                                                 <span>€</span>
@@ -62,7 +63,8 @@
                                 </div>
                                 <label for='user'>Add participants:</label>
                                 <add-person id="user" :state="addPersonState"/>
-                                <p class="text-danger mt-5" :key="notMatchDisplayProperty" v-bind:style='{display: notMatchDisplayProperty}'>
+                                <p class="text-danger mt-5" :key="notMatchDisplayProperty"
+                                   v-bind:style='{display: notMatchDisplayProperty}'>
                                     {{errorMessage}}</p>
                             </div>
                         </form>
@@ -162,6 +164,8 @@
             errorDisplayProperty: 'none',
             notMatchDisplayProperty: 'none',
             errorMessage: 'Sum and participations don\'t match!',
+            notMatchErrorMessage: 'Sum and participations don\'t match!',
+            negativeErrorMessage: 'Negative sums not allowed!',
             peopleInited: false,
             bill: {
                 title: '',
@@ -219,12 +223,26 @@
                     this.pageTitle = 'Edit bill';
                 }
             },
+            peopleContains(person) {
+                return person && person.email && this.addPersonState.people.map((p) => (p.email)).includes(person.email);
+            },
+            removePreviousOwnerIfNewOwnerIsntInParticipants() {
+                if (this.peopleContains(this.bill.buyer) && this.bill.buyer.email !== this.buyer.email
+                    && !this.peopleContains(this.buyer)) {
+                    this.addPersonState.people.removeElement(this.bill.buyer, (person) => person.email);
+                }
+            },
+            addBuyerToPeopleIfNotInPeople() {
+                if (!this.peopleContains(this.buyer)) {
+                    this.addPersonState.people.push(this.buyer);
+                }
+            },
             updateBuyer() {
                 if (this.buyer && this.buyer.firstName) {
+                    this.removePreviousOwnerIfNewOwnerIsntInParticipants();
                     this.bill.buyer = this.buyer;
-                    if (!this.addPersonState.people.map((p) => (p.email)).includes(this.buyer.email)) {
-                        this.addPersonState.people.push(this.buyer);
-                    }
+                    this.addBuyerToPeopleIfNotInPeople();
+                    this.buyer = {};
                 }
             },
             getFullName(person) {
@@ -235,15 +253,15 @@
             },
             setErrorMessage(greaterThanZero) {
                 if (!greaterThanZero) {
-                    this.errorMessage = 'Negative sums not allowed!';
+                    this.errorMessage = this.negativeErrorMessage;
                 } else {
-                    this.errorMessage = 'Sum and participations don\'t match!';
+                    this.errorMessage = this.notMatchErrorMessage;
                 }
             },
             participationsMatchSum() {
                 const participations = this.roundToTwoDecimalPoints(
                     this.addPersonState.people.map((u) => Number(u.participation))
-                    .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0));
+                        .reduce((a, b) => this.roundToTwoDecimalPoints(a + b), 0));
                 const sum = this.roundToTwoDecimalPoints(Number(this.bill.sum));
                 const greaterThanZero = participations >= 0 && sum >= 0;
                 this.setErrorMessage(greaterThanZero);
@@ -295,7 +313,7 @@
             },
             submit() {
                 const form = this.$refs.form;
-                if(!form.checkValidity()) {
+                if (!form.checkValidity()) {
                     form.reportValidity();
                 } else {
                     this.save();
