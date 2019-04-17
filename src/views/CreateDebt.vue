@@ -14,16 +14,16 @@
                     <b-row>
                         <form @submit.prevent="saveDebt()" class='w-100'>
                             <div class='form-group pt-3'>
-                                <label for='title'>Title:</label>
+                                <label for='title'>Title*:</label>
                                 <input type='text' class='form-control' v-model='formData.title' id='title'
-                                       placeholder='Enter debt title' required maxlength="255">
+                                       placeholder='Enter debt title' required minlength="1" maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <b-row>
                                     <b-col cols="10" md="11">
                                         <b-row>
                                             <b-col cols="2">
-                                                <label>From:</label>
+                                                <label>From*:</label>
                                             </b-col>
                                             <b-col cols="10">
                                                 <input v-if="!userIsReceiver" type='text' class='form-control'
@@ -38,7 +38,7 @@
                                         </b-row>
                                         <b-row>
                                             <b-col cols="2" class="mt-3">
-                                                <label>To:</label>
+                                                <label>To*:</label>
                                             </b-col>
                                             <b-col cols="10" class="mt-3">
                                                 <input v-if="userIsReceiver" type='text' class='form-control'
@@ -64,11 +64,11 @@
                             <div class='form-group'>
                                 <b-row>
                                     <b-col cols='2'>
-                                        <label for='sum' class='mt-2'>Sum:</label>
+                                        <label for='sum' class='mt-2'>Sum*:</label>
                                     </b-col>
                                     <b-col cols='3'>
-                                        <input id='sum' type='text' class='form-control pr-0' v-model='formData.sum'
-                                               placeholder='0' required maxlength="255">
+                                        <input id='sum' type='number' class='form-control pr-0' v-model='formData.sum'
+                                               placeholder='0' required min="0" maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>

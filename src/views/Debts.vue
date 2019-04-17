@@ -14,7 +14,7 @@
                 <b-row class='mt-4 mb-4'>
                     <b-col class="col-12 col-md-3">
                         <input class='form-control' type='text' v-model='search' placeholder='Search'
-                               v-on:change="filterSearch" maxlength="255"/>
+                               v-on:change="filterSearch"/>
                     </b-col>
                     <b-col class="col-12 col-md-3 form-inline mt-3 mt-md-0">
                         <div class="form-group">

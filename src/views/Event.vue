@@ -121,7 +121,7 @@
             user: null,
             selectedBill: undefined,
             addBillClickCount: 0,
-            selectedBillCount: 0,
+            selectedBillCount: 100,
             editing: false,
             addBillState: {showing: false},
             seeBillState: {showing: false},

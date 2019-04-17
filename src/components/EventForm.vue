@@ -15,14 +15,14 @@
                     <b-row>
                         <form @submit.prevent='submitButtonHandler()' class='w-100 mt-3'>
                             <div class='form-group'>
-                                <label for='title'>Title:</label>
+                                <label for='title'>Title*:</label>
                                 <input type='text' class='form-control' v-model='title' id='title' required
-                                       placeholder='Enter event title' maxlength="255">
+                                       placeholder='Enter event title' minlength="1" maxlength="255">
                             </div>
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
                                 <textarea id='description' class='form-control' v-model='description'
-                                          placeholder='Enter event description' maxlength="255"></textarea>
+                                          placeholder='Enter event description' minlength="1" maxlength="255"></textarea>
                             </div>
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length !== 0'>People:</p>
@@ -33,18 +33,6 @@
                                 </ul>
                                 <label>Add people:</label>
                                 <add-person :state="addPersonState"/>
-                                <!--<b-row>
-                                    <b-col cols='9' class='pr-0'>
-                                        <autocomplete :required="false" id='user' v-model='user' :placeholder='"Name"' :field='field'
-                                                      :items='allPeople' class="mb-3"
-                                                      :key-extractor='getFullName'></autocomplete>
-                                    </b-col>
-                                    <b-col cols='3'>
-                                        <b-btn v-on:click='addPerson' variant="primary" class='w-100'>
-                                            Add
-                                        </b-btn>
-                                    </b-col>
-                                </b-row>-->
                             </div>
                             <b-row class='mt-4'>
                                 <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">

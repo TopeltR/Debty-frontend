@@ -14,12 +14,12 @@ const router = new Router({
         {
             path: '/home',
             name: 'home',
-            component: () => import( './views/Home.vue'),
+            component: () => import('./views/Home.vue'),
         },
         {
             path: '/register',
             name: 'register',
-            component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
+            component: () => import('./views/Register.vue'),
         },
         {
             path: '/events/create',
@@ -69,12 +69,7 @@ router.beforeEach(async (to, from, next) => {
     const publicPages = ['/register', '/'];
     const authRequired = !publicPages.includes(to.path);
 
-    let loggedIn = true;
-    try {
-        const user = await userStore.getUser();
-    } catch (e) {
-        loggedIn = false;
-    }
+    const loggedIn = await userStore.isLoggedIn();
 
     if (authRequired && !loggedIn) {
         userStore.alertUserNotLoggedIn();
