@@ -55,6 +55,7 @@ class UserStore {
     public async logOut() {
         await axios.post('/users/signout');
         localStorage.removeItem('user');
+        this.user = null;
         router.push('/');
     }
 

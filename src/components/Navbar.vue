@@ -2,8 +2,8 @@
     <b-container fluid>
         <b-row>
             <b-navbar class='fixed-top w-100 bg-gray py-0 h-md-60px' type='light' toggleable='sm'>
-                <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
+                <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-collapse is-nav id='nav_collapse'>
                     <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="home" to='/home'>
@@ -143,7 +143,7 @@
         height: 60px !important;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 575px) {
         .h-md-60px {
             height: 60px !important;
         }
@@ -151,8 +151,8 @@
         .hoverable-nav:hover, .active {
             color: #fff !important;
             background-color: #EFEFEF !important;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
     }
 </style>

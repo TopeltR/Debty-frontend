@@ -43,13 +43,13 @@
                                 <div v-for='person in addPersonState.people' v-bind:key='person.id'>
                                     <b-col cols="12" class="form-group ml-1">
                                         <b-row>
-                                            <b-col class="mt-1" cols="7">
+                                            <b-col class="mt-1" cols="6" col-md="7">
                                                 <label :for="person.firstName">
                                                     <person :person="person" :addPersonState="addPersonState"
                                                             :owner="isOwner(person)" :disableOwnerDelete="true"/>
                                                 </label>
                                             </b-col>
-                                            <b-col cols="3">
+                                            <b-col cols="4" col-md="3">
                                                 <input type="number" class="form-control"
                                                        :id="person.firstName" step="0.01" v-model="person.participation"
                                                        required min="0" maxlength="255"

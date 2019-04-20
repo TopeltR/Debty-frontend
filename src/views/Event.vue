@@ -4,92 +4,96 @@
         <div v-else>
             <navbar/>
             <background>
-                <b-row>
-                    <add-bill :key="selectedBillCount" :selectedBill="selectedBill" :state="seeBillState"
-                              :event="event"/>
-                    <add-bill :key="addBillClickCount" :state="addBillState" :event="event"/>
-                    <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
-                    <b-col sm='12' md='6'>
-                        <div class='pt-4'>
-                            <h1>
+                <spinner :loaded="loaded">
+                    <b-row>
+                        <add-bill :key="selectedBillCount" :selectedBill="selectedBill" :state="seeBillState"
+                                  :event="event"/>
+                        <add-bill :key="addBillClickCount" :state="addBillState" :event="event"/>
+                        <debt-distribution :state="debtDistributionState" :debts="debts" :eventId="event.id"/>
+                        <b-col sm='12' md='6'>
+                            <div class='pt-4'>
+                                <h1>
                                 <span class='p-0'>
                                     {{event.title}}
                                 </span>
-                            </h1>
-                            <p>
+                                </h1>
+                                <p>
                                 <span>
                                     {{event.description}}
                                 </span>
-                            </p>
-                        </div>
-                    </b-col>
-                    <b-col class="mt-md-4" sm='12' md='6'>
-                        <h2>People</h2>
-                        <div class='table-wrapper-scroll-y mt-md-2'>
-                            <table class='table table-bordered table-striped bill-table'>
-                                <tbody>
-                                <tr v-for='person in event.people'>
-                                    <td>{{person.firstName + ' ' + person.lastName}}
-                                        <small v-if="isOwner(person)"> (owner)</small>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </b-col>
-                </b-row>
-                <b-row class="pt-2">
-                    <b-col cols="12">
-                        <div>
-                            <h2>Bills</h2>
-                            <table class='table table-bordered table-hover table-striped'>
-                                <thead>
-                                <tr class='d-none d-md-table-row'>
-                                    <th scope='col'>Title</th>
-                                    <th scope='col'>Sum (€)</th>
-                                    <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
-                                    <th class='d-none d-md-table-cell' scope='col'>Participants</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="bill in event.bills" v-if="bill !== undefined" @click="openBillModal(bill)">
-                                    <td>{{bill.title}}</td>
-                                    <td>{{bill.sum}}</td>
-                                    <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}}
-                                        {{bill.buyer.lastName}}
-                                    </td>
-                                    <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </b-col>
-                    <b-col v-if="event.closedAt == null">
-                        <b-row>
-                            <b-col v-if="isOwner(user)" md="2">
-                                <b-btn class="mt-4 w-100" variant="outline-danger"
-                                       v-on:click='calculateDistributedDebts'>
-                                    Close event...
-                                </b-btn>
-                            </b-col>
-                            <b-col v-if="isOwner(user)" cols="6" md="2">
-                                <b-btn class="mt-4 w-100" variant="outline-danger" v-on:click='deleteEvent'>Delete
-                                </b-btn>
-                            </b-col>
-                            <b-col v-if="isOwner(user)" cols="6" md="2">
-                                <b-btn class="mt-4 w-100" variant="outline-primary" v-on:click='editing = true'>Edit
-                                </b-btn>
-                            </b-col>
-                            <b-col md="2">
-                                <b-btn class="mt-4 mb-3 w-100" variant="outline-primary" v-on:click='addBill'>Add bill
-                                </b-btn>
-                            </b-col>
-                        </b-row>
-                    </b-col>
-                    <b-col class="pb-5" v-else>
-                        This event has been closed.
-                    </b-col>
-                </b-row>
+                                </p>
+                            </div>
+                        </b-col>
+                        <b-col class="mt-md-4" sm='12' md='6'>
+                            <h2>People</h2>
+                            <div class='table-wrapper-scroll-y mt-md-2'>
+                                <table class='table table-bordered table-striped bill-table'>
+                                    <tbody>
+                                    <tr v-for='person in event.people'>
+                                        <td>{{person.firstName + ' ' + person.lastName}}
+                                            <small v-if="isOwner(person)"> (owner)</small>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </b-col>
+                    </b-row>
+                    <b-row class="pt-2">
+                        <b-col cols="12">
+                            <div>
+                                <h2>Bills</h2>
+                                <table class='table table-bordered table-hover table-striped'>
+                                    <thead>
+                                    <tr class='d-none d-md-table-row'>
+                                        <th scope='col'>Title</th>
+                                        <th scope='col'>Sum (€)</th>
+                                        <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
+                                        <th class='d-none d-md-table-cell' scope='col'>Participants</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="bill in event.bills" v-if="bill !== undefined"
+                                        @click="openBillModal(bill)">
+                                        <td>{{bill.title}}</td>
+                                        <td>{{bill.sum}}</td>
+                                        <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}}
+                                            {{bill.buyer.lastName}}
+                                        </td>
+                                        <td class='d-none d-md-table-cell'>{{bill.people.length}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </b-col>
+                        <b-col v-if="event.closedAt == null">
+                            <b-row>
+                                <b-col v-if="isOwner(user)" md="2">
+                                    <b-btn class="mt-4 w-100" variant="outline-danger"
+                                           v-on:click='calculateDistributedDebts'>
+                                        Close event...
+                                    </b-btn>
+                                </b-col>
+                                <b-col v-if="isOwner(user)" cols="6" md="2">
+                                    <b-btn class="mt-4 w-100" variant="outline-danger" v-on:click='deleteEvent'>Delete
+                                    </b-btn>
+                                </b-col>
+                                <b-col v-if="isOwner(user)" cols="6" md="2">
+                                    <b-btn class="mt-4 w-100" variant="outline-primary" v-on:click='editing = true'>Edit
+                                    </b-btn>
+                                </b-col>
+                                <b-col md="2">
+                                    <b-btn class="mt-4 mb-3 w-100" variant="outline-primary" v-on:click='addBill'>Add
+                                        bill
+                                    </b-btn>
+                                </b-col>
+                            </b-row>
+                        </b-col>
+                        <b-col class="pb-5" v-else>
+                            This event has been closed.
+                        </b-col>
+                    </b-row>
+                </spinner>
             </background>
         </div>
     </div>
@@ -103,10 +107,11 @@
     import EventForm from '@/components/EventForm.vue';
     import AddBill from '@/components/AddBill.vue';
     import DebtDistribution from '@/components/DebtDistribution.vue';
+    import Spinner from '@/components/Spinner.vue';
 
     export default {
-        name: 'Event.vue',
-        components: {Navbar, Background, EventForm, AddBill, DebtDistribution},
+        name: 'Event',
+        components: {Navbar, Background, EventForm, AddBill, DebtDistribution, Spinner},
         data: () => ({
             event: {
                 id: null,
@@ -128,6 +133,7 @@
             addBillStates: {},
             debtDistributionState: {showing: false},
             debts: [],
+            loaded: false,
             buttons: [
                 {
                     name: 'Save',
@@ -176,6 +182,8 @@
             for (const bill of this.event.bills) {
                 this.addBillStates[bill.id] = {showing: false};
             }
+
+            this.loaded = true;
         },
         methods: {
             isOwner(user) {

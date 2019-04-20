@@ -2,7 +2,7 @@
     <div>
         <navbar/>
         <background>
-            <div v-if='loaded'>
+            <spinner :loaded="loaded">
                 <div v-if="events.length > 0">
                     <h1 class='pt-4'>My events
                         <font-awesome-icon icon='plus' class=' ml-3 mt-2 limegreen' v-on:click='createNewEvent'/>
@@ -41,7 +41,7 @@
                     <h1>You don't have any events yet, grab your friends and create one!</h1>
                     <b-btn class="m-5 btn-limegreen px-3 py-2" v-on:click="goToEventCreation">Create event!</b-btn>
                 </div>
-            </div>
+            </spinner>
         </background>
     </div>
 </template>
@@ -50,12 +50,12 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import router from '@/router';
-    import userStore from '../stores/UserStore';
-    import BRow from "bootstrap-vue/src/components/layout/row";
+    import userStore from '@/stores/UserStore';
+    import Spinner from '@/components/Spinner.vue';
 
     export default {
         name: 'events',
-        components: {BRow, Navbar, Background},
+        components: {Navbar, Background, Spinner},
 
         mounted() {
             this.getEvents();

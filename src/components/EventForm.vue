@@ -2,52 +2,55 @@
     <div>
         <navbar></navbar>
         <background>
-            <b-row>
-                <b-col sm='12' md='6' offset-md='3' class='mt-5'>
-                    <b-row>
-                        <h2>Create event</h2>
-                        <font-awesome-icon v-if="!eventId" id="info" icon='info-circle'
-                                           class="ml-1"></font-awesome-icon>
-                        <b-tooltip v-if="!eventId" target="info"
-                                   title="Create an Event by giving it an informative title and contacts, then add your contacts to it."
-                                   placement="bottom"></b-tooltip>
-                    </b-row>
-                    <b-row>
-                        <form @submit.prevent='submitButtonHandler()' class='w-100 mt-3'>
-                            <div class='form-group'>
-                                <label for='title'>Title*:</label>
-                                <input type='text' class='form-control' v-model='title' id='title' required
-                                       placeholder='Enter event title' minlength="1" maxlength="255">
-                            </div>
-                            <div class='form-group'>
-                                <label for='description'>Description:</label>
-                                <textarea id='description' class='form-control' v-model='description'
-                                          placeholder='Enter event description' minlength="1"
-                                          maxlength="255"></textarea>
-                            </div>
-                            <div class='form-group'>
-                                <p v-if='addPersonState.people.length !== 0'>People:</p>
-                                <ul class="without-bullets">
-                                    <li v-for='person in addPersonState.people'>
-                                        <person :person="person" :addPersonState="addPersonState" :owner="isOwner(person)"/>
-                                    </li>
-                                </ul>
-                                <label>Add people:</label>
-                                <add-person :state="addPersonState"/>
-                            </div>
-                            <b-row class='mt-4'>
-                                <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">
-                                    <b-btn :type="button.type" :variant='button.variant'
-                                           v-on:click='button.type !== "submit" ? button.handler : undefined'
-                                           class='w-100'>
-                                        {{button.name}}
-                                    </b-btn>
-                                </b-col>
-                            </b-row>
-                        </form>
-                    </b-row>
-                </b-col>
-            </b-row>
+            <spinner :loaded="loaded">
+                <b-row>
+                    <b-col sm='12' md='6' offset-md='3' class='mt-5'>
+                        <b-row>
+                            <h2>Create event</h2>
+                            <font-awesome-icon v-if="!eventId" id="info" icon='info-circle'
+                                               class="ml-1"></font-awesome-icon>
+                            <b-tooltip v-if="!eventId" target="info"
+                                       title="Create an Event by giving it an informative title and contacts, then add your contacts to it."
+                                       placement="bottom"></b-tooltip>
+                        </b-row>
+                        <b-row>
+                            <form @submit.prevent='submitButtonHandler()' class='w-100 mt-3'>
+                                <div class='form-group'>
+                                    <label for='title'>Title*:</label>
+                                    <input type='text' class='form-control' v-model='title' id='title' required
+                                           placeholder='Enter event title' minlength="1" maxlength="255">
+                                </div>
+                                <div class='form-group'>
+                                    <label for='description'>Description:</label>
+                                    <textarea id='description' class='form-control' v-model='description'
+                                              placeholder='Enter event description' minlength="1"
+                                              maxlength="255"></textarea>
+                                </div>
+                                <div class='form-group'>
+                                    <p v-if='addPersonState.people.length !== 0'>People:</p>
+                                    <ul class="without-bullets">
+                                        <li v-for='person in addPersonState.people'>
+                                            <person :person="person" :addPersonState="addPersonState"
+                                                    :owner="isOwner(person)"/>
+                                        </li>
+                                    </ul>
+                                    <label>Add people:</label>
+                                    <add-person :state="addPersonState"/>
+                                </div>
+                                <b-row class='mt-4'>
+                                    <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">
+                                        <b-btn :type="button.type" :variant='button.variant'
+                                               v-on:click='button.type !== "submit" ? button.handler : undefined'
+                                               class='w-100'>
+                                            {{button.name}}
+                                        </b-btn>
+                                    </b-col>
+                                </b-row>
+                            </form>
+                        </b-row>
+                    </b-col>
+                </b-row>
+            </spinner>
         </background>
     </div>
 </template>
@@ -59,10 +62,11 @@
     import AddPerson from '@/components/AddPerson.vue';
     import userStore from '@/stores/UserStore';
     import Person from "@/components/Person.vue";
+    import Spinner from "@/components/Spinner.vue";
 
     export default {
         name: 'EventForm',
-        components: {Background, Navbar, AddPerson, Person},
+        components: {Background, Navbar, AddPerson, Person, Spinner},
         props: {
             eventId: {
                 type: Number,
@@ -100,6 +104,7 @@
             bills: [],
             user: {},
             owner: {},
+            loaded: false,
             addPersonState: {
                 allPeople: [],
                 people: [],
@@ -125,6 +130,8 @@
             const user = await userStore.getUser();
             const response = await this.$http.get('/contacts/' + user.id + '/users');
             this.addPersonState.allPeople = response.data.filter((u) => u.email !== user.email);
+
+            this.loaded = true;
         },
         methods: {
             fixButtonHandler(button) {

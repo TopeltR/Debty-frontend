@@ -1,6 +1,7 @@
 <template>
     <b-container fluid class='diagonal-background'>
         <b-container>
+
             <slot></slot>
         </b-container>
     </b-container>

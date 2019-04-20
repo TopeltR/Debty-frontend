@@ -67,7 +67,8 @@
                                         <label for='sum' class='mt-2'>Sum*:</label>
                                     </b-col>
                                     <b-col cols='3'>
-                                        <input id='sum' type='number' class='form-control pr-0' v-model='formData.sum'
+                                        <input id='sum' type='number' class='form-control pr-0'
+                                               v-model='formData.sum'
                                                placeholder='0' required min="0" maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
@@ -88,15 +89,16 @@
 
 <script>
     import router from '../router.ts';
-    import Background from '@/components/Background';
-    import Navbar from '@/components/Navbar';
-    import Autocomplete from '@/components/Autocomplete';
+    import Background from '@/components/Background.vue';
+    import Navbar from '@/components/Navbar.vue';
+    import Autocomplete from '@/components/Autocomplete.vue';
+    import Spinner from '@/components/Spinner.vue';
     import userStore from '@/stores/UserStore';
 
 
     export default {
-        name: 'CreateEvent',
-        components: {Background, Navbar, Autocomplete},
+        name: 'CreateDebt',
+        components: {Background, Navbar, Autocomplete, Spinner},
         data: () => ({
             formData: {
                 title: '',

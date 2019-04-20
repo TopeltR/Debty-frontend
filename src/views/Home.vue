@@ -3,48 +3,50 @@
         <navbar></navbar>
         <add-bank-account :state="addBankAccountState"></add-bank-account>
         <background>
-            <div>
-                <b-row>
-                    <b-col class='mt-5' sm='12' md='6'>
-                        <b-row>
-                            <b-col sm='12'>
-                                <b-btn v-b-toggle.events class='menu-list-button shadow'>
-                                    <span class='float-left'>Events</span>
-                                    <font-awesome-icon icon='plus' class='float-right mt-2 green'
-                                                       v-on:click='createNewEvent'/>
-                                </b-btn>
-                            </b-col>
-                        </b-row>
-                        <b-collapse visible id='events' class="shadow">
-                            <b-list-group>
-                                <b-list-group-item v-for='event in events' :to='"events/"+event.id'>
-                                    {{ event.title }}
-                                </b-list-group-item>
-                            </b-list-group>
-                        </b-collapse>
-                    </b-col>
-                    <b-col class='mt-5' sm='12' md='6'>
-                        <b-row>
-                            <b-col sm='12'>
-                                <b-btn v-b-toggle.debts class='menu-list-button shadow'>
-                                    <span class='float-left'>Debts</span>
-                                    <font-awesome-icon icon='plus' class='float-right mt-2 green'
-                                                       v-on:click='createNewDebt'/>
-                                </b-btn>
-                            </b-col>
-                        </b-row>
-                        <b-collapse visible id='debts' class="mb-3 shadow">
-                            <b-list-group>
-                                <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>
-                                    {{ debt.title }}
-                                    <span v-if="debt.action"
-                                          class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
-                                </b-list-group-item>
-                            </b-list-group>
-                        </b-collapse>
-                    </b-col>
-                </b-row>
-            </div>
+            <spinner :loaded="loaded">
+                <div>
+                    <b-row>
+                        <b-col class='mt-5' sm='12' md='6'>
+                            <b-row>
+                                <b-col sm='12'>
+                                    <b-btn v-b-toggle.events class='menu-list-button shadow'>
+                                        <span class='float-left'>Events</span>
+                                        <font-awesome-icon icon='plus' class='float-right mt-2 green'
+                                                           v-on:click='createNewEvent'/>
+                                    </b-btn>
+                                </b-col>
+                            </b-row>
+                            <b-collapse visible id='events' class="shadow">
+                                <b-list-group>
+                                    <b-list-group-item v-for='event in events' :to='"events/"+event.id'>
+                                        {{ event.title }}
+                                    </b-list-group-item>
+                                </b-list-group>
+                            </b-collapse>
+                        </b-col>
+                        <b-col class='mt-5' sm='12' md='6'>
+                            <b-row>
+                                <b-col sm='12'>
+                                    <b-btn v-b-toggle.debts class='menu-list-button shadow'>
+                                        <span class='float-left'>Debts</span>
+                                        <font-awesome-icon icon='plus' class='float-right mt-2 green'
+                                                           v-on:click='createNewDebt'/>
+                                    </b-btn>
+                                </b-col>
+                            </b-row>
+                            <b-collapse visible id='debts' class="mb-3 shadow">
+                                <b-list-group>
+                                    <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>
+                                        {{ debt.title }}
+                                        <span v-if="debt.action"
+                                              class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>&nbsp;</span>
+                                    </b-list-group-item>
+                                </b-list-group>
+                            </b-collapse>
+                        </b-col>
+                    </b-row>
+                </div>
+            </spinner>
         </background>
     </div>
 </template>
@@ -54,11 +56,12 @@
     import Background from '@/components/Background.vue';
     import router from '@/router';
     import userStore from '../stores/UserStore';
-    import AddBankAccount from "../components/AddBankAccount";
+    import AddBankAccount from "@/components/AddBankAccount.vue";
+    import Spinner from '@/components/Spinner.vue';
 
     export default {
         name: 'CreateEvent',
-        components: {AddBankAccount, Navbar, Background},
+        components: {AddBankAccount, Navbar, Background, Spinner},
         async mounted() {
             this.user = await userStore.getUser();
             this.getDebts();
@@ -66,8 +69,8 @@
             this.openBankAccountModal();
         },
         data: () => ({
-            events: [],
-            debts: [],
+            events: null,
+            debts: null,
             addBankAccountState: {showing: false},
             user: {},
             debtStatus: {
@@ -78,6 +81,11 @@
                 CONFIRMED: 'CONFIRMED',
             },
         }),
+        computed: {
+            loaded() {
+                return !!this.events && !!this.debts;
+            },
+        },
         methods: {
             createNewEvent() {
                 router.push('/events/create');

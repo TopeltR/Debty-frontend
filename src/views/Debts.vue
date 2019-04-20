@@ -2,7 +2,7 @@
     <div>
         <navbar/>
         <background>
-            <div v-if='loaded'>
+            <spinner :loaded='loaded'>
                 <h1 class='header pt-4'>My debts
                     <font-awesome-icon icon='plus' class='ml-3 mt-2 green' v-on:click='createNewDebt'/>
                 </h1>
@@ -51,7 +51,7 @@
                             <td v-else> -{{debt.sum}} €</td>
                             <td>{{debt.title}}
                                 <span v-if="debt.action"
-                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
+                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>&nbsp;</span>
                             </td>
                             <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}}
                                 {{debt.receiver.lastName}}
@@ -73,7 +73,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </spinner>
         </background>
     </div>
 </template>
@@ -82,12 +82,13 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import router from '@/router';
-    import userStore from '../stores/UserStore';
-    import DebtStatus from "../components/DebtStatus";
+    import userStore from '@/stores/UserStore';
+    import DebtStatus from "@/components/DebtStatus.vue";
+    import Spinner from "@/components/Spinner.vue";
 
     export default {
         name: 'events',
-        components: {DebtStatus, Navbar, Background},
+        components: {DebtStatus, Navbar, Background, Spinner},
 
         async mounted() {
             this.user = await userStore.getUser();

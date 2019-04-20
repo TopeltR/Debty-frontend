@@ -55,18 +55,16 @@
                     </b-row>
                 </form>
             </b-col>
-            <b-col sm='12' md='6'>
+            <b-col sm='12' md='6' class="mt-4 mt-md-0">
                 <p>
                     <b>
-                        Doggo ipsum bork heckin angery woofer borking doggo wrinkler vvv shooberino pupper, ur givin me
-                        a spook smol pupperino long water shoob.
+                        We are debty.
                     </b>
                     <br><br>
-                    Sub woofer big ol pupper such treat heckin good boys he made many woofs much ruin diet very good
-                    spot, puggorino super chub doggorino such treat. Doge you are doing me the shock wrinkler,
-                    borkdrive. Many pats boof heckin good boys and girls heckin the neighborhood pupper waggy wags
-                    shibe, noodle horse aqua doggo you are doing me a frighten shibe fluffer. Shoober sub woofer much
-                    ruin diet noodle horse pupper, stop it fren dat tungg tho.
+                    Debt is when something, usually money, is owed by one party, the borrower or debtor, to a second party, the lender or creditor.
+                    Debt is a deferred payment, or series of payments, that is owed in the future, which is what differentiates it from an immediate purchase.
+                    Private individuals lend money to other people, mostly relatives or friends. One reason for such informal debts is comfort.
+                    Such debts can cause problems when they are not paid back according to expectations of the lending person.
                 </p>
             </b-col>
         </b-row>
