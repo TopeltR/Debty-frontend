@@ -1,37 +1,37 @@
 <template>
     <b-container fluid>
         <b-row>
-            <b-navbar class='fixed-top w-100 bg-light-gray' type='light' toggleable='sm'>
+            <b-navbar class='fixed-top w-100 bg-gray py-0 h60px' type='light' toggleable='sm'>
                 <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
                 <b-collapse is-nav id='nav_collapse'>
-                    <b-navbar-nav>
-                        <b-nav-item to='/home'>
+                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                        <b-nav-item ref="home" to='/home'>
                             Home
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav>
-                        <b-nav-item to='/events'>
+                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                        <b-nav-item ref="events" to='/events'>
                             Events
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav>
-                        <b-nav-item to='/debts'>
+                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                        <b-nav-item ref="debts" to='/debts'>
                             Debts
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav>
-                        <b-nav-item to='/contacts'>
+                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                        <b-nav-item ref="contacts" to='/contacts'>
                             Contacts
                             <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav>
+                    <b-navbar-nav ref="profile" class="hoverable-nav h60px mt-3">
                         <b-nav-item to='/profile'>
                             Profile
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="ml-auto">
+                    <b-navbar-nav class="ml-auto h60px mt-3">
                         <span class="d-none d-md-block mr-4 mt-2"> Welcome, <b>{{ getUserName() }}</b></span>
                         <b-nav-item v-on:click="logOut">
                             <font-awesome-icon icon="sign-out-alt"
@@ -57,6 +57,7 @@
             notificationAmount: 0,
         }),
         async mounted() {
+            this.highlightActiveNav();
             this.user = await userStore.getUser();
             this.getNotificationCount();
         },
@@ -80,6 +81,10 @@
             logOut() {
                 userStore.logOut();
             },
+            highlightActiveNav() {
+                const currentNav = this.$router.history.current.name;
+                this.$refs[currentNav].classList.add("active");
+            },
         },
     };
 </script>
@@ -98,11 +103,22 @@
         background-color: limegreen !important;
     }
 
-    .bg-light-gray {
-        background-color: #E8E8E8;
+    .bg-gray {
+        background-color: #dadada;
     }
 
     .icon {
         font-size: 20px;
+    }
+
+    .h60px {
+        height: 60px !important;
+    }
+
+    .hoverable-nav:hover, .active {
+        color: #fff !important;
+        background-color: #EFEFEF !important;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
     }
 </style>
