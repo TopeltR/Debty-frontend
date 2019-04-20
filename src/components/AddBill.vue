@@ -41,15 +41,15 @@
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length > 0'>Participants:</p>
                                 <div v-for='person in addPersonState.people' v-bind:key='person.id'>
-                                    <b-col cols="11" offset="1" class="form-group">
+                                    <b-col cols="12" class="form-group ml-1">
                                         <b-row>
-                                            <b-col cols="5" md="6">
+                                            <b-col class="mt-1" cols="7">
                                                 <label :for="person.firstName">
-                                                    {{getFullName(person)}}
-                                                    <small v-if="isOwner(person)"> (owner)</small>
+                                                    <person :person="person" :addPersonState="addPersonState"
+                                                            :owner="isOwner(person)" :disableOwnerDelete="true"/>
                                                 </label>
                                             </b-col>
-                                            <b-col cols="5" md="4">
+                                            <b-col cols="3">
                                                 <input type="number" class="form-control"
                                                        :id="person.firstName" step="0.01" v-model="person.participation"
                                                        required min="0" maxlength="255"
@@ -93,11 +93,12 @@
 <script>
     import AddPerson from '@/components/AddPerson.vue';
     import Autocomplete from "./Autocomplete";
-    import userStore from "../stores/UserStore";
+    import userStore from "@/stores/UserStore";
+    import Person from "@/components/Person.vue";
 
     export default {
         name: 'AddBill',
-        components: {Autocomplete, AddPerson},
+        components: {Person, Autocomplete, AddPerson},
         props: {
             state: {
                 type: Object,
@@ -129,6 +130,9 @@
             eventPeople() {
                 return this.event.people;
             },
+            billPeople() {
+                return this.addPersonState.people;
+            },
         },
         watch: {
             state: {
@@ -146,6 +150,12 @@
             },
             eventPeople(people) {
                 this.initPeople(people);
+            },
+            addPersonState: {
+                deep: true,
+                handler() {
+                    this.displayNotMatchMessage();
+                },
             },
         },
         async mounted() {
@@ -318,7 +328,7 @@
                 } else {
                     this.save();
                 }
-            }
+            },
         },
     };
 </script>

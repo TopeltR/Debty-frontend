@@ -22,13 +22,14 @@
                             <div class='form-group'>
                                 <label for='description'>Description:</label>
                                 <textarea id='description' class='form-control' v-model='description'
-                                          placeholder='Enter event description' minlength="1" maxlength="255"></textarea>
+                                          placeholder='Enter event description' minlength="1"
+                                          maxlength="255"></textarea>
                             </div>
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length !== 0'>People:</p>
-                                <ul>
+                                <ul class="without-bullets">
                                     <li v-for='person in addPersonState.people'>
-                                        {{ getFullName(person) }}
+                                        <person :person="person" :addPersonState="addPersonState" :owner="isOwner(person)"/>
                                     </li>
                                 </ul>
                                 <label>Add people:</label>
@@ -53,14 +54,15 @@
 
 <script>
     import router from '../router.ts';
-    import Background from '@/components/Background';
-    import Navbar from '@/components/Navbar';
-    import AddPerson from '@/components/AddPerson';
+    import Background from '@/components/Background.vue';
+    import Navbar from '@/components/Navbar.vue';
+    import AddPerson from '@/components/AddPerson.vue';
     import userStore from '@/stores/UserStore';
+    import Person from "@/components/Person.vue";
 
     export default {
         name: 'EventForm',
-        components: {Background, Navbar, AddPerson},
+        components: {Background, Navbar, AddPerson, Person},
         props: {
             eventId: {
                 type: Number,
@@ -76,7 +78,7 @@
                     handler: (eventForm, store) => {
                         store.getUser().then((user) => {
                             eventForm.addPersonState.people.push(user);
-                            eventForm.$http.post('/events', {
+                            eventForm.$http.post('/events/', {
                                 title: eventForm.title,
                                 people: eventForm.addPersonState.people,
                                 description: eventForm.description,
@@ -97,6 +99,7 @@
             description: '',
             bills: [],
             user: {},
+            owner: {},
             addPersonState: {
                 allPeople: [],
                 people: [],
@@ -107,6 +110,7 @@
         async mounted() {
             if (this.eventId) {
                 const {data} = await this.$http.get('/events/' + this.eventId);
+                this.owner = data.owner;
                 this.title = data.title;
                 this.description = data.description;
                 this.addPersonState.people = data.people;
@@ -119,7 +123,7 @@
                 this.fixButtonHandler(button);
             }
             const user = await userStore.getUser();
-            const response = await this.$http.get('/contacts/' + user.id);
+            const response = await this.$http.get('/contacts/' + user.id + '/users');
             this.addPersonState.allPeople = response.data.filter((u) => u.email !== user.email);
         },
         methods: {
@@ -133,10 +137,16 @@
             getFullName(user) {
                 return user.firstName + ' ' + user.lastName;
             },
+            isOwner(person) {
+                return person.id === this.owner.id;
+            },
         },
     }
     ;
 </script>
 
 <style scoped>
+    .without-bullets {
+        list-style-type: none;
+    }
 </style>
