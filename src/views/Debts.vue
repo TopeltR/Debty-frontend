@@ -31,8 +31,8 @@
                         </div>
                     </b-col>
                 </b-row>
-                <div id='table' class="shadow p-sm-3 mt-2 mb-2">
-                    <table class='table table-responsive-sm table-bordered table-hover table-borderless' id='debts'>
+                <div id='table' class="shadow rounded p-sm-3 mt-2 mb-2 bg-white">
+                    <table class='table table-responsive-sm table-hover' id='debts'>
                         <thead>
                         <tr>
                             <th scope='col'>Sum</th>
@@ -181,6 +181,11 @@
         color: limegreen;
     }
 
+    table thead tr th {
+        border-top-color: white;
+        border-bottom-color: white;
+    }
+
     .text-grey {
         color: grey;
     }
@@ -193,15 +198,6 @@
         #table {
             margin: -30px;
         }
-    }
-
-    #table {
-        background-color: white;
-        border-radius: .25rem;
-    }
-
-    table {
-        border: none;
     }
 
     .no-hover:hover {

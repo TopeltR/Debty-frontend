@@ -26,8 +26,8 @@
                         </b-col>
                         <b-col class="mt-md-4" sm='12' md='6'>
                             <h2>People</h2>
-                            <div class='table-wrapper-scroll-y mt-md-2'>
-                                <table class='table table-bordered table-striped bill-table'>
+                            <div class='table-wrapper-scroll-y mt-0 mt-md-2'>
+                                <table class='table bill-table'>
                                     <tbody>
                                     <tr v-for='person in event.people'>
                                         <td>{{person.firstName + ' ' + person.lastName}}
@@ -41,13 +41,13 @@
                     </b-row>
                     <b-row class="pt-2">
                         <b-col cols="12">
-                            <div>
-                                <h2>Bills</h2>
-                                <table class='table table-bordered table-hover table-striped'>
+                            <h2>Bills</h2>
+                            <div class="bg-white rounded shadow p-3">
+                                <table class='table table-hover'>
                                     <thead>
-                                    <tr class='d-none d-md-table-row'>
+                                    <tr class='d-table-row'>
                                         <th scope='col'>Title</th>
-                                        <th scope='col'>Sum (€)</th>
+                                        <th scope='col'>Sum</th>
                                         <th class='d-none d-md-table-cell' scope='col'>Buyer</th>
                                         <th class='d-none d-md-table-cell' scope='col'>Participants</th>
                                     </tr>
@@ -56,7 +56,7 @@
                                     <tr v-for="bill in event.bills" v-if="bill !== undefined"
                                         @click="openBillModal(bill)">
                                         <td>{{bill.title}}</td>
-                                        <td>{{bill.sum}}</td>
+                                        <td>{{bill.sum}} €</td>
                                         <td class='d-none d-md-table-cell'>{{bill.buyer.firstName}}
                                             {{bill.buyer.lastName}}
                                         </td>
@@ -233,5 +233,10 @@
         overflow-y: auto;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         margin-top: 5vh;
+    }
+
+    table thead tr th {
+        border-top-color: white;
+        border-bottom-color: white;
     }
 </style>
