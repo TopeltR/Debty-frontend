@@ -23,7 +23,7 @@ const router = new Router({
         },
         {
             path: '/events/create',
-            name: 'create-event',
+            name: 'events',
             component: () => import('./views/CreateEvent.vue'),
         },
         {
@@ -33,13 +33,13 @@ const router = new Router({
         },
         {
             path: '/events/:id',
-            name: 'event-id',
+            name: 'events',
             component: () => import('./views/Event.vue'),
             props: true,
         },
         {
             path: '/debts/create',
-            name: 'create-debt',
+            name: 'debts',
             component: () => import('./views/CreateDebt.vue'),
         },
         {
@@ -49,7 +49,7 @@ const router = new Router({
         },
         {
             path: '/debts/:id',
-            name: 'debts-id',
+            name: 'debts',
             component: () => import('./views/Debt.vue'),
         },
         {
