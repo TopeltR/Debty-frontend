@@ -1,37 +1,37 @@
 <template>
     <b-container fluid>
         <b-row>
-            <b-navbar class='fixed-top w-100 bg-gray py-0 h60px' type='light' toggleable='sm'>
+            <b-navbar class='fixed-top w-100 bg-gray py-0 h-md-60px' type='light' toggleable='sm'>
                 <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
                 <b-collapse is-nav id='nav_collapse'>
-                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="home" to='/home'>
                             Home
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="events" to='/events'>
                             Events
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="debts" to='/debts'>
                             Debts
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="hoverable-nav h60px mt-3">
+                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="contacts" to='/contacts'>
                             Contacts
                             <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav ref="profile" class="hoverable-nav h60px mt-3">
+                    <b-navbar-nav ref="profile" class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item to='/profile'>
                             Profile
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="ml-auto h60px mt-3">
+                    <b-navbar-nav class="ml-auto h-60px mt-3 pb-2">
                         <span class="d-none d-md-block mr-4 mt-2"> Welcome, <b>{{ getUserName() }}</b></span>
                         <b-nav-item v-on:click="logOut">
                             <font-awesome-icon icon="sign-out-alt"
@@ -111,14 +111,20 @@
         font-size: 20px;
     }
 
-    .h60px {
+    .h-60px {
         height: 60px !important;
     }
 
-    .hoverable-nav:hover, .active {
-        color: #fff !important;
-        background-color: #EFEFEF !important;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
+    @media (min-width: 768px) {
+        .h-md-60px {
+            height: 60px !important;
+        }
+
+        .hoverable-nav:hover, .active {
+            color: #fff !important;
+            background-color: #EFEFEF !important;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
     }
 </style>
