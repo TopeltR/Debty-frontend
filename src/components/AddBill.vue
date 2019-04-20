@@ -318,7 +318,7 @@
                 } else {
                     this.save();
                 }
-            }
+            },
         },
     };
 </script>

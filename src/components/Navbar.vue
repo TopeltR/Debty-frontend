@@ -18,12 +18,15 @@
                     <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="debts" to='/debts'>
                             Debts
+                            <span class='badge badge-primary badge-pill m-0 bg-lime'
+                                  v-if="debtsNotification === true">{{debtsNotificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
                         <b-nav-item ref="contacts" to='/contacts'>
                             Contacts
-                            <span class='badge badge-primary badge-pill  m-0 bg-lime' v-if="notification === true"> {{notificationAmount}}</span>
+                            <span class='badge badge-primary badge-pill  m-0 bg-lime'
+                                  v-if="contactsNotification === true"> {{contactsNotificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav ref="profile" class="hoverable-nav h-60px mt-3 pb-2">
@@ -53,24 +56,49 @@
         name: 'Navbar',
         data: () => ({
             user: null,
-            notification: false,
-            notificationAmount: 0,
+            contactsNotification: false,
+            contactsNotificationAmount: 0,
+            debtsNotification: false,
+            debtsNotificationAmount: 0,
+            debtStatus: {
+                NEW: 'NEW',
+                ACCEPTED: 'ACCEPTED',
+                DECLINED: 'DECLINED',
+                PAID: 'PAID',
+                CONFIRMED: 'CONFIRMED',
+            },
         }),
         async mounted() {
             this.highlightActiveNav();
             this.user = await userStore.getUser();
-            this.getNotificationCount();
+            this.getContactsNotificationCount();
+            this.getDebtsNotificationCount();
         },
         methods: {
             goToHome() {
                 router.push('/home');
             },
-            async getNotificationCount() {
+            async getContactsNotificationCount() {
                 const response = await this.$http.get('/contacts/incoming/' + this.user.id);
                 if (response.data.length > 0) {
-                    this.notification = true;
-                    this.notificationAmount = response.data.length;
+                    this.contactsNotification = true;
+                    this.contactsNotificationAmount = response.data.length;
                 }
+            },
+            async getDebtsNotificationCount() {
+                const response = await this.$http.get('/debts/user/' + this.user.id);
+                let debts = response.data;
+                debts = debts.filter((debt) => this.isActionForDebt(debt));
+                if (debts.length > 0) {
+                    this.debtsNotification = true;
+                    this.debtsNotificationAmount = debts.length;
+                }
+            },
+            isActionForDebt(debt) {
+                const canAcceptDecline = debt.owner.id !== this.user.id && debt.status === this.debtStatus.NEW;
+                const canPay = this.user.id === debt.payer.id && debt.status === this.debtStatus.ACCEPTED;
+                const canConfirm = this.user.id === debt.receiver.id && debt.status === this.debtStatus.PAID;
+                return canAcceptDecline || canPay || canConfirm;
             },
             getUserName() {
                 if (this.user == null) {

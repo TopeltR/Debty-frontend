@@ -49,7 +49,10 @@
                                 </div>
                             </td>
                             <td v-else> -{{debt.sum}} €</td>
-                            <td>{{debt.title}}</td>
+                            <td>{{debt.title}}
+                                <span v-if="debt.action"
+                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
+                            </td>
                             <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}}
                                 {{debt.receiver.lastName}}
                             </td>
@@ -101,6 +104,13 @@
                 user: {},
                 allStatuses: ["NEW", "ACCEPTED", "DECLINED", "PAID", "CONFIRMED"],
                 selectedStatus: "ALL",
+                debtStatus: {
+                    NEW: 'NEW',
+                    ACCEPTED: 'ACCEPTED',
+                    DECLINED: 'DECLINED',
+                    PAID: 'PAID',
+                    CONFIRMED: 'CONFIRMED',
+                },
             };
         },
         methods: {
@@ -116,20 +126,24 @@
             },
             async getDebts() {
                 const response = await this.$http.get('/debts/user/' + this.user.id);
-                response.data.forEach((debt) => {
-                    if (debt.payer.id === this.user.id) {
-                        Object.assign(debt, {type: 'outgoing'});
-                        this.debts.push(debt);
-                    } else if (debt.receiver.id === this.user.id) {
-                        Object.assign(debt, {type: 'incoming'});
-                        this.debts.push(debt);
-                    }
-                });
-                this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
-                    || debt.receiver.id === this.user.id);
+                this.debts = response.data;
+                this.debts.map((debt) => this.addKeysToDebt(debt));
                 this.sortDebts();
                 this.filteredDebts = this.debts;
                 this.loaded = true;
+            },
+            addKeysToDebt(debt) {
+                let key = 'type';
+                debt[key] = debt.payer.id === this.user.id ? 'outgoing' : 'incoming';
+                key = 'action';
+                debt[key] = this.isActionForDebt(debt);
+                return debt;
+            },
+            isActionForDebt(debt) {
+                const canAcceptDecline = debt.owner.id !== this.user.id && debt.status === this.debtStatus.NEW;
+                const canPay = this.user.id === debt.payer.id && debt.status === this.debtStatus.ACCEPTED;
+                const canConfirm = this.user.id === debt.receiver.id && debt.status === this.debtStatus.PAID;
+                return canAcceptDecline || canPay || canConfirm;
             },
             async filterSearch() {
                 this.sortDebts();
@@ -191,5 +205,9 @@
 
     .no-hover:hover {
         background-color: white !important;
+    }
+
+    .bg-lime {
+        background-color: limegreen !important;
     }
 </style>

@@ -17,7 +17,8 @@
                         </b-row>
                         <b-collapse visible id='events' class="shadow">
                             <b-list-group>
-                                <b-list-group-item v-for='event in events' :to='"events/"+event.id'>{{ event.title }}
+                                <b-list-group-item v-for='event in events' :to='"events/"+event.id'>
+                                    {{ event.title }}
                                 </b-list-group-item>
                             </b-list-group>
                         </b-collapse>
@@ -34,7 +35,10 @@
                         </b-row>
                         <b-collapse visible id='debts' class="mb-3 shadow">
                             <b-list-group>
-                                <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>{{ debt.title }}
+                                <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>
+                                    {{ debt.title }}
+                                    <span v-if="debt.action"
+                                          class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
                                 </b-list-group-item>
                             </b-list-group>
                         </b-collapse>
@@ -66,6 +70,13 @@
             debts: [],
             addBankAccountState: {showing: false},
             user: {},
+            debtStatus: {
+                NEW: 'NEW',
+                ACCEPTED: 'ACCEPTED',
+                DECLINED: 'DECLINED',
+                PAID: 'PAID',
+                CONFIRMED: 'CONFIRMED',
+            },
         }),
         methods: {
             createNewEvent() {
@@ -76,17 +87,8 @@
             },
             async getDebts() {
                 const response = await this.$http.get('/debts/user/' + this.user.id);
-
-                response.data.forEach((debt) => {
-                    if (debt.payer.id === this.user.id) {
-                        Object.assign(debt, {type: 'out'});
-                    } else {
-                        Object.assign(debt, {type: 'in'});
-                    }
-                    this.debts.push(debt);
-                });
-                this.debts = this.debts.filter((debt) => debt.payer.id === this.user.id
-                    || debt.receiver.id === this.user.id);
+                this.debts = response.data;
+                this.debts.map((debt) => this.addKeysToDebt(debt));
             },
             async getEvents() {
                 const response = await this.$http.get('/events/user/' + this.user.id);
@@ -99,6 +101,17 @@
                     this.addBankAccountState.showing = false;
                     this.addBankAccountState.showing = true;
                 }
+            },
+            addKeysToDebt(debt) {
+                const key = 'action';
+                debt[key] = this.isActionForDebt(debt);
+                return debt;
+            },
+            isActionForDebt(debt) {
+                const canAcceptDecline = debt.owner.id !== this.user.id && debt.status === this.debtStatus.NEW;
+                const canPay = this.user.id === debt.payer.id && debt.status === this.debtStatus.ACCEPTED;
+                const canConfirm = this.user.id === debt.receiver.id && debt.status === this.debtStatus.PAID;
+                return canAcceptDecline || canPay || canConfirm;
             },
         },
     };
@@ -124,5 +137,9 @@
 
     #debts {
         border-radius: .25rem;
+    }
+
+    .bg-lime {
+        background-color: limegreen !important;
     }
 </style>
