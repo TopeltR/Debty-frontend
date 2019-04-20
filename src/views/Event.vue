@@ -40,7 +40,7 @@
                         </b-col>
                     </b-row>
                     <b-row class="pt-2">
-                        <b-col cols="12">
+                        <b-col v-if="event.bills && event.bills.length > 0" cols="12">
                             <h2>Bills</h2>
                             <div class="bg-white rounded shadow p-3">
                                 <table class='table table-hover'>
