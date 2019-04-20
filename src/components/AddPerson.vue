@@ -16,7 +16,6 @@
 
 <script>
     import Autocomplete from '@/components/Autocomplete.vue';
-    import userStore from "../stores/UserStore";
 
     export default {
         name: "AddPerson",

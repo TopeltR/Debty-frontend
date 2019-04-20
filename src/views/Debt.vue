@@ -200,7 +200,7 @@
             this.loadDebt();
 
             this.user = await userStore.getUser();
-            const usersResponse = await this.$http.get('/contacts/' + this.user.id);
+            const usersResponse = await this.$http.get('/contacts/' + this.user.id + '/users');
             this.contacts = usersResponse.data.filter((user) => user.email !== this.user.email);
         },
         methods: {
