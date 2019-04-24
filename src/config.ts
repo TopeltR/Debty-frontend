@@ -27,7 +27,7 @@ export default class Config {
     }
 
     private configureAxios() {
-        this.axios.defaults.baseURL = 'http://localhost:8080';
+        this.axios.defaults.baseURL = 'http://ec2-3-93-154-97.compute-1.amazonaws.com:8080';
         this.axios.defaults.withCredentials = true;
         this.axios.interceptors.response.use((response) => {
             return response;
