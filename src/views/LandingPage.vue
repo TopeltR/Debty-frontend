@@ -52,9 +52,7 @@
 </template>
 
 <script>
-    import router from '../router.ts';
     import Background from '../components/Background';
-    import User from '../entities/User';
     import userStore from '../stores/UserStore';
 
     export default {
@@ -66,10 +64,12 @@
             displayProperty: 'none',
         }),
         async mounted() {
-            /*const loggedIn = await userStore.isLoggedIn();
+            /*
+            const loggedIn = await userStore.isLoggedIn();
             if (loggedIn) {
                 router.push('/home');
-            }*/
+            }
+            */
         },
         methods: {
             async login() {

@@ -78,7 +78,7 @@
     import Spinner from '@/components/Spinner.vue';
 
     export default {
-        name: 'events',
+        name: 'Contacts',
         components: {Navbar, Background, Autocomplete, Spinner},
         data: () => ({
             contact: {},

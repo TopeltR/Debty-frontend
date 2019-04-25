@@ -185,7 +185,7 @@
     import Spinner from "@/components/Spinner.vue";
 
     export default {
-        name: 'CreateEvent',
+        name: 'Debt',
         components: {DebtStatus, Background, Navbar, Autocomplete, Spinner},
         data: () => ({
             debtId: null,
