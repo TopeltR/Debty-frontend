@@ -10,7 +10,7 @@
         <div class="col-10 offset-1">
             <b-row>
                 <b-col cols="12">
-                    <b-row v-for="debt in debts" class="mt-2 mb-2">
+                    <b-row v-for="debt in debts" class="mt-2 mb-2" :key="debt.id">
                         <b-col sm="12" md="3"><b>{{ debt.sum }} €</b></b-col>
                         <b-col sm="12" md="9">
                             {{ getFullName(debt.payer) }}

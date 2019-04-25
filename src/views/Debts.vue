@@ -42,7 +42,7 @@
                         </tr>
                         </thead>
                         <tbody v-if="filteredDebts.length > 0">
-                        <tr v-for="debt in filteredDebts" @click="goToDebt(debt.id)">
+                        <tr v-for="debt in filteredDebts" :key="debt.id" @click="goToDebt(debt.id)">
                             <td v-if="debt.receiver.id === user.id">
                                 <div class="text-success">
                                     +{{debt.sum}} €

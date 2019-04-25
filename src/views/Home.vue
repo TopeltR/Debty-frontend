@@ -18,7 +18,7 @@
                             </b-row>
                             <b-collapse visible id='events' class="shadow">
                                 <b-list-group>
-                                    <b-list-group-item v-for='event in events' :to='"events/"+event.id'>
+                                    <b-list-group-item v-for='event in events' :to='"events/"+event.id' :key="event.id">
                                         {{ event.title }}
                                     </b-list-group-item>
                                 </b-list-group>
@@ -36,7 +36,7 @@
                             </b-row>
                             <b-collapse visible id='debts' class="mb-3 shadow">
                                 <b-list-group>
-                                    <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>
+                                    <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id' :key="debt.id">
                                         {{ debt.title }}
                                         <span v-if="debt.action"
                                               class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
