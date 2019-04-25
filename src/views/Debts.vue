@@ -51,7 +51,7 @@
                             <td v-else> -{{debt.sum}} €</td>
                             <td>{{debt.title}}
                                 <span v-if="debt.action"
-                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>&nbsp;</span>
+                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
                             </td>
                             <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}}
                                 {{debt.receiver.lastName}}

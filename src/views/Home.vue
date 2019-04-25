@@ -39,7 +39,7 @@
                                     <b-list-group-item v-for='debt in debts' :to='"debts/"+debt.id'>
                                         {{ debt.title }}
                                         <span v-if="debt.action"
-                                              class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>&nbsp;</span>
+                                              class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
                                     </b-list-group-item>
                                 </b-list-group>
                             </b-collapse>
