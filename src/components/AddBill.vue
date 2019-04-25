@@ -95,6 +95,7 @@
     import Autocomplete from "./Autocomplete";
     import userStore from "@/stores/UserStore";
     import Person from "@/components/Person.vue";
+    import fromArray from "@/utils";
 
     export default {
         name: 'AddBill',
@@ -239,7 +240,7 @@
             removePreviousOwnerIfNewOwnerIsntInParticipants() {
                 if (this.peopleContains(this.bill.buyer) && this.bill.buyer.email !== this.buyer.email
                     && !this.peopleContains(this.buyer)) {
-                    this.addPersonState.people.removeElement(this.bill.buyer, (person) => person.email);
+                    fromArray(this.addPersonState.people).removeElement(this.bill.buyer, (person) => person.email);
                 }
             },
             addBuyerToPeopleIfNotInPeople() {

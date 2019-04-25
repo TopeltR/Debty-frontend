@@ -12,6 +12,8 @@
 </template>
 
 <script>
+    import {fromArray} from "@/utils";
+
     export default {
         name: 'Person',
         props: {
@@ -37,7 +39,7 @@
         methods: {
             deletePerson() {
                 if (!this.owner || this.disableOwnerDelete) {
-                    this.addPersonState.people.removeElement(this.person, (person) => person.id);
+                    fromArray(this.addPersonState.people).removeElement(this.person, (person) => person.id);
                 }
             },
         },
