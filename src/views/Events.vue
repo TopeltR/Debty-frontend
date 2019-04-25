@@ -54,7 +54,7 @@
     import Spinner from '@/components/Spinner.vue';
 
     export default {
-        name: 'events',
+        name: 'Events',
         components: {Navbar, Background, Spinner},
 
         mounted() {

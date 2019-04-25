@@ -87,7 +87,7 @@
     import Spinner from "@/components/Spinner.vue";
 
     export default {
-        name: 'events',
+        name: 'Debts',
         components: {DebtStatus, Navbar, Background, Spinner},
 
         async mounted() {

@@ -60,7 +60,7 @@
     import Spinner from '@/components/Spinner.vue';
 
     export default {
-        name: 'CreateEvent',
+        name: 'Home',
         components: {AddBankAccount, Navbar, Background, Spinner},
         async mounted() {
             this.user = await userStore.getUser();

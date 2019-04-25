@@ -1,15 +1,19 @@
 import {AxiosInstance} from 'axios';
-import {library, Library} from '@fortawesome/fontawesome-svg-core';
+import {Library} from '@fortawesome/fontawesome-svg-core';
 import userStore from '@/stores/UserStore';
 import router from '@/router';
 import {
     faArrowDown,
     faArrowRight,
-    faArrowUp, faCheck,
-    faEdit, faEnvelope,
+    faArrowUp,
+    faCheck,
+    faEdit,
+    faEnvelope,
     faInfoCircle,
     faPlus,
-    faSave, faSignOutAlt, faTimes,
+    faSave,
+    faSignOutAlt,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 export default class Config {
@@ -27,7 +31,8 @@ export default class Config {
     }
 
     private configureAxios() {
-        this.axios.defaults.baseURL = 'http://ec2-3-93-154-97.compute-1.amazonaws.com:8080';
+        // this.axios.defaults.baseURL = 'http://ec2-3-93-154-97.compute-1.amazonaws.com:8080';
+        this.axios.defaults.baseURL = 'http://localhost:8080';
         this.axios.defaults.withCredentials = true;
         this.axios.interceptors.response.use((response) => {
             return response;
