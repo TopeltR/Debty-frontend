@@ -48,8 +48,7 @@
                                                               :field='field'
                                                               :items='contacts'
                                                               :required='true'
-                                                              :key-extractor='getUserFullName'
-                                                ></autocomplete>
+                                                              :key-extractor='getUserFullName'></autocomplete>
                                             </b-col>
                                         </b-row>
                                     </b-col>
@@ -128,20 +127,16 @@
                 return user.lastName == null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             async saveDebt() {
-                if (this.formData.payer === null) {
-                    this.formData.payer = {
-                        firstName: this.field.value,
-                    };
-                } else {
-                    this.formData.receiver = {
-                        firstName: this.field.value,
-                    };
-                }
                 const result = await this.$http.post('/debts', this.formData);
                 router.push('/debts/' + result.data.id);
             },
             switchDebtorReceiver() {
                 this.userIsReceiver = !this.userIsReceiver;
+                if (this.userIsReceiver) {
+                    this.formData.receiver = this.user;
+                } else {
+                    this.formData.payer = this.user;
+                }
             },
         },
     };

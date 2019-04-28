@@ -72,16 +72,20 @@
                                 </b-row>
                                 <b-row class="mt-5" v-if="canAcceptDecline()">
                                     <b-col cols="6">
-                                        <b-button variant="secondary" class="w-100" v-on:click="decline">Decline
+                                        <b-button variant="secondary" class="w-100"
+                                                  v-on:click="acceptDeclineDebt(false)">
+                                            Decline
                                         </b-button>
                                     </b-col>
                                     <b-col cols="6">
-                                        <b-button variant="primary" class="w-100" v-on:click="accept">Accept</b-button>
+                                        <b-button variant="primary" class="w-100" v-on:click="acceptDeclineDebt(true)">
+                                            Accept
+                                        </b-button>
                                     </b-col>
                                 </b-row>
                                 <b-row class="mt-3" v-if="canConfirm()">
                                     <b-col>
-                                        <b-button variant="primary" class="w-100" v-on:click="confirmPayment()">
+                                        <b-button variant="primary" class="w-100" v-on:click="confirmPayment">
                                             Confirm payment
                                         </b-button>
                                     </b-col>
@@ -105,7 +109,7 @@
                                 </b-row>
                                 <b-row class="mt-4" v-if="canPay()">
                                     <b-col>
-                                        <b-button variant="primary" class="w-100" v-on:click="payDebt()">
+                                        <b-button variant="primary" class="w-100" v-on:click="payDebt">
                                             I have paid
                                         </b-button>
                                     </b-col>
@@ -273,41 +277,54 @@
                 this.editing = false;
                 this.loadDebt();
             },
-            decline() {
-                this.debt.status = this.debtStatus.DECLINED;
-                this.save();
+            async acceptDeclineDebt(isAccept) {
+                const response = await this.$http.put('/debts/' + this.debt.id + '/accept/' + isAccept);
+                this.debt = response.data;
             },
-            accept() {
-                this.debt.status = this.debtStatus.ACCEPTED;
-                this.save();
+            async payDebt() {
+                const response = await this.$http.put('/debts/' + this.debt.id + '/pay');
+                this.debt = response.data;
             },
-            payDebt() {
-                this.debt.status = this.debtStatus.PAID;
-                this.save();
-            },
-            confirmPayment() {
-                this.debt.status = this.debtStatus.CONFIRMED;
-                this.save();
+            async confirmPayment() {
+                const response = await this.$http.put('/debts/' + this.debt.id + '/confirm');
+                this.debt = response.data;
             },
             payWithLHV() {
-                const url = `https://www.lhv.ee/portfolio/payment_out.cfm?
-                i_receiver_name=${this.debt.receiver.bankAccount.name}
-                &amp;i_receiver_account_no=${this.debt.receiver.bankAccount.number}
-                &amp;i_amount=${this.debt.sum}
-                &amp;i_payment_desc=${this.debt.title}&amp`;
-                window.location.href = encodeURI(url);
+                let url = '';
+                if (this.debt.receiver.bankAccount != null) {
+                    url = `https://www.lhv.ee/portfolio/payment_out.cfm?` +
+                        `i_receiver_account_no=${this.debt.receiver.bankAccount.number}` +
+                        `&i_receiver_name=${this.debt.receiver.bankAccount.name}` +
+                        `&i_payment_desc=${this.debt.title}` +
+                        `&i_amount=${this.debt.sum}`;
+                } else {
+                    url = `https://www.lhv.ee/portfolio/payment_out.cfm?` +
+                        `i_payment_desc=${this.debt.title}` +
+                        `&i_amount=${this.debt.sum}`;
+                }
+                window.open(encodeURI(url));
             },
             payWithSEB() {
-                const url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST
-                &field1=benname&value1=${this.debt.receiver.bankAccount.name}
-                &field3=benacc&value3=${this.debt.receiver.bankAccount.number}
-                &field10=desc&value10=${this.debt.title}
-                &value11=&field5=amount&value5=${this.debt.sum}
-                &paymtype=REMSEBEE&field6=currency&value6=EUR`;
-                window.location.href = encodeURI(url);
+                let url = '';
+                if (this.debt.receiver.bankAccount != null) {
+                    url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST` +
+                        `&field3=benacc&value3=${this.debt.receiver.bankAccount.number}` +
+                        `&field1=benname&value1=${this.debt.receiver.bankAccount.name}` +
+                        `&value11=&field5=amount&value5=${this.debt.sum}` +
+                        `&field10=desc&value10=${this.debt.title}` +
+                        `&paymtype=REMSEBEE&field6=currency&value6=EUR`;
+                } else {
+                    url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST` +
+                        `&field3=benacc&value3=${this.debt.receiver.bankAccount.number}` +
+                        `&field1=benname&value1=${this.debt.receiver.bankAccount.name}` +
+                        `&value11=&field5=amount&value5=${this.debt.sum}` +
+                        `&field10=desc&value10=${this.debt.title}` +
+                        `&paymtype=REMSEBEE&field6=currency&value6=EUR`;
+                }
+                window.open(encodeURI(url));
             },
             payWithSwed() {
-                window.location.href = "https://www.swedbank.ee/private";
+                window.open("https://www.swedbank.ee/private");
             },
         },
     };

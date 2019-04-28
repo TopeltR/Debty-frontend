@@ -38,7 +38,7 @@ export default class Config {
             return response;
         }, (error) => {
             const path = JSON.parse(error.request.responseText).path;
-            if (!['/users/loggedIn'].includes(path)) {
+            if (!['/users/loggedIn'].includes(path) && error.response.status === 401) {
                 userStore.alertUserNotLoggedIn();
                 router.push('/');
                 return Promise.reject(error);
