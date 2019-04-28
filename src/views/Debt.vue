@@ -72,16 +72,20 @@
                                 </b-row>
                                 <b-row class="mt-5" v-if="canAcceptDecline()">
                                     <b-col cols="6">
-                                        <b-button variant="secondary" class="w-100" v-on:click="decline">Decline
+                                        <b-button variant="secondary" class="w-100"
+                                                  v-on:click="acceptDeclineDebt(false)">
+                                            Decline
                                         </b-button>
                                     </b-col>
                                     <b-col cols="6">
-                                        <b-button variant="primary" class="w-100" v-on:click="accept">Accept</b-button>
+                                        <b-button variant="primary" class="w-100" v-on:click="acceptDeclineDebt(true)">
+                                            Accept
+                                        </b-button>
                                     </b-col>
                                 </b-row>
                                 <b-row class="mt-3" v-if="canConfirm()">
                                     <b-col>
-                                        <b-button variant="primary" class="w-100" v-on:click="confirmPayment()">
+                                        <b-button variant="primary" class="w-100" v-on:click="confirmPayment">
                                             Confirm payment
                                         </b-button>
                                     </b-col>
@@ -105,7 +109,7 @@
                                 </b-row>
                                 <b-row class="mt-4" v-if="canPay()">
                                     <b-col>
-                                        <b-button variant="primary" class="w-100" v-on:click="payDebt()">
+                                        <b-button variant="primary" class="w-100" v-on:click="payDebt">
                                             I have paid
                                         </b-button>
                                     </b-col>
@@ -273,21 +277,17 @@
                 this.editing = false;
                 this.loadDebt();
             },
-            decline() {
-                this.debt.status = this.debtStatus.DECLINED;
-                this.save();
+            async acceptDeclineDebt(isAccept) {
+                const response = await this.$http.put('/debts/' + this.debt.id + '/accept/' + isAccept);
+                this.debt = response.data;
             },
-            accept() {
-                this.debt.status = this.debtStatus.ACCEPTED;
-                this.save();
+            async payDebt() {
+                const response = await this.$http.put('/debts/' + this.debt.id + '/pay');
+                this.debt = response.data;
             },
-            payDebt() {
-                this.debt.status = this.debtStatus.PAID;
-                this.save();
-            },
-            confirmPayment() {
-                this.debt.status = this.debtStatus.CONFIRMED;
-                this.save();
+            async confirmPayment() {
+                const response = await this.$http.put('/debts/' + this.debt.id + '/confirm');
+                this.debt = response.data;
             },
             payWithLHV() {
                 let url = '';
