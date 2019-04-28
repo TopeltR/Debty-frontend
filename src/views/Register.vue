@@ -76,7 +76,6 @@
 </template>
 
 <script>
-    // this should go to validated fields: @input='v.$touch()'
     import router from '../router.ts';
     import Background from '../components/Background';
     import User from '../entities/User';

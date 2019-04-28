@@ -12,9 +12,9 @@
         computed: {
             forElement() {
                 return this.for;
-            }
-        }
-    }
+            },
+        },
+    };
 </script>
 
 <style scoped>

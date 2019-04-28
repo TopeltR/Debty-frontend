@@ -16,3 +16,5 @@ export const fromArray = (array: []) => {
     };
     return fns;
 };
+
+export default fromArray;

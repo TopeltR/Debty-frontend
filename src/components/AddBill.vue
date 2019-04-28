@@ -37,10 +37,12 @@
                                        v-model="bill.sum"
                                        required v-on:change="displayNotMatchMessage" min="0" maxlength="255">
                                 <span class="ml-1">€</span>
+                                <b-btn @click="calculateSum" class="float-right" variant="outline-primary">Calculate
+                                </b-btn>
                             </div>
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length > 0'>Participants:</p>
-                                <div v-for='person in addPersonState.people' v-bind:key='person.id'>
+                                <div v-for='person in addPersonState.people' :key='participationChanged'>
                                     <b-col cols="12" class="form-group ml-1 pr-0">
                                         <b-row>
                                             <b-col class="mt-1" cols="6" col-md="7">
@@ -57,6 +59,19 @@
                                             </b-col>
                                             <b-col cols="1" class="pt-2">
                                                 <span>€</span>
+                                            </b-col>
+                                        </b-row>
+                                    </b-col>
+                                </div>
+                                <div>
+                                    <b-col cols="12" class="form-group ml-1 pr-0">
+                                        <b-row>
+                                            <b-col class="mt-1" sm="6">
+                                            </b-col>
+                                            <b-col cols="11" sm="4">
+                                                <b-btn @click="divideParticipationsEqually" variant="outline-primary" class="w-100">
+                                                    Divide sum
+                                                </b-btn>
                                             </b-col>
                                         </b-row>
                                     </b-col>
@@ -171,13 +186,13 @@
             field: {value: ''},
             allPeople: [],
             buyer: {},
-            participationChanged: false,
+            participationChanged: 0,
             billChanged: false,
             errorDisplayProperty: 'none',
             notMatchDisplayProperty: 'none',
             errorMessage: 'Sum and participations don\'t match!',
             notMatchErrorMessage: 'Sum and participations don\'t match!',
-            negativeErrorMessage: 'Negative sums not allowed!',
+            negativeErrorcMessage: 'Negative sums not allowed!',
             peopleInited: false,
             bill: {
                 title: '',
@@ -322,6 +337,30 @@
                 return user != null && this.selectedBill != null
                     && this.selectedBill.creator != null
                     && user.id === this.selectedBill.creator.id;
+            },
+            calculateSum() {
+                this.bill.sum = 0;
+                for (const person of this.billPeople) {
+                    this.bill.sum += Number(person.participation);
+                }
+                this.displayNotMatchMessage();
+            },
+            divideParticipationsEqually() {
+                const participation = this.bill.sum / this.addPersonState.people.length;
+                const participationRounded = this.roundToTwoDecimalPoints(participation);
+                let sum = 0;
+
+                this.billPeople.forEach((person) => {
+                    person.participation = participationRounded;
+                    sum += participationRounded;
+                });
+
+                this.billPeople[this.billPeople.length - 1].participation += (this.bill.sum - sum);
+                this.toggleParticipationChanged();
+                this.displayNotMatchMessage();
+            },
+            toggleParticipationChanged() {
+                this.participationChanged++;
             },
             submit() {
                 const form = this.$refs.form;
