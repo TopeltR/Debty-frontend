@@ -127,16 +127,6 @@
                 return user.lastName == null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             async saveDebt() {
-                debugger;
-                if (this.formData.payer == null) {
-                    this.formData.payer = {
-                        firstName: this.field.value,
-                    };
-                } else if (this.formData.receiver == null) {
-                    this.formData.receiver = {
-                        firstName: this.field.value,
-                    };
-                }
                 const result = await this.$http.post('/debts', this.formData);
                 router.push('/debts/' + result.data.id);
             },
