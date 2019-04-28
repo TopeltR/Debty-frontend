@@ -13,8 +13,7 @@
                 </b-row>
                 <b-row class='mt-4 mb-4'>
                     <b-col class="col-12 col-md-3">
-                        <input class='form-control' type='text' v-model='search' placeholder='Search'
-                               v-on:change="filterSearch"/>
+                        <input class='form-control' type='text' v-model='search' placeholder='Search'/>
                     </b-col>
                     <b-col class="col-12 col-md-3 form-inline mt-3 mt-md-0">
                         <div class="form-group">
@@ -41,8 +40,8 @@
                             <th scope='col'>Status</th>
                         </tr>
                         </thead>
-                        <tbody v-if="filteredDebts.length > 0">
-                        <tr v-for="debt in filteredDebts" :key="debt.id" @click="goToDebt(debt.id)">
+                        <tbody v-if="filterSearch.length > 0">
+                        <tr v-for="debt in filterSearch" :key="debt.id" @click="goToDebt(debt.id)">
                             <td v-if="debt.receiver.id === user.id">
                                 <div class="text-success">
                                     +{{debt.sum}} €
@@ -67,7 +66,9 @@
                         <tbody v-else>
                         <tr class="no-hover">
                             <td colspan="4">
-                                <span class="text-grey">You have no debts, start by clicking on the plus sign!</span>
+                                <span v-if="debts.length === 0" class="text-grey">
+                                    You have no debts, start by clicking on the plus sign!</span>
+                                <span v-else class="text-grey">No debts match your query</span>
                             </td>
                         </tr>
                         </tbody>
@@ -147,16 +148,6 @@
                 const canConfirm = this.user.id === debt.receiver.id && debt.status === this.debtStatus.PAID;
                 return canAcceptDecline || canPay || canConfirm;
             },
-            async filterSearch() {
-                this.sortDebts();
-                this.filteredDebts = this.debts.filter((debt) => {
-                    return debt.title.toLowerCase().includes(this.search.toLowerCase()) ||
-                        debt.payer.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
-                        debt.payer.lastName.toLowerCase().includes(this.search.toLowerCase()) ||
-                        debt.receiver.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
-                        debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase());
-                });
-            },
             filterStatus() {
                 this.sortDebts();
                 if (this.selectedStatus === "ALL") {
@@ -171,6 +162,17 @@
                     // to get a value that is either negative, positive, or zero.
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 });
+            },
+        },
+        computed: {
+            filterSearch() {
+                this.sortDebts();
+                return this.filteredDebts.filter((debt) =>
+                    debt.title.toLowerCase().includes(this.search.toLowerCase()) ||
+                    debt.payer.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
+                    debt.payer.lastName.toLowerCase().includes(this.search.toLowerCase()) ||
+                    debt.receiver.firstName.toLowerCase().includes(this.search.toLowerCase()) ||
+                    debt.receiver.lastName.toLowerCase().includes(this.search.toLowerCase()));
             },
         },
     }
