@@ -58,6 +58,8 @@
     import userStore from '../stores/UserStore';
     import AddBankAccount from "@/components/AddBankAccount.vue";
     import Spinner from '@/components/Spinner.vue';
+    import eventStore from "../stores/EventStore";
+    import debtStore from "../stores/DebtStore";
 
     export default {
         name: 'Home',
@@ -93,16 +95,17 @@
             createNewDebt() {
                 router.push('/debts/create');
             },
-            async getDebts() {
-                const response = await this.$http.get('/debts/user/' + this.user.id);
-                this.debts = response.data;
-                this.debts.map((debt) => this.addKeysToDebt(debt));
+            getDebts() {
+                debtStore.getUserDebts(this.user.id).onChange((debts) => {
+                    this.debts = debts;
+                    this.debts.map((debt) => this.addKeysToDebt(debt));
+                });
             },
-            async getEvents() {
-                const response = await this.$http.get('/events/user/' + this.user.id);
-                this.events = response.data;
-                this.events = this.events.filter((event) =>
-                    event.people.some((person) => person.id === this.user.id));
+            getEvents() {
+                eventStore.getUserEvents(this.user.id).onChange((events) => {
+                    this.events = events.filter((event) =>
+                        event.people.some((person) => person.id === this.user.id));
+                });
             },
             async openBankAccountModal() {
                 if (this.user.bankAccount === null) {

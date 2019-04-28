@@ -77,6 +77,7 @@
     import Autocomplete from '@/components/Autocomplete.vue';
     import userStore from '@/stores/UserStore';
     import Spinner from '@/components/Spinner.vue';
+    import contactStore from "../stores/ContactStore";
 
     export default {
         name: 'Contacts',
@@ -110,25 +111,20 @@
             isUserTo(contact) {
                 return this.user != null && contact != null && this.user.id === contact.to.id;
             },
-            async getAvailableContacts() {
-                const {data} = await this.$http.get('/contacts/all/' + this.user.id);
-                this.availableContacts = data;
-            },
-            async getRequests() {
-                const response1 = await this.$http.get('/contacts/incoming/' + this.user.id);
-                const incomingRequests = response1.data;
-                incomingRequests.forEach((request) => {
-                    Object.assign(request, {type: 'Incoming'});
+            getAvailableContacts() {
+                contactStore.getAvailableContacts(this.user.id).onChange((contacts) => {
+                    this.availableContacts = contacts;
                 });
-
-                const response2 = await this.$http.get('/contacts/outgoing/' + this.user.id);
-                const outgoingRequests = response2.data;
-
-                this.requests = incomingRequests.concat(outgoingRequests);
             },
-            async getPersonContacts() {
-                const response = await this.$http.get('/contacts/' + this.user.id);
-                this.userContacts = response.data;
+            getRequests() {
+                contactStore.getIncomingAndOutGoingRequests(this.user.id).onChange((incomingRequests, outgoingRequests) => {
+                    this.requests = incomingRequests.concat(outgoingRequests);
+                });
+            },
+            getPersonContacts() {
+                contactStore.getPersonContacts((contacts) => {
+                    this.userContacts = contacts;
+                });
             },
 
             async sendRequest() {

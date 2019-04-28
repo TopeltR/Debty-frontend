@@ -3,7 +3,7 @@
         <navbar/>
         <background>
             <spinner :loaded="loaded">
-                <div v-if="events.length > 0">
+                <div v-if="events && events.length > 0">
                     <h1 class='pt-4'>My events
                         <font-awesome-icon icon='plus' class=' ml-3 mt-2 limegreen' v-on:click='createNewEvent'/>
                     </h1>
@@ -50,9 +50,10 @@
 <script>
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
+    import Spinner from '@/components/Spinner.vue';
     import router from '@/router';
     import userStore from '@/stores/UserStore';
-    import Spinner from '@/components/Spinner.vue';
+    import eventStore from '@/stores/EventStore';
 
     export default {
         name: 'Events',
@@ -63,9 +64,8 @@
         },
         data() {
             return {
-                events: [],
+                events: undefined,
                 search: '',
-                loaded: false,
             };
         },
         methods: {
@@ -75,10 +75,8 @@
             goToEvent(id) {
                 router.push('/events/' + id);
             },
-            async getEvents() {
-                const user = await userStore.getUser();
-                const response = await this.$http.get('/events/user/' + user.id);
-                this.events = response.data.sort((event1, event2) => {
+            sortByTime() {
+                this.events.sort((event1, event2) => {
                     if (event1.closedAt != null && event2.closedAt == null) {
                         return 1;
                     }
@@ -93,7 +91,14 @@
                     }
                     return 0;
                 });
-                this.loaded = true;
+            },
+            async getEvents() {
+                const user = await userStore.getUser();
+
+                eventStore.getUserEvents(user.id).onChange((events) => {
+                    this.events = events;
+                    this.sortByTime();
+                });
             },
             getDateString(date) {
                 return date !== null ? new Date(date).toLocaleString() : '';
@@ -106,6 +111,9 @@
             },
         },
         computed: {
+            loaded() {
+                return !!this.events;
+            },
             filteredList() {
                 return this.events.filter((event) => {
                     return event.title.toLowerCase().includes(this.search.toLowerCase()) ||

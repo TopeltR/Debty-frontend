@@ -87,6 +87,7 @@
     import DebtStatus from "@/components/DebtStatus.vue";
     import Spinner from "@/components/Spinner.vue";
     import InputLabel from "../components/InputLabel";
+    import debtStore from "../stores/DebtStore";
 
     export default {
         name: 'Debts',
@@ -94,7 +95,7 @@
 
         async mounted() {
             this.user = await userStore.getUser();
-            this.totalBalance = await this.getBalance();
+            this.getBalance();
             this.getDebts();
         },
         data() {
@@ -105,15 +106,9 @@
                 totalBalance: 0,
                 search: '',
                 user: {},
-                allStatuses: ["NEW", "ACCEPTED", "DECLINED", "PAID", "CONFIRMED"],
+                allStatuses: Object.keys(debtStore.debtStatus),
                 selectedStatus: "ALL",
-                debtStatus: {
-                    NEW: 'NEW',
-                    ACCEPTED: 'ACCEPTED',
-                    DECLINED: 'DECLINED',
-                    PAID: 'PAID',
-                    CONFIRMED: 'CONFIRMED',
-                },
+                debtStatus: debtStore.debtStatus,
             };
         },
         methods: {
@@ -124,29 +119,27 @@
                 router.push('/debts/' + id);
             },
             async getBalance() {
-                const response = await this.$http.get("/debts/user/" + this.user.id + "/total");
-                return response.data;
+                debtStore.getUserBalance(this.user.id).onChange((balance) => {
+                    this.totalBalance = balance;
+                });
             },
-            async getDebts() {
-                const response = await this.$http.get('/debts/user/' + this.user.id);
-                this.debts = response.data;
-                this.debts.map((debt) => this.addKeysToDebt(debt));
-                this.sortDebts();
-                this.filteredDebts = this.debts;
-                this.loaded = true;
+            getDebts() {
+                debtStore.getUserDebts(this.user.id).onChange((debts) => {
+                    this.debts = debts;
+                    this.debts.map((debt) => this.addKeysToDebt(debt));
+                    this.sortDebts();
+                    this.filteredDebts = this.debts;
+                    if (this.debts.length > 0) {
+                        this.loaded = true;
+                    }
+                });
             },
             addKeysToDebt(debt) {
                 let key = 'type';
                 debt[key] = debt.payer.id === this.user.id ? 'outgoing' : 'incoming';
                 key = 'action';
-                debt[key] = this.isActionForDebt(debt);
+                debt[key] = debtStore.isActionForDebt(debt, this.user.id);
                 return debt;
-            },
-            isActionForDebt(debt) {
-                const canAcceptDecline = debt.owner.id !== this.user.id && debt.status === this.debtStatus.NEW;
-                const canPay = this.user.id === debt.payer.id && debt.status === this.debtStatus.ACCEPTED;
-                const canConfirm = this.user.id === debt.receiver.id && debt.status === this.debtStatus.PAID;
-                return canAcceptDecline || canPay || canConfirm;
             },
             filterStatus() {
                 this.sortDebts();
@@ -158,8 +151,6 @@
             },
             sortDebts() {
                 this.debts.sort((a, b) => {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 });
             },

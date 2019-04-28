@@ -2,6 +2,9 @@ import User from '@/entities/User';
 
 import axios from 'axios';
 import router from '@/router';
+import eventStore from '@/stores/EventStore';
+import debtStore from '@/stores/DebtStore';
+import contactStore from '@/stores/ContactStore';
 
 
 class UserStore {
@@ -54,8 +57,14 @@ class UserStore {
 
     public async logOut() {
         await axios.post('/users/signout');
-        localStorage.removeItem('user');
+
         this.user = null;
+        localStorage.removeItem('user');
+
+        eventStore.clear();
+        debtStore.clear();
+        contactStore.clear();
+
         router.push('/');
     }
 

@@ -51,6 +51,8 @@
 <script>
     import router from '@/router';
     import userStore from '../stores/UserStore';
+    import debtStore from "../stores/DebtStore";
+    import contactStore from "../stores/ContactStore";
 
     export default {
         name: 'Navbar',
@@ -60,13 +62,6 @@
             contactsNotificationAmount: 0,
             debtsNotification: false,
             debtsNotificationAmount: 0,
-            debtStatus: {
-                NEW: 'NEW',
-                ACCEPTED: 'ACCEPTED',
-                DECLINED: 'DECLINED',
-                PAID: 'PAID',
-                CONFIRMED: 'CONFIRMED',
-            },
         }),
         async mounted() {
             this.highlightActiveNav();
@@ -79,26 +74,20 @@
                 router.push('/home');
             },
             async getContactsNotificationCount() {
-                const response = await this.$http.get('/contacts/incoming/' + this.user.id);
-                if (response.data.length > 0) {
-                    this.contactsNotification = true;
-                    this.contactsNotificationAmount = response.data.length;
-                }
+                contactStore.getContactsNotificationCount(this.user.id).onChange((count) => {
+                    if (count > 0) {
+                        this.contactsNotification = true;
+                        this.contactsNotificationAmount = count;
+                    }
+                });
             },
-            async getDebtsNotificationCount() {
-                const response = await this.$http.get('/debts/user/' + this.user.id);
-                let debts = response.data;
-                debts = debts.filter((debt) => this.isActionForDebt(debt));
-                if (debts.length > 0) {
-                    this.debtsNotification = true;
-                    this.debtsNotificationAmount = debts.length;
-                }
-            },
-            isActionForDebt(debt) {
-                const canAcceptDecline = debt.owner.id !== this.user.id && debt.status === this.debtStatus.NEW;
-                const canPay = this.user.id === debt.payer.id && debt.status === this.debtStatus.ACCEPTED;
-                const canConfirm = this.user.id === debt.receiver.id && debt.status === this.debtStatus.PAID;
-                return canAcceptDecline || canPay || canConfirm;
+            getDebtsNotificationCount() {
+                debtStore.getDebtsNotificationCount(this.user.id).onChange((count) => {
+                    if (count > 0) {
+                        this.debtsNotification = true;
+                        this.debtsNotificationAmount = count;
+                    }
+                });
             },
             getUserName() {
                 if (this.user == null) {
