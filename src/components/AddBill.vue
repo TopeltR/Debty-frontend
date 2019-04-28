@@ -16,23 +16,23 @@
                     <b-row>
                         <form @submit.prevent='save()' ref="form" class='w-100'>
                             <div class='form-group'>
-                                <label for='title'>Title*:</label>
+                                <input-label :required="true" for="title">Title</input-label>
                                 <input type='text' class='form-control' v-model='bill.title' id='title' required
                                        placeholder='Enter bill title' minlength="1" maxlength="255">
                             </div>
                             <div class='form-group'>
-                                <label for='description'>Description:</label>
+                                <input-label for='description'>Description</input-label>
                                 <textarea id='description' class='form-control' v-model='bill.description'
                                           placeholder='Enter bill description' maxlength="255"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="buyer">Buyer*:</label>
+                                <input-label :required="true" for="buyer">Buyer</input-label>
                                 <autocomplete id="buyer" v-model="buyer" :field="field" v-on:input="updateBuyer"
                                               :items="allPeople" :required="true"
                                               :keyExtractor="getFullName"/>
                             </div>
                             <div class="form-group inline-form">
-                                <label for="sum" class="pr-3">Sum*:</label>
+                                <input-label :required="true" for="sum" class="pr-3">Sum</input-label>
                                 <input type="number" step="0.01" class="d-inline form-control skinny" id="sum"
                                        v-model="bill.sum"
                                        required v-on:change="displayNotMatchMessage" min="0" maxlength="255">
@@ -41,7 +41,7 @@
                             <div class='form-group'>
                                 <p v-if='addPersonState.people.length > 0'>Participants:</p>
                                 <div v-for='person in addPersonState.people' v-bind:key='person.id'>
-                                    <b-col cols="12" class="form-group ml-1">
+                                    <b-col cols="12" class="form-group ml-1 pr-0">
                                         <b-row>
                                             <b-col class="mt-1" cols="6" col-md="7">
                                                 <label :for="person.firstName">
@@ -61,7 +61,7 @@
                                         </b-row>
                                     </b-col>
                                 </div>
-                                <label for='user'>Add participants:</label>
+                                <input-label for='user'>Add participants</input-label>
                                 <add-person id="user" :state="addPersonState"/>
                                 <p class="text-danger mt-5" :key="notMatchDisplayProperty"
                                    v-bind:style='{display: notMatchDisplayProperty}'>
@@ -92,14 +92,15 @@
 
 <script>
     import AddPerson from '@/components/AddPerson.vue';
-    import Autocomplete from "./Autocomplete";
+    import Autocomplete from "@/components/Autocomplete.vue";
     import userStore from "@/stores/UserStore";
     import Person from "@/components/Person.vue";
+    import InputLabel from "@/components/InputLabel.vue";
     import fromArray from "@/utils";
 
     export default {
         name: 'AddBill',
-        components: {Person, Autocomplete, AddPerson},
+        components: {Person, Autocomplete, AddPerson, InputLabel},
         props: {
             state: {
                 type: Object,

@@ -16,12 +16,12 @@
                         <b-row>
                             <form @submit.prevent='submitButtonHandler()' class='w-100 mt-3'>
                                 <div class='form-group'>
-                                    <label for='title'>Title*:</label>
+                                    <input-label :required="true" for='title'>Title</input-label>
                                     <input type='text' class='form-control' v-model='title' id='title' required
                                            placeholder='Enter event title' minlength="1" maxlength="255">
                                 </div>
                                 <div class='form-group'>
-                                    <label for='description'>Description:</label>
+                                    <input-label for='description'>Description</input-label>
                                     <textarea id='description' class='form-control' v-model='description'
                                               placeholder='Enter event description' minlength="1"
                                               maxlength="255"></textarea>
@@ -34,7 +34,7 @@
                                                     :owner="isOwner(person)"/>
                                         </li>
                                     </ul>
-                                    <label>Add people:</label>
+                                    <input-label>Add people</input-label>
                                     <add-person :state="addPersonState"/>
                                 </div>
                                 <b-row class='mt-4'>
@@ -64,10 +64,11 @@
     import userStore from '@/stores/UserStore';
     import Person from "@/components/Person.vue";
     import Spinner from "@/components/Spinner.vue";
+    import InputLabel from "./InputLabel";
 
     export default {
         name: 'EventForm',
-        components: {Background, Navbar, AddPerson, Person, Spinner},
+        components: {InputLabel, Background, Navbar, AddPerson, Person, Spinner},
         props: {
             eventId: {
                 type: Number,

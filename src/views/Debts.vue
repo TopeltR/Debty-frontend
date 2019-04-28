@@ -18,7 +18,7 @@
                     </b-col>
                     <b-col class="col-12 col-md-3 form-inline mt-3 mt-md-0">
                         <div class="form-group">
-                            <label for="statusFilter" class="mr-3">Filter by status:</label>
+                            <input-label for="statusFilter" class="mr-3">Filter by status</input-label>
                             <select id="statusFilter" v-model='selectedStatus' class="form-control float-right"
                                     v-on:change="filterStatus">
                                 <option selected value="ALL">All</option>
@@ -85,10 +85,11 @@
     import userStore from '@/stores/UserStore';
     import DebtStatus from "@/components/DebtStatus.vue";
     import Spinner from "@/components/Spinner.vue";
+    import InputLabel from "../components/InputLabel";
 
     export default {
         name: 'Debts',
-        components: {DebtStatus, Navbar, Background, Spinner},
+        components: {InputLabel, DebtStatus, Navbar, Background, Spinner},
 
         async mounted() {
             this.user = await userStore.getUser();

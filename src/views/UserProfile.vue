@@ -14,7 +14,7 @@
                                     <div class='form-group'>
                                         <b-row class="pb-3 border-bottom-1">
                                             <b-col md="6">
-                                                <label for='first'>Name:</label>
+                                                <input-label for='first'>Name</input-label>
                                             </b-col>
                                             <b-col md="6">
                                                 {{user.firstName + ' ' + user.lastName}}
@@ -24,7 +24,7 @@
                                     <div v-if="user.bankAccount" class='w-100'>
                                         <b-row class="pb-3 border-bottom-1">
                                             <b-col md="6">
-                                                <label for='first'>Bank account:</label>
+                                                <input-label for='first'>Bank account</input-label>
                                             </b-col>
                                             <b-col md="6">
                                                 <div>{{user.bankAccount.name}}</div>
@@ -35,7 +35,7 @@
                                     <div class='form-group'>
                                         <b-row class="py-3">
                                             <b-col md="6">
-                                                <label for='email'>Email:</label>
+                                                <input-label for='email'>Email</input-label>
                                             </b-col>
                                             <b-col md="6">
                                                 <div>{{user.email}}</div>
@@ -56,7 +56,7 @@
                             <div class="info mt-5">
                                 <h2 class="mb-3">Edit user profile</h2>
                                 <div class='form-group'>
-                                    <label for='first'>Name*:</label>
+                                    <input-label :required="true" for='first'>Name</input-label>
                                     <b-row>
                                         <b-col cols="6">
                                             <input type='text' class='form-control float-left' v-model='user.firstName'
@@ -69,7 +69,7 @@
                                     </b-row>
                                 </div>
                                 <div class='form-group'>
-                                    <label for='first'>Bank account:</label>
+                                    <input-label for='first'>Bank account</input-label>
                                     <b-row>
                                         <b-col cols="6">
                                             <input type='text' class='form-control float-left'
@@ -84,18 +84,18 @@
                                     </b-row>
                                 </div>
                                 <div class='form-group'>
-                                    <label for='email'>Email*:</label>
+                                    <input-label :required="true" for='email'>Email</input-label>
                                     <input type='email' class='form-control' v-model='user.email' id='email' required
                                            minlength="5" maxlength="255">
                                 </div>
                                 <div class='form-group'>
-                                    <label for='password'>New password:</label>
+                                    <input-label for='password'>New password</input-label>
                                     <input type='password' class='form-control' v-model='user.password' id='password'
                                            minlength="8" maxlength="255"
                                            placeholder='Enter new password'>
                                 </div>
                                 <div class='form-group'>
-                                    <label for='password-confirmation'>Password confirmation:</label>
+                                    <input-label for='password-confirmation'>Password confirmation</input-label>
                                     <input type='password' class='form-control' v-model='user.passwordConfirmation'
                                            id='password-confirmation' minlength="8" maxlength="255"
                                            placeholder='Enter password again'>
@@ -123,10 +123,11 @@
     import Background from '@/components/Background.vue';
     import Navbar from '@/components/Navbar.vue';
     import Spinner from '@/components/Spinner.vue';
+    import InputLabel from "../components/InputLabel";
 
     export default {
         name: "UserProfile",
-        components: {Background, Navbar, Spinner},
+        components: {InputLabel, Background, Navbar, Spinner},
         data: () => ({
             editing: false,
             user: {
