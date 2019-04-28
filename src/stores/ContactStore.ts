@@ -27,6 +27,8 @@ class ContactStore {
                     request.type = 'Incoming';
                 });
                 const {data: outgoingRequests} = await axios.get('/contacts/outgoing/' + userId);
+                this.incomingRequests = incomingRequests;
+                this.outgoingRequests = outgoingRequests;
                 callback(incomingRequests, outgoingRequests);
             },
         };
