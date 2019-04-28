@@ -61,10 +61,14 @@
                         We are debty.
                     </b>
                     <br><br>
-                    Debt is when something, usually money, is owed by one party, the borrower or debtor, to a second party, the lender or creditor.
-                    Debt is a deferred payment, or series of payments, that is owed in the future, which is what differentiates it from an immediate purchase.
-                    Private individuals lend money to other people, mostly relatives or friends. One reason for such informal debts is comfort.
-                    Such debts can cause problems when they are not paid back according to expectations of the lending person.
+                    Let's imagine. You are out with your friends having a nice evening. Everybody is chipping in on the stuff you buy.
+                    You buy one thing for the crew and other friends do the same. By the end of the evening you have bunch of bills and
+                    no clue who you should pay and how much.
+                    <br><br>
+                    Introducing Debty, a platform for friends to sign up, create an event and then insert these bills including the people,
+                    who you bought the items. After the event all you need is one click and you will see exactly how much you have to pay and to who.
+                    <br><br>
+                    It's that simple!
                 </p>
             </b-col>
         </b-row>

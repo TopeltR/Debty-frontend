@@ -64,14 +64,6 @@
             password: '',
             displayProperty: 'none',
         }),
-        async mounted() {
-            /*
-            const loggedIn = await userStore.isLoggedIn();
-            if (loggedIn) {
-                router.push('/home');
-            }
-            */
-        },
         methods: {
             async login() {
                 try {
