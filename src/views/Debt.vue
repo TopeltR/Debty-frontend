@@ -120,13 +120,13 @@
                             <form @submit.prevent='saveDebt' class='w-100'>
                                 <h1>Edit debt</h1>
                                 <div class='form-group pt-3'>
-                                    <label for='title'>Title*:</label>
+                                    <input-label :required="true" for='title'>Title</input-label>
                                     <input type='text' class='form-control' v-model='debt.title' id='title'
                                            placeholder='Enter debt title' required minlength="1" maxlength="255">
                                 </div>
                                 <div class='form-group'
                                      v-if="isOwner(debt.receiver)">
-                                    <label>From*:</label>
+                                    <input-label :required="true">From</input-label>
 
                                     <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
                                                   :items='contacts' :required="true"
@@ -134,7 +134,7 @@
                                 </div>
                                 <div class='form-group'
                                      v-if="isOwner(debt.payer)">
-                                    <label>To*:</label>
+                                    <input-label :required="true">To</input-label>
 
                                     <autocomplete id='receiver'
                                                   v-model='debt.receiver'
@@ -147,7 +147,7 @@
                                 <div class='form-group'>
                                     <b-row>
                                         <b-col cols='2'>
-                                            <label for='sum' class='mt-2'>Sum*:</label>
+                                            <input-label :required="true" for='sum' class='mt-2'>Sum</input-label>
                                         </b-col>
                                         <b-col cols='3'>
                                             <input id='sum' type='number' class='form-control pr-0' v-model='debt.sum'
@@ -183,10 +183,11 @@
     import userStore from '@/stores/UserStore';
     import DebtStatus from "@/components/DebtStatus.vue";
     import Spinner from "@/components/Spinner.vue";
+    import InputLabel from "../components/InputLabel";
 
     export default {
         name: 'Debt',
-        components: {DebtStatus, Background, Navbar, Autocomplete, Spinner},
+        components: {InputLabel, DebtStatus, Background, Navbar, Autocomplete, Spinner},
         data: () => ({
             debtId: null,
             debt: {},

@@ -9,12 +9,12 @@
                     <b-row>
                         <form @submit.prevent='saveBankAccount()' class='w-100'>
                             <div class='form-group'>
-                                <label for='bankAccountName'>Name connected to bank account:</label>
+                                <input-label for='bankAccountName'>Name connected to bank account</input-label>
                                 <input type='text' class='form-control' v-model='bankAccount.name' id='bankAccountName'
                                        required placeholder='John Doe' maxlength="255">
                             </div>
                             <div class='form-group'>
-                                <label for='bankAccountNumber'>Bank account number:</label>
+                                <input-label for='bankAccountNumber'>Bank account number</input-label>
                                 <input type='text' class='form-control' v-model='bankAccount.number' maxlength="255"
                                        id='bankAccountNumber' required placeholder='EE1111111111111111'>
                             </div>
@@ -38,9 +38,11 @@
 
 <script>
     import userStore from '@/stores/UserStore';
+    import InputLabel from "./InputLabel";
 
     export default {
         name: 'AddBankAccount',
+        components: {InputLabel},
         props: {
             state: {
                 type: Object,

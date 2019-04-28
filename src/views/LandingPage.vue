@@ -20,7 +20,7 @@
                     <div class='form-group'>
                         <b-row>
                             <b-col>
-                                <label class='label' for='email'>Email:</label>
+                                <input-label class='label' for='email'>Email</input-label>
                                 <input type='email' class='form-control' id='email' placeholder='Email' required
                                        v-model='email' minlength="5" maxlength="255">
                             </b-col>
@@ -29,7 +29,7 @@
                     <div class='form-group'>
                         <b-row>
                             <b-col>
-                                <label class='label' for='password'>Password:</label>
+                                <input-label class='label' for='password'>Password</input-label>
                                 <input type='password' class='form-control' id='password' placeholder='Password'
                                        required v-model='password' maxlength="255">
                             </b-col>
@@ -41,7 +41,7 @@
                         </b-col>
                         <b-col sm='12' md='7' class='MT7 mob-text-center'>
                             <router-link to='/register'>
-                                <a>Register?</a>
+                                Register?
                             </router-link>
                         </b-col>
                     </b-row>
@@ -54,10 +54,11 @@
 <script>
     import Background from '../components/Background';
     import userStore from '../stores/UserStore';
+    import InputLabel from "../components/InputLabel";
 
     export default {
         name: 'LandingPage',
-        components: {Background},
+        components: {InputLabel, Background},
         data: () => ({
             email: '',
             password: '',
