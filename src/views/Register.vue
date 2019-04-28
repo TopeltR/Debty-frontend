@@ -98,7 +98,7 @@
                 const user = this.form;
                 const response = await this.$http.post('/users/register', user);
                 if (response.status === 200) {
-                    userStore.setUser(User.from(user));
+                    userStore.setUser(User.from(response.data));
                     router.push('/home');
                 }
             },
