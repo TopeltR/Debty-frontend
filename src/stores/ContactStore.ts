@@ -53,6 +53,7 @@ class ContactStore {
                 if (this.contacts) {
                     callback(this.contacts);
                 }
+                debugger;
                 const {data: contacts} = await axios.get('/contacts/' + userId);
                 this.contacts = contacts;
                 callback(contacts);

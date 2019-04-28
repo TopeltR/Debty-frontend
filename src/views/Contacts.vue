@@ -122,7 +122,7 @@
                 });
             },
             getPersonContacts() {
-                contactStore.getPersonContacts((contacts) => {
+                contactStore.getPersonContacts(this.user.id).onChange((contacts) => {
                     this.userContacts = contacts;
                 });
             },
