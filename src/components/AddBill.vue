@@ -63,7 +63,7 @@
                                         </b-row>
                                     </b-col>
                                 </div>
-                                <div>
+                                <div v-if="billPeople && billPeople.length > 0">
                                     <b-col cols="12" class="form-group ml-1 pr-0">
                                         <b-row>
                                             <b-col class="mt-1" sm="6">
