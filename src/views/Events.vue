@@ -14,7 +14,8 @@
                             </b-col>
                         </b-row>
                     </div>
-                    <div v-for="event in filteredList" @click="goToEvent(event.id)" class="card my-3 shadow">
+                    <div v-for="event in filteredList" :key="event.id" @click="goToEvent(event.id)"
+                         class="card my-3 shadow">
                         <div class="card-body">
                             <b-row>
                                 <b-col md="6">
@@ -54,7 +55,7 @@
     import Spinner from '@/components/Spinner.vue';
 
     export default {
-        name: 'events',
+        name: 'Events',
         components: {Navbar, Background, Spinner},
 
         mounted() {

@@ -52,9 +52,7 @@
 </template>
 
 <script>
-    import router from '../router.ts';
     import Background from '../components/Background';
-    import User from '../entities/User';
     import userStore from '../stores/UserStore';
 
     export default {

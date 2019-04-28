@@ -29,7 +29,7 @@
                                 <div class='form-group'>
                                     <p v-if='addPersonState.people.length !== 0'>People:</p>
                                     <ul class="without-bullets">
-                                        <li v-for='person in addPersonState.people'>
+                                        <li v-for='person in addPersonState.people' :key="person.id">
                                             <person :person="person" :addPersonState="addPersonState"
                                                     :owner="isOwner(person)"/>
                                         </li>
@@ -38,7 +38,8 @@
                                     <add-person :state="addPersonState"/>
                                 </div>
                                 <b-row class='mt-4'>
-                                    <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset">
+                                    <b-col v-for="button in buttons" :cols="button.width" :offset="button.offset"
+                                           :key="button.name">
                                         <b-btn :type="button.type" :variant='button.variant'
                                                v-on:click='button.type !== "submit" ? button.handler : undefined'
                                                class='w-100'>

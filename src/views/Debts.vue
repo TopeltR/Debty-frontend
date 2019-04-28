@@ -42,7 +42,7 @@
                         </tr>
                         </thead>
                         <tbody v-if="filteredDebts.length > 0">
-                        <tr v-for="debt in filteredDebts" @click="goToDebt(debt.id)">
+                        <tr v-for="debt in filteredDebts" :key="debt.id" @click="goToDebt(debt.id)">
                             <td v-if="debt.receiver.id === user.id">
                                 <div class="text-success">
                                     +{{debt.sum}} €
@@ -51,7 +51,7 @@
                             <td v-else> -{{debt.sum}} €</td>
                             <td>{{debt.title}}
                                 <span v-if="debt.action"
-                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>&nbsp;</span>
+                                      class='badge badge-primary badge-pill m-0 ml-2 bg-lime'>!</span>
                             </td>
                             <td v-if='debt.type === "outgoing"'>{{debt.receiver.firstName}}
                                 {{debt.receiver.lastName}}
@@ -87,7 +87,7 @@
     import Spinner from "@/components/Spinner.vue";
 
     export default {
-        name: 'events',
+        name: 'Debts',
         components: {DebtStatus, Navbar, Background, Spinner},
 
         async mounted() {

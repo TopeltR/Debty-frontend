@@ -29,7 +29,7 @@
                             <div class='table-wrapper-scroll-y mt-0 mt-md-2'>
                                 <table class='table bill-table'>
                                     <tbody>
-                                    <tr v-for='person in event.people'>
+                                    <tr v-for='person in event.people' :key="person.id">
                                         <td>{{person.firstName + ' ' + person.lastName}}
                                             <small v-if="isOwner(person)"> (owner)</small>
                                         </td>
@@ -53,7 +53,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="bill in event.bills" v-if="bill !== undefined"
+                                    <tr v-for="bill in event.bills" :key="bill.id" v-if="bill !== undefined"
                                         @click="openBillModal(bill)">
                                         <td>{{bill.title}}</td>
                                         <td>{{bill.sum}} €</td>

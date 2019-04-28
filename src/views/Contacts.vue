@@ -32,7 +32,8 @@
                         <b-list-group>
                             <h2>Requests</h2>
                             <div v-if='requests && requests.length > 0' class="shadow rounded">
-                                <b-list-group-item v-for='person in requests'> {{getUserFullName(person)}}
+                                <b-list-group-item v-for='person in requests' :key="person.id">
+                                    {{getUserFullName(person)}}
                                     <span v-if='person.type === "Incoming"'>
                                     <font-awesome-icon icon='check' class='limegreen ml-1 icons float-right'
                                                        v-on:click='acceptContact(person.id)'/>
@@ -52,7 +53,7 @@
                         <b-list-group>
                             <h2>My contacts</h2>
                             <div v-if="userContacts && userContacts.length > 0" class="shadow rounded">
-                                <b-list-group-item v-for='contact in userContacts'>
+                                <b-list-group-item v-for='contact in userContacts' :key="contact.id">
                                     <span v-if="isUserTo(contact)">{{getUserFullName(contact.from)}}</span>
                                     <span v-else>{{getUserFullName(contact.to)}}</span>
                                     <font-awesome-icon icon='times' class='text-danger icons float-right'
@@ -78,7 +79,7 @@
     import Spinner from '@/components/Spinner.vue';
 
     export default {
-        name: 'events',
+        name: 'Contacts',
         components: {Navbar, Background, Autocomplete, Spinner},
         data: () => ({
             contact: {},
