@@ -7,7 +7,7 @@
             <b-row>
                 <b-col cols="12" class='mt-4'>
                     <b-row>
-                        <form @submit.prevent='saveBankAccount()' class='w-100'>
+                        <form @submit.prevent='saveBankAccount' ref="form" class='w-100'>
                             <div class='form-group'>
                                 <input-label for='bankAccountName'>Name connected to bank account</input-label>
                                 <input type='text' class='form-control' v-model='bankAccount.name' id='bankAccountName'
@@ -29,7 +29,7 @@
                     <b-button class="w-100" variant="secondary" v-on:click="cancel">Cancel</b-button>
                 </b-col>
                 <b-col cols="6">
-                    <b-button class="w-100" variant="primary" type="submit">Save</b-button>
+                    <b-button class="w-100" variant="primary" v-on:click="submit">Save</b-button>
                 </b-col>
             </b-row>
         </div>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+    import User from '../entities/User';
     import userStore from '@/stores/UserStore';
     import InputLabel from "./InputLabel";
 
@@ -78,8 +79,17 @@
         methods: {
             async saveBankAccount() {
                 const user = await userStore.getUser();
-                const result = await this.$http.post('/users/bankAccount/' + user.id, this.bankAccount);
+                const response = await this.$http.post('/users/' + user.id + '/bankAccount', this.bankAccount);
+                userStore.setUser(User.from(response.data));
                 this.cancel();
+            },
+            submit() {
+                const form = this.$refs.form;
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                } else {
+                    this.saveBankAccount();
+                }
             },
             cancel() {
                 this.state.showing = false;
