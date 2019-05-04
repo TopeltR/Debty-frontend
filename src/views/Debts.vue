@@ -119,7 +119,7 @@
             goToDebt(id) {
                 router.push('/debts/' + id);
             },
-            async getBalance() {
+            getBalance() {
                 debtStore.getUserBalance(this.user.id).onChange((balance) => {
                     this.totalBalance = balance;
                 });
