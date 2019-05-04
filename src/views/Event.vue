@@ -89,7 +89,7 @@
                                 </b-col>
                             </b-row>
                         </b-col>
-                        <b-col class="pb-5" v-else>
+                        <b-col class="pb-5 mt-5" v-else>
                             This event has been closed.
                         </b-col>
                     </b-row>
