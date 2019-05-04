@@ -28,7 +28,7 @@
                                             <b-col cols="10">
                                                 <input v-if="!userIsReceiver" type='text' class='form-control'
                                                        v-model='userName' disabled required maxlength="255">
-                                                <autocomplete v-else id='payer' v-model='formData.payer'
+                                                <autocomplete v-else id='payer' v-model='other'
                                                               :placeholder='"Name"'
                                                               :field='field'
                                                               :items='contacts'
@@ -43,7 +43,7 @@
                                             <b-col cols="10" class="mt-3">
                                                 <input v-if="userIsReceiver" type='text' class='form-control'
                                                        v-model='userName' disabled required maxlength="255">
-                                                <autocomplete v-else id='receiver' v-model='formData.receiver'
+                                                <autocomplete v-else id='receiver' v-model='other'
                                                               :placeholder='"Name"'
                                                               :field='field'
                                                               :items='contacts'
@@ -110,6 +110,7 @@
             field: {value: ''},
             contacts: [],
             user: null,
+            other: null,
             userIsReceiver: true,
             userName: null,
         }),
@@ -134,7 +135,9 @@
                 this.userIsReceiver = !this.userIsReceiver;
                 if (this.userIsReceiver) {
                     this.formData.receiver = this.user;
+                    this.formData.payer = this.other;
                 } else {
+                    this.formData.receiver = this.other;
                     this.formData.payer = this.user;
                 }
             },
