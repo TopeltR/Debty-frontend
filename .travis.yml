@@ -1,9 +1,14 @@
 language: node_js
 node_js: "stable"
-
-install: npm install
+sudo: true
 branches:
   only:
-    - master
-    - release
-script: npm run build
+  - master
+script:
+  - npm run build
+after_success:
+  deploy:
+    provider: s3
+    access_key_id: $FTP_ACC
+    secret_access_key: $FTP_S
+    bucket: "debty-frontend"
