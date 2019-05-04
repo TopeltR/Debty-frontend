@@ -5,7 +5,7 @@
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
                 <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-collapse is-nav id='nav_collapse'>
-                    <b-navbar-nav class="h-60px">
+                    <b-navbar-nav class="h-60px mt-3 pb-2">
                         <b-nav-item ref="home" to='/home' class="hoverable-nav">
                             Home
                         </b-nav-item>

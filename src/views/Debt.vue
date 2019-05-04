@@ -60,7 +60,7 @@
                                         {{ new Date(debt.modifiedAt).toLocaleString() }}
                                     </b-col>
                                 </b-row>
-                                <b-row class="mt-5" v-if="isOwner(user)">
+                                <b-row class="mt-5" v-if="isOwner(user) && isEditable()">
                                     <b-col cols="6">
                                         <b-button variant="danger" class="w-100" v-on:click="deleteDebt">Delete
                                         </b-button>
@@ -255,12 +255,16 @@
                     && this.user.id === this.debt.receiver.id
                     && this.debt.status === this.debtStatus.PAID;
             },
+            isEditable() {
+                return this.debt.status !== this.debtStatus.PAID && this.debt.status !== this.debtStatus.CONFIRMED;
+            },
             saveDebt() {
                 if (this.debt.payer === null) {
                     this.debt.payer = {
                         firstName: this.field.value,
                     };
                 }
+                this.debt.status = this.debtStatus.NEW;
                 this.editing = false;
                 this.save();
             },
@@ -315,8 +319,6 @@
                         `&paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 } else {
                     url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST` +
-                        `&field3=benacc&value3=${this.debt.receiver.bankAccount.number}` +
-                        `&field1=benname&value1=${this.debt.receiver.bankAccount.name}` +
                         `&value11=&field5=amount&value5=${this.debt.sum}` +
                         `&field10=desc&value10=${this.debt.title}` +
                         `&paymtype=REMSEBEE&field6=currency&value6=EUR`;
