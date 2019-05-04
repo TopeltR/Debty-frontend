@@ -10,14 +10,19 @@
         <div class="col-10 offset-1">
             <b-row>
                 <b-col cols="12">
-                    <b-row v-for="debt in debts" class="mt-2 mb-2" :key="debt.id">
-                        <b-col sm="12" md="3"><b>{{ debt.sum }} €</b></b-col>
-                        <b-col sm="12" md="9">
-                            {{ getFullName(debt.payer) }}
-                            <font-awesome-icon icon='arrow-right' class="arrow-margin"></font-awesome-icon>
-                            {{ getFullName(debt.receiver) }}
-                        </b-col>
-                    </b-row>
+                    <div v-if="debts.length > 0">
+                        <b-row v-for="debt in debts" class="mt-2 mb-2" :key="debt.id">
+                            <b-col sm="12" md="3"><b>{{ debt.sum }} €</b></b-col>
+                            <b-col sm="12" md="9">
+                                {{ getFullName(debt.payer) }}
+                                <font-awesome-icon icon='arrow-right' class="arrow-margin"></font-awesome-icon>
+                                {{ getFullName(debt.receiver) }}
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <div v-else>
+                        <h5>You all paid equal amount of money to others. No debts created!</h5>
+                    </div>
                 </b-col>
             </b-row>
         </div>
