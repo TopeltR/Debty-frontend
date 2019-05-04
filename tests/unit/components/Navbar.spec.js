@@ -17,7 +17,7 @@ describe('Navbar', () => {
             const navbar = mount(Navbar);
             await Vue.nextTick();
 
-            await navbar.vm.getNotificationCount();
+            await navbar.vm.getDebtsNotificationCount();
 
             expect(get).toHaveBeenCalledWith('/contact/waiting/1');
             expect(navbar.vm.notification).toBe(true);

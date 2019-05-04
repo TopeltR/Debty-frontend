@@ -119,11 +119,11 @@
 </template>
 
 <script>
-    import userStore from '@/stores/UserStore';
+    import userStore from '@/stores/UserStore.ts';
     import Background from '@/components/Background.vue';
     import Navbar from '@/components/Navbar.vue';
     import Spinner from '@/components/Spinner.vue';
-    import InputLabel from "../components/InputLabel";
+    import InputLabel from "@/components/InputLabel.vue";
 
     export default {
         name: "UserProfile",

@@ -87,12 +87,12 @@
 </template>
 
 <script>
-    import router from '../router.ts';
+    import router from '@/router.ts';
     import Background from '@/components/Background.vue';
     import Navbar from '@/components/Navbar.vue';
     import Autocomplete from '@/components/Autocomplete.vue';
     import Spinner from '@/components/Spinner.vue';
-    import userStore from '@/stores/UserStore';
+    import userStore from '@/stores/UserStore.ts';
     import InputLabel from "@/components/InputLabel.vue";
 
 

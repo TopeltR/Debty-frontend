@@ -75,9 +75,9 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import Autocomplete from '@/components/Autocomplete.vue';
-    import userStore from '@/stores/UserStore';
+    import userStore from '@/stores/UserStore.ts';
     import Spinner from '@/components/Spinner.vue';
-    import contactStore from "../stores/ContactStore";
+    import contactStore from "@/stores/ContactStore.ts";
 
     export default {
         name: 'Contacts',

@@ -51,9 +51,9 @@
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
     import Spinner from '@/components/Spinner.vue';
-    import router from '@/router';
-    import userStore from '@/stores/UserStore';
-    import eventStore from '@/stores/EventStore';
+    import router from '@/router.ts';
+    import userStore from '@/stores/UserStore.ts';
+    import eventStore from '@/stores/EventStore.ts';
 
     export default {
         name: 'Events',

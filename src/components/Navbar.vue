@@ -26,7 +26,7 @@
                         <b-nav-item ref="contacts" to='/contacts' class="hoverable-nav">
                             Contacts
                             <span class='badge badge-primary badge-pill  m-0 bg-lime'
-                                  v-if="contactsNotification === true"> {{contactsNotificationAmount}}</span>
+                                  v-if="contactsNotification === true">{{contactsNotificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
                     <b-navbar-nav class="h-60px mt-3 pb-2">
@@ -73,7 +73,7 @@
             goToHome() {
                 router.push('/home');
             },
-            async getContactsNotificationCount() {
+            getContactsNotificationCount() {
                 contactStore.getContactsNotificationCount(this.user.id).onChange((count) => {
                     if (count > 0) {
                         this.contactsNotification = true;
@@ -99,7 +99,7 @@
                 userStore.logOut();
             },
             highlightActiveNav() {
-                const currentNav = this.$router.history.current.name;
+                const currentNav = this.$router.history.current.name.split('_').shift();
                 this.$refs[currentNav].classList.add("active");
             },
         },

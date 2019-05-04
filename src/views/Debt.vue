@@ -180,14 +180,14 @@
 </template>
 
 <script>
-    import router from '../router.ts';
+    import router from '@/router.ts';
     import Background from '@/components/Background.vue';
     import Navbar from '@/components/Navbar.vue';
     import Autocomplete from '@/components/Autocomplete.vue';
-    import userStore from '@/stores/UserStore';
+    import userStore from '@/stores/UserStore.ts';
     import DebtStatus from "@/components/DebtStatus.vue";
     import Spinner from "@/components/Spinner.vue";
-    import InputLabel from "../components/InputLabel";
+    import InputLabel from "@/components/InputLabel.vue";
 
     export default {
         name: 'Debt',

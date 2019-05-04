@@ -100,10 +100,10 @@
 </template>
 
 <script>
-    import router from '@/router';
+    import router from '@/router.ts';
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
-    import userStore from '../stores/UserStore';
+    import userStore from '@/stores/UserStore.ts';
     import EventForm from '@/components/EventForm.vue';
     import AddBill from '@/components/AddBill.vue';
     import DebtDistribution from '@/components/DebtDistribution.vue';

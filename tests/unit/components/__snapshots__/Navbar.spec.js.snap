@@ -3,37 +3,37 @@
 exports[`Navbar should render 1`] = `
 <div class="container-fluid">
   <div class="row">
-    <nav class="navbar fixed-top w-100 bg-light-gray navbar-light navbar-expand-sm"><button type="button" aria-label="Toggle navigation" aria-controls="nav_collapse" aria-expanded="false" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
-      <div class="navbar-brand limegreen brand">debty</div>
+    <nav class="navbar fixed-top w-100 bg-gray py-0 h-md-60px navbar-light navbar-expand-sm">
+      <div class="navbar-brand limegreen brand">debty</div> <button type="button" aria-label="Toggle navigation" aria-controls="nav_collapse" aria-expanded="false" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
       <div id="nav_collapse" class="navbar-collapse collapse" style="display: none;">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a target="_self" href="/home" class="nav-link">
+        <ul class="navbar-nav h-60px mt-3 pb-2">
+          <li class="nav-item hoverable-nav"><a target="_self" href="/home" class="nav-link">
               Home
             </a></li>
         </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item"><a target="_self" href="/events" class="nav-link">
+        <ul class="navbar-nav h-60px mt-3 pb-2">
+          <li class="nav-item hoverable-nav"><a target="_self" href="/events" class="nav-link">
               Events
             </a></li>
         </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item"><a target="_self" href="/debts" class="nav-link">
+        <ul class="navbar-nav h-60px mt-3 pb-2">
+          <li class="nav-item hoverable-nav"><a target="_self" href="/debts" class="nav-link">
               Debts
-            </a></li>
+              <!----></a></li>
         </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item"><a target="_self" href="/contacts" class="nav-link">
+        <ul class="navbar-nav h-60px mt-3 pb-2">
+          <li class="nav-item hoverable-nav"><a target="_self" href="/contacts" class="nav-link">
               Contacts
               <!----></a></li>
         </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item"><a target="_self" href="/profile" class="nav-link">
+        <ul class="navbar-nav h-60px mt-3 pb-2">
+          <li class="nav-item hoverable-nav"><a target="_self" href="/profile" class="nav-link">
               Profile
             </a></li>
         </ul>
-        <ul class="navbar-nav ml-auto"><span class="d-none d-md-block mr-4 mt-2"> Welcome, <b></b></span>
+        <ul class="navbar-nav ml-auto h-60px mt-3 pb-2"><span class="d-none d-md-block mr-4 mt-2"> Welcome, <b></b></span>
           <li class="nav-item"><a target="_self" href="#" class="nav-link">
-              <font-awesome-icon icon="sign-out-alt" class="icon"></font-awesome-icon> <span>Sign out</span>
+              <font-awesome-icon icon="sign-out-alt" class="icon mr-2"></font-awesome-icon> <span>Sign out</span>
             </a></li>
         </ul>
       </div>

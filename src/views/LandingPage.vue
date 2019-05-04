@@ -52,9 +52,9 @@
 </template>
 
 <script>
-    import Background from '../components/Background';
-    import userStore from '../stores/UserStore';
-    import InputLabel from "../components/InputLabel";
+    import Background from '@/components/Background.vue';
+    import userStore from '@/stores/UserStore.ts';
+    import InputLabel from "@/components/InputLabel.vue";
 
     export default {
         name: 'LandingPage',

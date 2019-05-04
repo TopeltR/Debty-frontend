@@ -54,12 +54,12 @@
 <script>
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
-    import router from '@/router';
-    import userStore from '../stores/UserStore';
+    import router from '@/router.ts';
+    import userStore from '@/stores/UserStore.ts';
     import AddBankAccount from "@/components/AddBankAccount.vue";
     import Spinner from '@/components/Spinner.vue';
-    import eventStore from "../stores/EventStore";
-    import debtStore from "../stores/DebtStore";
+    import eventStore from "@/stores/EventStore.ts";
+    import debtStore from "@/stores/DebtStore.ts";
 
     export default {
         name: 'Home',

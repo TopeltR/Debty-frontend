@@ -76,10 +76,10 @@
 </template>
 
 <script>
-    import router from '../router.ts';
-    import Background from '../components/Background';
-    import User from '../entities/User';
-    import userStore from '../stores/UserStore';
+    import router from '@/router.ts';
+    import Background from '@/components/Background.vue';
+    import User from '@/entities/User.ts';
+    import userStore from '@/stores/UserStore.ts';
 
     export default {
         name: 'Register',

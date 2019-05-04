@@ -82,12 +82,12 @@
 <script>
     import Navbar from '@/components/Navbar.vue';
     import Background from '@/components/Background.vue';
-    import router from '@/router';
-    import userStore from '@/stores/UserStore';
+    import router from '@/router.ts';
+    import userStore from '@/stores/UserStore.ts';
     import DebtStatus from "@/components/DebtStatus.vue";
     import Spinner from "@/components/Spinner.vue";
-    import InputLabel from "../components/InputLabel";
-    import debtStore from "../stores/DebtStore";
+    import InputLabel from "@/components/InputLabel.vue";
+    import debtStore from "@/stores/DebtStore.ts";
 
     export default {
         name: 'Debts',
