@@ -79,6 +79,7 @@
             async closeEvent() {
                 await this.$http.post('/events/' + this.eventId + '/close');
                 this.state.showing = false;
+
                 window.location.reload();
             },
             cancel() {

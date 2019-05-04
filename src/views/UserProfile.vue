@@ -52,7 +52,7 @@
                                 </b-row>
                             </b-col>
                         </div>
-                        <form v-else>
+                        <form @submit.prevent="save" v-else>
                             <div class="info mt-5">
                                 <h2 class="mb-3">Edit user profile</h2>
                                 <div class='form-group'>
@@ -141,7 +141,7 @@
             loaded: false,
         }),
         async mounted() {
-            this.user = await userStore.getUser();
+            this.user = {... await userStore.getUser()};
             this.loaded = true;
         },
         methods: {
@@ -152,7 +152,7 @@
                 this.editing = false;
             },
             async cancel() {
-                this.user = await userStore.getUser();
+                this.user = {... await userStore.getUser()};
                 this.editing = false;
             },
         },

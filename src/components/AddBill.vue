@@ -37,7 +37,7 @@
                                        v-model="bill.sum"
                                        required v-on:change="displayNotMatchMessage" min="0" maxlength="255">
                                 <span class="ml-1">€</span>
-                                <b-btn @click="calculateSum" class="float-right" variant="outline-primary">Calculate
+                                <b-btn v-if="billPeople.length > 0" @click="calculateSum" class="float-right" variant="outline-primary">Calculate
                                 </b-btn>
                             </div>
                             <div class='form-group'>

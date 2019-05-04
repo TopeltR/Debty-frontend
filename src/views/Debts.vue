@@ -97,6 +97,7 @@
             this.user = await userStore.getUser();
             this.getBalance();
             this.getDebts();
+            this.loaded = true;
         },
         data() {
             return {
@@ -129,9 +130,6 @@
                     this.debts.map((debt) => this.addKeysToDebt(debt));
                     this.sortDebts();
                     this.filteredDebts = this.debts;
-                    if (this.debts.length > 0) {
-                        this.loaded = true;
-                    }
                 });
             },
             addKeysToDebt(debt) {
