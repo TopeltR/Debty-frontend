@@ -5,32 +5,32 @@
                 <b-navbar-brand class='limegreen brand' v-on:click='goToHome'>debty</b-navbar-brand>
                 <b-navbar-toggle target='nav_collapse'></b-navbar-toggle>
                 <b-collapse is-nav id='nav_collapse'>
-                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
-                        <b-nav-item ref="home" to='/home'>
+                    <b-navbar-nav class="h-60px">
+                        <b-nav-item ref="home" to='/home' class="hoverable-nav">
                             Home
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
-                        <b-nav-item ref="events" to='/events'>
+                    <b-navbar-nav class="h-60px mt-3 pb-2">
+                        <b-nav-item ref="events" to='/events' class="hoverable-nav">
                             Events
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
-                        <b-nav-item ref="debts" to='/debts'>
+                    <b-navbar-nav class="h-60px mt-3 pb-2">
+                        <b-nav-item ref="debts" to='/debts' class="hoverable-nav">
                             Debts
                             <span class='badge badge-primary badge-pill m-0 bg-lime'
                                   v-if="debtsNotification === true">{{debtsNotificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav class="hoverable-nav h-60px mt-3 pb-2">
-                        <b-nav-item ref="contacts" to='/contacts'>
+                    <b-navbar-nav class="h-60px mt-3 pb-2">
+                        <b-nav-item ref="contacts" to='/contacts' class="hoverable-nav">
                             Contacts
                             <span class='badge badge-primary badge-pill  m-0 bg-lime'
                                   v-if="contactsNotification === true"> {{contactsNotificationAmount}}</span>
                         </b-nav-item>
                     </b-navbar-nav>
-                    <b-navbar-nav ref="profile" class="hoverable-nav h-60px mt-3 pb-2">
-                        <b-nav-item to='/profile'>
+                    <b-navbar-nav class="h-60px mt-3 pb-2">
+                        <b-nav-item ref="profile" to='/profile' class="hoverable-nav">
                             Profile
                         </b-nav-item>
                     </b-navbar-nav>
@@ -135,6 +135,9 @@
     @media (min-width: 575px) {
         .h-md-60px {
             height: 60px !important;
+        }
+
+        .hoverable-nav {
         }
 
         .hoverable-nav:hover, .active {
