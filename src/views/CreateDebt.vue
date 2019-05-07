@@ -128,11 +128,15 @@
                 return user.lastName == null ? user.firstName : user.firstName + ' ' + user.lastName;
             },
             async saveDebt() {
+                this.updateDebtorReceiver();
                 const result = await this.$http.post('/debts', this.formData);
                 router.push('/debts/' + result.data.id);
             },
             switchDebtorReceiver() {
                 this.userIsReceiver = !this.userIsReceiver;
+                this.updateDebtorReceiver();
+            },
+            updateDebtorReceiver() {
                 if (this.userIsReceiver) {
                     this.formData.receiver = this.user;
                     this.formData.payer = this.other;
