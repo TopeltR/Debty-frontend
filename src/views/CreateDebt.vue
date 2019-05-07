@@ -68,7 +68,7 @@
                                     <b-col cols='3'>
                                         <input id='sum' type='number' class='form-control pr-0'
                                                v-model='formData.sum'
-                                               placeholder='0' required min="0" maxlength="255">
+                                               placeholder='0' required min="0" step="0.01" maxlength="255">
                                     </b-col>
                                     <b-col cols='1' class='mt-2 pl-0'>€</b-col>
                                 </b-row>

@@ -61,12 +61,11 @@
                         We are debty.
                     </b>
                     <br><br>
-                    Let's imagine. You are out with your friends having a nice evening. Everybody is chipping in on the stuff you buy.
-                    You buy one thing for the crew and other friends do the same. By the end of the evening you have bunch of bills and
-                    no clue who you should pay and how much.
+                    Imagine, you are out with your friends having a good time. Everybody is chipping in on the stuff you buy.
+                    You buy something for the crew and your friends do the same. By the end of the evening you have bunch of bills and
+                    no clue how much to pay and to whom.
                     <br><br>
-                    Introducing Debty, a platform for friends to sign up, create an event and then insert these bills including the people,
-                    who you bought the items. After the event all you need is one click and you will see exactly how much you have to pay and to who.
+                    Introducing Debty, a platform for friends to sign up, create an event and add all of their bills along with the people who participated. After the event all you need is one click and you will see exactly how much you have to pay and to whom.
                     <br><br>
                     It's that simple!
                 </p>
