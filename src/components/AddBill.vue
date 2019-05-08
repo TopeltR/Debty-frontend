@@ -360,7 +360,7 @@
                     sum += participationRounded;
                 });
 
-                this.billPeople[this.billPeople.length - 1].participation += (this.bill.sum - sum);
+                this.billPeople[this.billPeople.length - 1].participation += this.roundToTwoDecimalPoints(this.bill.sum - sum);
                 this.toggleParticipationChanged();
                 this.displayNotMatchMessage();
             },
