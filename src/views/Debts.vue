@@ -6,9 +6,16 @@
                 <h1 class='header pt-4'>My debts
                     <font-awesome-icon icon='plus' class='ml-3 mt-2 green fa-shadow-hover' v-on:click='createNewDebt'/>
                 </h1>
-                <b-row>
+                <b-row class="w-100">
                     <b-col>
-                        <h4>Total balance: {{totalBalance}}€</h4>
+                        <h4>Total balance: {{totalBalance}}€
+                            <font-awesome-icon id="total-balance-info" icon='info-circle'
+                                               class='p-1'></font-awesome-icon>
+                            <b-tooltip target="total-balance-info"
+                                       title="Your total balance includes all debts which aren't Confirmed or Declined."
+                                       placement="bottom">
+                            </b-tooltip>
+                        </h4>
                     </b-col>
                 </b-row>
                 <b-row class='mt-4 mb-4'>
