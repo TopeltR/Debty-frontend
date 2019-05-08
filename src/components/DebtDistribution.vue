@@ -21,7 +21,7 @@
                         </b-row>
                     </div>
                     <div v-else>
-                        <h5>You all paid equal amount of money to others. No debts created!</h5>
+                        <h5>No debts created!</h5>
                     </div>
                 </b-col>
             </b-row>
