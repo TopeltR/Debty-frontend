@@ -299,11 +299,11 @@
                     url = `https://www.lhv.ee/portfolio/payment_out.cfm?` +
                         `i_receiver_account_no=${this.debt.receiver.bankAccount.number}` +
                         `&i_receiver_name=${this.debt.receiver.bankAccount.name}` +
-                        `&i_payment_desc=${this.debt.title}` +
+                        `&i_payment_desc=${this.debt.title.replace('"', '').replace('"', '')}` +
                         `&i_amount=${this.debt.sum}`;
                 } else {
                     url = `https://www.lhv.ee/portfolio/payment_out.cfm?` +
-                        `i_payment_desc=${this.debt.title}` +
+                        `i_payment_desc=${this.debt.title.replace('"', '').replace('"', '')}` +
                         `&i_amount=${this.debt.sum}`;
                 }
                 window.open(encodeURI(url));
@@ -315,12 +315,12 @@
                         `&field3=benacc&value3=${this.debt.receiver.bankAccount.number}` +
                         `&field1=benname&value1=${this.debt.receiver.bankAccount.name}` +
                         `&value11=&field5=amount&value5=${this.debt.sum}` +
-                        `&field10=desc&value10=${this.debt.title}` +
+                        `&field10=desc&value10=${this.debt.title.replace('"', '').replace('"', '')}` +
                         `&paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 } else {
                     url = `https://www.seb.ee/ip/ipank?act=SMARTPAYM&lang=EST` +
                         `&value11=&field5=amount&value5=${this.debt.sum}` +
-                        `&field10=desc&value10=${this.debt.title}` +
+                        `&field10=desc&value10=${this.debt.title.replace('"', '').replace('"', '')}` +
                         `&paymtype=REMSEBEE&field6=currency&value6=EUR`;
                 }
                 window.open(encodeURI(url));
