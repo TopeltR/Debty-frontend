@@ -2,13 +2,6 @@
     <b-modal ref="modal" class="col-12">
         <div class="col-12" slot="modal-title">
             {{pageTitle}}
-            <div class="d-inline" v-if="!selectedBill">
-                <font-awesome-icon id="add-bill-info" icon='info-circle'
-                                   class="ml-1"></font-awesome-icon>
-                <b-tooltip target="add-bill-info"
-                           title="Here you can add bill to the event, remember to add participants!"
-                           placement="bottom"></b-tooltip>
-            </div>
         </div>
         <div class="col-10 offset-1">
             <b-row>
@@ -36,8 +29,14 @@
                                 <input type="number" step="0.01" class="d-inline form-control skinny" id="sum"
                                        v-model="bill.sum"
                                        required v-on:change="displayNotMatchMessage" min="0" maxlength="255">
-                                <span class="ml-1">€</span>
-                                <b-btn v-if="billPeople.length > 0" @click="calculateSum" class="float-right" variant="outline-primary">Calculate
+                                <span class="pl-1">€</span>
+                                <b-btn v-if="billPeople.length > 0" @click="divideParticipationsEqually" class="float-right" variant="outline-primary">
+                                    Divide sum
+                                    <font-awesome-icon id="divide-info" icon='info-circle'
+                                                       class="ml-2 p-0 mt-2"></font-awesome-icon>
+                                    <b-tooltip target="divide-info"
+                                               title="Divide sum equally between participants"
+                                               placement="bottom"></b-tooltip>
                                 </b-btn>
                             </div>
                             <div class='form-group'>
@@ -57,7 +56,7 @@
                                                        required min="0" maxlength="255"
                                                        v-on:change="displayNotMatchMessage">
                                             </b-col>
-                                            <b-col cols="1" class="pt-2">
+                                            <b-col cols="1" class="ml-n2 pt-2 p-0">
                                                 <span>€</span>
                                             </b-col>
                                         </b-row>
@@ -68,11 +67,17 @@
                                         <b-row>
                                             <b-col class="mt-1" sm="6">
                                             </b-col>
-                                            <b-col cols="11" sm="4">
-                                                <b-btn @click="divideParticipationsEqually" variant="outline-primary" class="w-100">
-                                                    Divide sum
+                                            <b-col cols="12" sm="5">
+                                                <b-btn @click="calculateSum" variant="outline-primary" class="w-90">
+                                                    Calculate
+                                                    <font-awesome-icon id="calculate-info" icon='info-circle'
+                                                                       class="ml-2 p-0 mt-2"></font-awesome-icon>
+                                                    <b-tooltip target="calculate-info"
+                                                               title="Calculate sum automatically from participations"
+                                                               placement="bottom"></b-tooltip>
                                                 </b-btn>
                                             </b-col>
+
                                         </b-row>
                                     </b-col>
                                 </div>
@@ -381,5 +386,9 @@
 
     .skinny {
         width: 70px;
+    }
+
+    .w-90 {
+        width: 90%;
     }
 </style>
