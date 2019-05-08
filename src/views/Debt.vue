@@ -12,7 +12,7 @@
                                 </div>
                                 <b-row class="mt-5 pb-3 border-bottom-1">
                                     <b-col md="6">
-                                        <b>Debtor:</b>
+                                        <b>Payer:</b>
                                     </b-col>
                                     <b-col md="6">
                                         {{ getUserFullName(debt.payer) }}
@@ -130,7 +130,7 @@
                                 </div>
                                 <div class='form-group'
                                      v-if="isOwner(debt.receiver)">
-                                    <input-label :required="true">From</input-label>
+                                    <input-label :required="true">Payer</input-label>
 
                                     <autocomplete id='payer' v-model='debt.payer' :placeholder='"Name"' :field='field'
                                                   :items='contacts' :required="true"
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class='form-group'
                                      v-if="isOwner(debt.payer)">
-                                    <input-label :required="true">To</input-label>
+                                    <input-label :required="true">Receiver</input-label>
 
                                     <autocomplete id='receiver'
                                                   v-model='debt.receiver'

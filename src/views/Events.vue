@@ -5,7 +5,8 @@
             <spinner :loaded="loaded">
                 <div v-if="events && events.length > 0">
                     <h1 class='pt-4'>My events
-                        <font-awesome-icon icon='plus' class=' ml-3 mt-2 limegreen' v-on:click='createNewEvent'/>
+                        <font-awesome-icon icon='plus' class='ml-3 mt-2 limegreen fa-shadow-hover'
+                                           v-on:click='createNewEvent'/>
                     </h1>
                     <div class='search-wrapper mr-4 mt-4 mb-4'>
                         <b-row>

@@ -3,7 +3,7 @@
 
         <span>
             <font-awesome-icon icon='times' v-bind:class="classes"
-                               class="icon icons"
+                               class="icon icons fa-shadow-hover"
                                v-on:click='deletePerson'/>
             {{fullName}}
             <small v-if="this.owner"> (owner)</small>

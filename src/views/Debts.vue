@@ -4,7 +4,7 @@
         <background>
             <spinner :loaded='loaded'>
                 <h1 class='header pt-4'>My debts
-                    <font-awesome-icon icon='plus' class='ml-3 mt-2 green' v-on:click='createNewDebt'/>
+                    <font-awesome-icon icon='plus' class='ml-3 mt-2 green fa-shadow-hover' v-on:click='createNewDebt'/>
                 </h1>
                 <b-row>
                     <b-col>
