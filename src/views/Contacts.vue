@@ -35,9 +35,11 @@
                                 <b-list-group-item v-for='person in requests' :key="person.id">
                                     {{getUserFullName(person)}}
                                     <span v-if='person.type === "Incoming"'>
-                                    <font-awesome-icon icon='check' class='limegreen ml-1 icons float-right'
+                                    <font-awesome-icon icon='check'
+                                                       class='limegreen ml-1 icons float-right fa-shadow-hover'
                                                        v-on:click='acceptContact(person.id)'/>
-                                    <font-awesome-icon icon='times' class='text-danger icons float-right'
+                                    <font-awesome-icon icon='times'
+                                                       class='text-danger icons float-right fa-shadow-hover'
                                                        v-on:click='deleteContact(person.id, user.id)'/>
                                 </span>
                                     <div v-else></div>
@@ -56,7 +58,8 @@
                                 <b-list-group-item v-for='contact in userContacts' :key="contact.id">
                                     <span v-if="isUserTo(contact)">{{getUserFullName(contact.from)}}</span>
                                     <span v-else>{{getUserFullName(contact.to)}}</span>
-                                    <font-awesome-icon icon='times' class='text-danger icons float-right'
+                                    <font-awesome-icon icon='times'
+                                                       class='text-danger icons float-right fa-shadow-hover'
                                                        v-on:click='deleteContact(contact.from.id, contact.to.id)'/>
                                 </b-list-group-item>
                             </div>

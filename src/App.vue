@@ -15,4 +15,8 @@
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
     }
+
+    .fa-shadow-hover:hover {
+        filter: drop-shadow(0 0 1px #ba9fc9);
+    }
 </style>

@@ -37,7 +37,7 @@
                     <b-navbar-nav class="ml-auto h-60px mt-3 pb-2">
                         <span class="d-none d-md-block mr-4 mt-2"> Welcome, <b>{{ getUserName() }}</b></span>
                         <b-nav-item v-on:click="logOut">
-                            <font-awesome-icon icon="sign-out-alt"
+                            <font-awesome-icon icon="sign-out-alt fa-shadow-hover"
                                                class="icon mr-2"></font-awesome-icon>
                             <span>Sign out</span>
                         </b-nav-item>

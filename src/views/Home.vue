@@ -11,7 +11,7 @@
                                 <b-col sm='12'>
                                     <b-btn v-b-toggle.events class='menu-list-button shadow'>
                                         <span class='float-left'>Events</span>
-                                        <font-awesome-icon icon='plus' class='float-right mt-2 green'
+                                        <font-awesome-icon icon='plus' class='float-right mt-2 green fa-shadow-hover'
                                                            v-on:click='createNewEvent'/>
                                     </b-btn>
                                 </b-col>
@@ -29,7 +29,7 @@
                                 <b-col sm='12'>
                                     <b-btn v-b-toggle.debts class='menu-list-button shadow'>
                                         <span class='float-left'>Debts</span>
-                                        <font-awesome-icon icon='plus' class='float-right mt-2 green'
+                                        <font-awesome-icon icon='plus' class='float-right mt-2 green fa-shadow-hover'
                                                            v-on:click='createNewDebt'/>
                                     </b-btn>
                                 </b-col>

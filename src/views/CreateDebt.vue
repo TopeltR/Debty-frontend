@@ -23,7 +23,7 @@
                                     <b-col cols="10" md="11">
                                         <b-row>
                                             <b-col cols="2">
-                                                <input-label :required="true">From</input-label>
+                                                <input-label :required="true">Payer</input-label>
                                             </b-col>
                                             <b-col cols="10">
                                                 <input v-if="!userIsReceiver" type='text' class='form-control'
@@ -38,7 +38,7 @@
                                         </b-row>
                                         <b-row>
                                             <b-col cols="2" class="mt-3">
-                                                <input-label :required="true">To</input-label>
+                                                <input-label :required="true">Receiver</input-label>
                                             </b-col>
                                             <b-col cols="10" class="mt-3">
                                                 <input v-if="userIsReceiver" type='text' class='form-control'
@@ -54,9 +54,9 @@
                                     </b-col>
                                     <b-col cols="2" md="1" v-on:click="switchDebtorReceiver">
                                         <font-awesome-icon icon='arrow-up'
-                                                           class="mt-4 p-0 limegreen"></font-awesome-icon>
+                                                           class="mt-4 p-0 limegreen fa-shadow-hover"></font-awesome-icon>
                                         <font-awesome-icon icon='arrow-down'
-                                                           class="mb-2 ml-2 limegreen"></font-awesome-icon>
+                                                           class="mb-2 ml-2 limegreen fa-shadow-hover"></font-awesome-icon>
                                     </b-col>
                                 </b-row>
                             </div>
